@@ -69,6 +69,7 @@ export default {
     }
   },
   mounted() {
+    // 로그인한 상태로 로그인 페이지에 진입하면 홈으로 돌려보냄
     if (this.loggedIn) {
       this.$router.push('/')
     }
