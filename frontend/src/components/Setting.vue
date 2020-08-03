@@ -20,7 +20,7 @@
 				<h2>{{userinfo.nickname}}</h2>
 				<p>{{userinfo.introduce}}</p>	
 				<div class="my-2">
-						<v-btn depressed small class="btn-success" @click="modprofile">Modify</v-btn>
+						<v-btn depressed small class="btn-success" @click="modprofile">수정</v-btn>
 				</div>
 			</v-col>
 			<!-- 클릭 시 name, description 부분 수정 -->
