@@ -9,47 +9,29 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.Map;
 
-@Component
-@Slf4j
-public class JwtService {
 
-    private String salt="MYSALT";
+public interface JwtService  {
 
-    private Long expireMin=(long)5;
 
-    public String create(final User user){
-        log.trace("time: {}", expireMin);
-        final JwtBuilder builder = Jwts.builder();
+    /**
+     * 로그인 성공 시 사용자 정보를 기반으로 JWTTOKEN을 생성해서 반환한다.
+     * @param user
+     * @return
+     */
+    public String create(final User user);
 
-        builder.setHeaderParam("typ", "JWT");
+    /**
+     * 전달받은 토큰이 제대로 생성된 것인지 확인하고 문제가 있다면 Runtime 예외를 발생시킨다.
+     * @param jwt
+     */
+    public void checkValid(final String jwt);
 
-        builder.setSubject("로그인토큰")
-                .setExpiration(new Date(System.currentTimeMillis()+ 1000*60*expireMin))
-                .claim("User",user).claim("second", "더 담고 싶은 것");
-
-        builder.signWith(SignatureAlgorithm.HS256, salt.getBytes());
-
-        final String jwt = builder.compact();
-        log.debug("토큰 발행: {}",jwt);
-        return jwt;
-    }
-
-    public void checkValid(final String jwt){
-        log.trace("토큰 점검: {}", jwt);
-        Jwts.parser().setSigningKey(salt.getBytes()).parseClaimsJws(jwt);
-    }
-
-    public Map<String, Object> get(final String jwt){
-        Jws<Claims> claims = null;
-        try{
-            claims = Jwts.parser().setSigningKey(salt.getBytes()).parseClaimsJws(jwt);
-        }catch(final Exception e){
-            throw new RuntimeException();
-        }
-
-        log.trace("claims: {}", claims);
-        return claims.getBody();
-    }
+    /**
+     * jwt 토큰을 분석해서 필요한 정보를 반환한다.
+     * @param jwt
+     * @return
+     */
+    public Map<String, Object> get(final String jwt);
 
 
 }
