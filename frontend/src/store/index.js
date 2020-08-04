@@ -9,9 +9,16 @@ const storage = window.sessionStorage
 
 export default new Vuex.Store({
   state: {
-    isLoggedIn: !!storage.getItem("jwt-auth-token")
+    isLoggedIn: false,
   },
   mutations: {
+    logincheck(state) {
+      if (storage.getItem("jwt-auth-token") === 'undefiend') {
+        state.isLoggedIn = false
+      } else {
+        state.isLoggedIn = !!storage.getItem("jwt-auth-token")
+      }
+    },
     loginSuccess(state, user) {
       state.status = {loggedIn: true}
       state.user = user
@@ -51,6 +58,7 @@ export default new Vuex.Store({
       )
     },
     logout({commit}) {
+      console.log(typeof(isLoggedIn))
       AuthService.logout()
       commit('logout')
     },

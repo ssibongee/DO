@@ -6,14 +6,14 @@
         src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
         class="profile-img-card"
       />
-      <form name="form" @submit.prevent="handleLogin">
+      <form name="form" @submit.prevent="login">
         <div class="form-group">
           <label for="username">email</label>
           <input
             type="email"
             class="form-control"
             name="email"
-            v-model="user.email"
+            v-model="email"
             v-validate="'required'"
           />
           <div
@@ -28,7 +28,7 @@
             type="password"
             class="form-control"
             name="password"
-            v-model="user.password"
+            v-model="password"
             v-validate="'required'"
           />
           <div
@@ -52,9 +52,11 @@
 </template>
 
 <script>
+import axios from 'axios'
 import User from '../models/user'
 
 const storage = window.sessionStorage
+const API_URL = 'http://localhost:8399/'
 
 export default {
   name: 'login',
@@ -63,35 +65,55 @@ export default {
   data() {
     return {
       user: new User('', ''),
+      email: "",
+      password: "",
       loading: false,
-      message: ''
-    }
-  },
-  mounted() {
-    this.init()
-    // 로그인한 상태로 로그인 페이지에 진입하면 홈으로 돌려보냄
-    if (this.loggedIn) {
-      this.$router.push('/')
+      message: "",
+      status: "",
+      token: "",
+      info: ""
     }
   },
   methods: {
-    handleLogin() {
-      this.loading = true
-      this.$validator.validateAll()
-
-      if (this.errors.any()) {
-        this.loading = false
-        return
-      }
-
-      if (this.user.email && this.user.password) {
-        this.$store.dispatch('login', this.user)
-          .then(() => {
-            // 로그인 성공하면 홈으로 보냄
+    setInfo(status, token, info) {
+      this.status = status
+      this.token = token
+      this.info = info
+    },
+    login() {
+      storage.setItem("jwt-auth-token", "")
+      storage.setItem("login_user", "")
+      axios.post(API_URL+'api/signin', {
+        email: this.email,
+        password: this.password
+      }).then(res => {
+          if (res.data.status) {
+            console.log(res.headers)
+            this.message = res.data.request_body.email + "로 로그인 되었습니다."
+            console.dir(res.headers["jwt-auth-token"])
+            this.setInfo(
+              "성공",
+              res.headers["jwt-auth-token"],
+              JSON.stringify(res.data.request_body)
+            )
+            storage.setItem("jwt-auth-token", res.headers["jwt-auth-token"])
+            storage.setItem("login_user", res.data.request_body.email)
             this.$router.push('/')
-          })
-          .catch(err => console.log(err))
-      }
+          } else {
+            this.setInfo("", "", "")
+            this.message = "로그인해주세요."
+            alert("입력 정보를 확인해주세요.")
+          }
+        })
+        .catch(err => {
+            this.setInfo("실패", "", JSON.stringify(err.response || err.message))
+        })
+    },
+    logout() {
+      storage.setItem("jwt-auth-token", "")
+      storage.setItem("login_user", "")
+      this.message = "로그인해주세요."
+      this.setInfo("로그아웃 성공", "", "")
     },
     
     // 로그인 했는지 체크
@@ -103,8 +125,33 @@ export default {
         // 토큰 없으면 제대로 로그인 접근한 사람이 아님
         storage.setItem("jwt-auth-token", "");
       }
+    },
+    // handleLogin() {
+    //   this.loading = true
+    //   this.$validator.validateAll()
+
+    //   if (this.errors.any()) {
+    //     this.loading = false
+    //     return
+    //   }
+
+    //   if (this.user.email && this.user.password) {
+    //     this.$store.dispatch('login', this.user)
+    //       .then(() => {
+    //         // 로그인 성공하면 홈으로 보냄
+    //         this.$router.push('/')
+    //       })
+    //       .catch(err => console.log(err))
+    //   }
+    // },
+  },
+  mounted() {
+    this.init()
+    // 로그인한 상태로 로그인 페이지에 진입하면 홈으로 돌려보냄
+    if (this.loggedIn) {
+      this.$router.push('/')
     }
-  }
+  },
 }
 </script>
 
