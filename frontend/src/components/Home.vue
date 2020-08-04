@@ -1,5 +1,9 @@
 <template>
   <v-container>
+<<<<<<< HEAD
+=======
+    <!-- <Navbar/> -->
+>>>>>>> 659e7596a5a1d11121e41a3e6f7ca03f5b83615b
     <!-- 상단 탭 -->
     <v-tabs v-model="tab" grow class="nav">
       <v-tab v-for="item in items" :key="item">
@@ -62,6 +66,10 @@
 </template>
 
 <script>
+<<<<<<< HEAD
+=======
+// import Navbar from '../components/Navbar.vue'
+>>>>>>> 659e7596a5a1d11121e41a3e6f7ca03f5b83615b
 import Sidebar from '../components/Sidebar.vue'
 import axios from 'axios'
 
@@ -79,6 +87,10 @@ export default {
     }
   },
   components: {
+<<<<<<< HEAD
+=======
+    // Navbar,
+>>>>>>> 659e7596a5a1d11121e41a3e6f7ca03f5b83615b
     Sidebar
   },
   mounted() {

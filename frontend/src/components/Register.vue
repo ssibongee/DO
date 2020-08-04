@@ -67,15 +67,22 @@
 
 <script>
 import User from '../models/user'
+<<<<<<< HEAD
 // import axios from 'axios'
 
 // const SERVER_URL = 'http://localhost:8000'
+=======
+>>>>>>> 659e7596a5a1d11121e41a3e6f7ca03f5b83615b
 
 export default {
   name: 'register',
   computed: {
     loggedIn() {
+<<<<<<< HEAD
       return this.$store.state.auth.status.loggedIn
+=======
+      return this.$store.getters.isAuthenticated
+>>>>>>> 659e7596a5a1d11121e41a3e6f7ca03f5b83615b
     }
   },
   data() {
@@ -113,6 +120,7 @@ export default {
         }
       })
     },
+<<<<<<< HEAD
     // onSubmitRegister() {
     //   const body = {
     //     user: {
@@ -127,6 +135,18 @@ export default {
     //       console.log(err)
     //     })
     // }
+=======
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+      }
+    },
+    mounted() {
+      if (this.loggedIn) {
+        this.$router.push('/profile');
+      }
+    },
+>>>>>>> 659e7596a5a1d11121e41a3e6f7ca03f5b83615b
   }
 }
 </script>

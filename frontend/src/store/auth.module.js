@@ -1,3 +1,3 @@
-export const auth = {
-    namespaced: true,
-}
+// export const auth = {
+//     namespaced: true,
+// }
