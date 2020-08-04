@@ -60,7 +60,7 @@ public class UserController {
      */
 
     @PostMapping("/api/emailduplicate")
-    public boolean isemailAvailable (@RequestBody User loginVo) {    //HTTP요청의 내용을 객체에 매핑하기 위해 @RequestBody 를 설정.
+    public boolean isemailAvailable (@RequestBody User  loginVo) {    //HTTP요청의 내용을 객체에 매핑하기 위해 @RequestBody 를 설정.
         // @Controller인 경우 @ResponseBody를 적어야한다.
         String in_email = loginVo.getEmail();
 

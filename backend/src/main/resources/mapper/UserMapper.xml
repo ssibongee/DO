@@ -39,8 +39,9 @@
        uid를 기준으로 nickname,email,password,profileImage,qrImage 변경
       -->
     <update id="update" parameterType="User">
-        update user set nickname=#{nickname},email=#{email},password=#{password},
-        profileImage=#{profileImage},qrImage=#{qrImage} where uid = #{uid};
+        update user set nickname=#{nickname},password=#{password},
+        profileImage=#{profileImage},qrImage=#{qrImage},facebook=#{facebook},
+        instagram=#{instagram}, github=#{github}, introduce=#{introduce} where email = #{email};
     </update>
 
     <select id="signin" resultType="User" parameterType="String">
