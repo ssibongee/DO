@@ -1,8 +1,10 @@
 import axios from 'axios'
 
 const API_URL = 'http://localhost:8399/'
+const storage = window.sessionStorage
 
 class AuthService {
+    // 로그인, 로그아웃, 접속 체크
     // Login
     login(user){
         return axios
@@ -20,19 +22,28 @@ class AuthService {
     }
     // Logout
     logout() {
-        localStorage.removeItem('user')
+        storage.setItem("jwt-auth-token", "")
+        storage.setItem("login_user", "")
+        // this.message = "로그인 해주세요"
+        // this.setInfo("로그아웃 성공", "", "")
     }
+    // 
+
+    // User CRUD
     // C: User
     register(user){
         return axios.post(API_URL + 'api/v1/', {
             nickname: user.username,
             email: user.email,
-            password: user.password
+            password: user.password,
         })
     }
     // R: User
-    detail(user){
-        return axios.get(API_URL + `api/v1/${user.id}`)
+    // detail(user){
+    //     return axios.get(API_URL + `api/v1/${user.id}`)
+    // }
+    detail() {
+        return axios.get(API_URL + `api/v1/`)
     }
     // U: User
     update(){

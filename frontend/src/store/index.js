@@ -4,10 +4,12 @@ import Vuex from 'vuex'
 import AuthService from '../services/auth-service'
 
 Vue.use(Vuex)
-    
+
+const storage = window.sessionStorage
+
 export default new Vuex.Store({
   state: {
-    initialState
+    isLoggedIn: !!storage.getItem("jwt-auth-token")
   },
   mutations: {
     loginSuccess(state, user) {
@@ -27,7 +29,13 @@ export default new Vuex.Store({
     },
     registerFailure(state){
         state.status = {}
-    }
+    },
+    // login(state) {
+    //   state.pending = true;
+    // },
+    // logout (state) {
+    //   state.isLoggedIn = false;
+    // }
   },
   actions: {
     login({commit}, user){
@@ -61,11 +69,16 @@ export default new Vuex.Store({
   },
   modules: {
   },
+  getters: {
+    isAuthenticated(state) {
+      return state.isLoggedIn
+    }
+  }
 })
 
 // const resourceHost = 'http://localhost:8081'
 
-const user = JSON.parse(localStorage.getItem('user'))
-const initialState = user
-    ? {status: {loggedIn: true}, user}
-    : {status: {}, user: null}
+// const user = JSON.parse(localStorage.getItem('user'))
+// const initialState = user
+//     ? {status: {loggedIn: true}, user}
+//     : {status: {}, user: null}
