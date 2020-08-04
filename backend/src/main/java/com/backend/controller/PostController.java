@@ -3,6 +3,8 @@ package com.backend.controller;
 import com.backend.dto.post.Post;
 import com.backend.service.CommentService;
 import com.backend.service.PostService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@Api(tags = {"Post"})
 @RestController
 @CrossOrigin(origins = {"*"})
 public class PostController {
@@ -27,6 +30,7 @@ public class PostController {
      * @param uid : 사용자 아이디
      * @return 글이 정상적으로 등록된 경우 HttpStatus 201 반환
      */
+    @ApiOperation(value = "글 작성", notes = "새로운 포스트를 작성한다.")
     @PostMapping("/api/v2/{uid}")
     public HttpStatus save(@RequestBody Post newPost) {
         postService.save(newPost);
@@ -37,6 +41,7 @@ public class PostController {
      * @param pid : Post 가 가지고 있는 고유 식별번호
      * @return
      */
+    @ApiOperation(value = "글 읽기", notes = "pid 를 통해 글 하나를 찾아서 반환")
     @GetMapping("/api/v2/p/{pid}")
     public Post findById(@PathVariable Long pid) {
         Post post = postService.findById(pid);
@@ -49,6 +54,7 @@ public class PostController {
      * @param option : 키워드 없이 옵션별로 전체 글을 조회 (작성일 순, 조회순, 좋아요 순)
      * @return 글이 없으면 null 을 반환
      */
+    @ApiOperation(value = "옵션에 따른 전체 글 조회", notes = "조회수, 좋아요 수, 최신순")
     @GetMapping("/api/v2/{option}")
     public List<Post> findAllOrderedByOption(@PathVariable String option) {
         List<Post> list = new ArrayList<>();
