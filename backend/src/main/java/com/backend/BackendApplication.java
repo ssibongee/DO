@@ -28,33 +28,4 @@ public class BackendApplication {
 		SpringApplication.run(BackendApplication.class, args);
 
 	}
-//	@Autowired
-//	private JwtInterceptor jwtInterceptor;
-//
-//	@Override
-//	public void addInterceptors(InterceptorRegistry registry){
-//		registry.addInterceptor(jwtInterceptor).addPathPatterns("/api/signin/") // 기본 적용 경로
-//				.addPathPatterns("/api/info/");
-////				.excludePathPatterns(Arrays.asList("/api/signin/**")) // 제외 경로
-////				.excludePathPatterns(Arrays.asList("/api/info/**"));
-//	}
-//
-//	@Override
-//	public void addCorsMappings(CorsRegistry registry){
-//		registry.addMapping("/**")
-//				.allowedOrigins("*")
-//				.allowedMethods("*")
-//				.allowedHeaders("*")
-//				.exposedHeaders("jwt-auth-token");
-//	}
-//
-//	@Bean
-//	public Docket swagger() {
-//		return new Docket(DocumentationType.SWAGGER_2)
-//				.select()
-//				.apis(RequestHandlerSelectors.basePackage("com.backend.controller"))
-//				.paths(PathSelectors.any())
-//				.build()
-//				.useDefaultResponseMessages(false); // 기본으로 세팅되는 200,401,403,404 메시지를 표시 하지 않음
-//	}
 }
