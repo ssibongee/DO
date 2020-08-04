@@ -11,7 +11,7 @@
           </a>
         </li>
       </div>
-      <div class="navbar-nav ml-auto" v-if="!currentUser">
+      <div v-if="!this.isLogin" class="navbar-nav ml-auto" >
         <li class="nav-item">
           <a href="/register" class="nav-link">
             회원가입
@@ -25,44 +25,50 @@
       </div> 
 
       <!-- 로그인 했을때 -->
-      <div class="navbar-nav ml-auto" v-if="currentUser">
+      <div v-if="this.isLogin" class="navbar-nav ml-auto" >
         <li class="nav-item">
           <a href="/profile" class="nav-link">
-            <font-awesome-icon icon="user" />
-            {{currentUser.username}}
+            <font-awesome-icon icon="user" /> 내 정보
           </a>
         </li>
         <li class="nav-item">
           <a href class="nav-link" @click="logOut">
-            <font-awesome-icon icon="sign-out-alt" /> LogOut
+            <font-awesome-icon icon="sign-out-alt" /> 로그아웃
           </a>
         </li>
       </div>
       </div>
   </nav>
   <!-- <button v-if="isAuthenticated" @click.prevent="onClickLogout">Logout</button> -->
-  <!-- <button @click.prevent="onClickLogout">Logout</button> -->
 </template>
 
 <script>
-import store from '../store'
+// import store from '../store'
 // import axios from 'axios'
 
 export default {
   name: 'Navbar',
-  computed: {
-      // 현재 로그인 한 상태인지 아닌지 체크
-      isAuthenticated() {  
-        return store.getters.isAuthenticated
-      }
-    },
-    methods: {
-      onClickLogout() {
-        // LOGOUT 변이 실행 후 리다이렉트
-        store.dispatch('LOGOUT')
-          .then(() => this.$router.push('/'))
-      }
+  data() {
+    return {
+      isLogin: null,
     }
+  },
+  computed: {
+    // 현재 로그인 한 상태인지 아닌지 체크
+  },
+  methods: {
+    onClickLogout() {
+      // LOGOUT 변이 실행 후 리다이렉트
+      this.$store.dispatch('logout')
+        .then(() => this.$router.push('/'))
+    },
+    loginChecker() {
+      this.isLogin = this.$store.getters.isAuthenticated
+    }
+  },
+  created() {
+    this.loginChecker()
+  },
 }
 </script>
 

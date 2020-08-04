@@ -67,15 +67,12 @@
 
 <script>
 import User from '../models/user'
-// import axios from 'axios'
-
-// const SERVER_URL = 'http://localhost:8000'
 
 export default {
   name: 'register',
   computed: {
     loggedIn() {
-      return this.$store.state.auth.status.loggedIn
+      return this.$store.getters.isAuthenticated
     }
   },
   data() {
@@ -113,20 +110,16 @@ export default {
         }
       })
     },
-    // onSubmitRegister() {
-    //   const body = {
-    //     user: {
-          
-    //     }
-    //   }
-    //   axios.post(`${SERVER_URL}/api/v1`, body)
-    //     .then(res => {
-    //       console.log(res)
-    //     })
-    //     .catch(err => {
-    //       console.log(err)
-    //     })
-    // }
+  computed: {
+    loggedIn() {
+      return this.$store.state.auth.status.loggedIn;
+      }
+    },
+    mounted() {
+      if (this.loggedIn) {
+        this.$router.push('/profile');
+      }
+    },
   }
 }
 </script>

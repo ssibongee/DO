@@ -23,7 +23,7 @@ export default {
 
 <style>
  @import './assets/style/bootstrap.css';
- Navbar {
+ /* Navbar {
    background-color : lightcoral;
- }
+ } */
 </style>

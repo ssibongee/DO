@@ -8,12 +8,12 @@
       />
       <form name="form" @submit.prevent="handleLogin">
         <div class="form-group">
-          <label for="username">Username</label>
+          <label for="username">email</label>
           <input
-            type="text"
+            type="email"
             class="form-control"
-            name="username"
-            v-model="user.username"
+            name="email"
+            v-model="user.email"
             v-validate="'required'"
           />
           <div
@@ -54,12 +54,11 @@
 <script>
 import User from '../models/user'
 
+const storage = window.sessionStorage
+
 export default {
   name: 'login',
   computed: {
-    loggedIn() {
-      return this.$store.state.status.loggedIn
-    }
   },
   data() {
     return {
@@ -69,6 +68,7 @@ export default {
     }
   },
   mounted() {
+    this.init()
     // 로그인한 상태로 로그인 페이지에 진입하면 홈으로 돌려보냄
     if (this.loggedIn) {
       this.$router.push('/')
@@ -84,16 +84,24 @@ export default {
         return
       }
 
-      if (this.user.username && this.user.password) {
-        this.$store.dispatch('login', this.user).then(
-          () => {
-            this.$router.push('/profile')
-          },
-          error => {
-            this.loading = false
-            this.message = error.message
-          }
-        )
+      if (this.user.email && this.user.password) {
+        this.$store.dispatch('login', this.user)
+          .then(() => {
+            // 로그인 성공하면 홈으로 보냄
+            this.$router.push('/')
+          })
+          .catch(err => console.log(err))
+      }
+    },
+    
+    // 로그인 했는지 체크
+    init() {
+      // 스토리지에 토큰 있으면
+      if (storage.getItem("jwt-auth-toekn")) {
+        this.message = storage.getItem("login_user") + "로 로그인 되었습니다."
+      } else {
+        // 토큰 없으면 제대로 로그인 접근한 사람이 아님
+        storage.setItem("jwt-auth-token", "");
       }
     }
   }
