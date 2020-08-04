@@ -17,7 +17,7 @@
                 <v-col col="12" md="6" lg="4" v-for="(post, index) in posts" :key="index+'_posts'">
                   <v-card
                     hover
-                    @click="testpostdetail"
+                    @click="testpostdetail(post.pid)"
                   >
                     <v-img
                       class="white--text align-end"
@@ -82,6 +82,7 @@ export default {
         'Latest', 'Hits', 'Likes'
       ],
       posts : {
+        pid: '',
         title: '',
         content: '',
         publishedTime: '',
@@ -90,8 +91,9 @@ export default {
   },
   created() {
     axios
-    .get(API_URL+'/api/v2/latest')
+    .get(API_URL+'api/v2/latest')
     .then(({data})=>{
+      // console.log(data)
       this.posts = data;
     })
   },
@@ -102,8 +104,11 @@ export default {
   mounted() {
   },
   methods: {
-    testpostdetail() {
-      axios.get(API_URL+'api/v2/p/1')
+    
+    testpostdetail(pid) {
+      // console.log(this.posts.data)
+      // var pid = this.$route.params.pid
+      axios.get(API_URL+`api/v2/p/${pid}`)
         .then(res => {
           console.log(res)
           this.$router.push({name: 'postdetail', params: { username:res.data.author, title:res.data.title, content: res.data.content}})
