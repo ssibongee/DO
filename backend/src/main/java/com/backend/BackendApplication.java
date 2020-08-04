@@ -26,9 +26,10 @@ public class BackendApplication implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry){
-		registry.addInterceptor(jwtInterceptor).addPathPatterns("/api/**")
-				.excludePathPatterns(Arrays.asList("/api/signin/**"))
-				.excludePathPatterns(Arrays.asList("/api/info/**"));
+		registry.addInterceptor(jwtInterceptor).addPathPatterns("/api/signin/") // 기본 적용 경로
+				.addPathPatterns("/api/info/");
+//				.excludePathPatterns(Arrays.asList("/api/signin/**")) // 제외 경로
+//				.excludePathPatterns(Arrays.asList("/api/info/**"));
 	}
 
 	@Override

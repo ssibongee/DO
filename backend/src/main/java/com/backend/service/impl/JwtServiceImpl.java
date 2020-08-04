@@ -4,6 +4,7 @@ import com.backend.dto.user.User;
 import com.backend.service.JwtService;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -12,9 +13,11 @@ import java.util.Map;
 @Component
 @Slf4j
 public class JwtServiceImpl implements JwtService {
-    private String salt="MYSALT";
+    @Value("${jwt.salt}")
+    private String salt;
 
-    private Long expireMin=(long)5;
+    @Value("${jwt.expmin}")
+    private Long expireMin;
 
     @Override
     public String create(User user) {

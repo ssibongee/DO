@@ -41,23 +41,13 @@ public class UserServiceImpl implements UserService{
     @Override
     public User signin(String email, String password) {
         // 이메일과 패스워드 DB와 비교.
-        User user = dao.signin(email,password);
+        User user = dao.signin(email, password);
 
-        if(user != null){
+        if (user != null) {
             return dao.signin(email, password);
-        }else{
+        } else {
             throw new RuntimeException("그런 사람은 없어요.");
         }
-
-//        if(email.equals("abc@def.net") && password.equals("1234")){
-//            return new User(email, password);
-//        } else{
-//            throw new RuntimeException("그런 사람은 없어요.");
-//        }
     }
 
-    @Override
-    public String getServiceInfo() {
-        return "getServiceInfo()";
-    }
 }

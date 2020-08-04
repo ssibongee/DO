@@ -41,7 +41,6 @@ public class UserController {
             res.setHeader("jwt-auth-token", token);
 
             resultMap.put("status", true);
-//            resultMap.put("info", info);
             resultMap.put("request_body", user);
             status = HttpStatus.ACCEPTED;
         } catch(RuntimeException e){
@@ -51,30 +50,6 @@ public class UserController {
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
 
-    }
-
-
-    @PostMapping("/api/info")
-    public ResponseEntity<Map<String, Object>> getInfo(HttpServletRequest req, @RequestBody User user){
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = null;
-
-        try{
-            // 사용자에게 전달할 정보이다.
-            String info = service.getServiceInfo();
-
-            // 토큰에 담긴 정보를 전달.
-            resultMap.putAll(jwtService.get(req.getHeader("jwt-auth-token")));
-
-            resultMap.put("status", true);
-            resultMap.put("info", info);
-            resultMap.put("request_body", user);
-        }catch(RuntimeException e){
-            log.error("정보 조회 실패", e);
-            resultMap.put("message", e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
     /**
