@@ -119,8 +119,10 @@ public class UserController {
     @PutMapping(value="/api/v1")
     public ResponseEntity<?> update(@RequestBody User user) {
         try{
+
             service.update(user);
             return new ResponseEntity<>("회원정보수정 성공", HttpStatus.OK);
+
         }catch(Exception err){
             String errorMessage;
             errorMessage = err + "<== error";
