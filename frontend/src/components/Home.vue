@@ -11,46 +11,50 @@
       <v-col>
         <!-- 카드 -->
         <v-tabs-items v-model="tab">
-          <v-tab-item v-for="item in items" :key="item">
-            <v-row>
-              <div class="col-lg-4 col-md-6" v-for="count in vforcount" :key="count">
-                <v-card
-                  hover
-                  @click="testpostdetail"
-                >
-                  <v-img
-                    class="white--text align-end"
-                    height="200px"
-                    src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
+          <v-tab-item v-for="(item) in items" :key="item">
+            <v-row v-if="posts.length">
+              <!-- <div v-if="item.length"> -->
+                <v-col col="12" md="6" lg="4" v-for="(post, index) in posts" :key="index+'_posts'">
+                  <v-card
+                    hover
+                    @click="testpostdetail(post.pid)"
                   >
-                    <v-card-title>Top 10 Australian beaches</v-card-title>
-                  </v-img>
-
-                  <v-card-subtitle class="pb-0">{{ item }} {{ count }}</v-card-subtitle>
-
-                  <v-card-text class="text--primary">
-                    <div>Whitehaven Beach</div>
-
-                    <div>Whitsunday Island, Whitsunday Islands</div>
-                  </v-card-text>
-
-                  <v-card-actions>
-                    <v-btn
-                      color="orange"
-                      text
+                    <v-img
+                      class="white--text align-end"
+                      height="200px"
+                      src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
                     >
-                      Share
-                    </v-btn>
+                      <v-card-title>{{post.title}}</v-card-title>
+                    </v-img>
 
-                    <v-btn
-                      color="orange"
-                      text
-                    >
-                      Explore
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </div>
+                    <v-card-subtitle class="pb-0">{{ item }} {{ count }}</v-card-subtitle>
+
+                    <v-card-text class="text--primary">
+                      <div>{{post.content}}</div>
+
+                      <div>{{post.publishedTime}}</div>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-btn
+                        color="orange"
+                        text
+                      >
+                        Share
+                      </v-btn>
+
+                      <v-btn
+                        color="orange"
+                        text
+                      >
+                        Explore
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-col>
+              </v-row>
+              <v-row v-else>
+                게시글이 없습니다.
             </v-row>
           </v-tab-item>
         </v-tabs-items>
@@ -73,12 +77,25 @@ export default {
   name: 'Home',
   data() {
     return {
-      vforcount: [1, 2, 3, 4, 5, 6],
       tab: null,
       items: [
-        'Trending', 'Recent'
-      ]
+        'Latest', 'Hits', 'Likes'
+      ],
+      posts : {
+        pid: '',
+        title: '',
+        content: '',
+        publishedTime: '',
+      }
     }
+  },
+  created() {
+    axios
+    .get(API_URL+'api/v2/latest')
+    .then(({data})=>{
+      // console.log(data)
+      this.posts = data;
+    })
   },
   components: {
     // Navbar,
@@ -87,8 +104,11 @@ export default {
   mounted() {
   },
   methods: {
-    testpostdetail() {
-      axios.get(API_URL+'api/v2/p/1')
+    
+    testpostdetail(pid) {
+      // console.log(this.posts.data)
+      // var pid = this.$route.params.pid
+      axios.get(API_URL+`api/v2/p/${pid}`)
         .then(res => {
           console.log(res)
           this.$router.push({name: 'postdetail', params: { username:res.data.author, title:res.data.title, content: res.data.content}})
