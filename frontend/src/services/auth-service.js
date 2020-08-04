@@ -12,14 +12,35 @@ class AuthService {
                 email: user.email,
                 password: user.password
             })
-            .then(this.handelResponse)
-            .then(response => {
-                if(response.data.accessToken) {
-                    localStorage.setItem('user', JSON.stringify(response.data))
+            .then(res => {
+                if (res.data.status) {
+                    this.message = res.data.data.email + "로 로그인 되었습니다."
+                    console.dir(res.headers["jwt-auth-token"])
+                    this.setInfo(
+                        "성공",
+                        res.headers["jwt-auth-token"],
+                        JSON.stringify(res.data.data)
+                    )
+                    storage.setItem("jwt-auth-token", res.headers["jwt-auth-token"])
+                    storage.setItem("login_user", res.data.data.email)
+                } else {
+                    this.setInfo("", "", "")
+                    this.message = "로그인해주세요."
+                    alert("입력 정보를 확인해주세요.")
                 }
-                return response.data
             })
+            .catch(err => {
+                this.setInfo("실패", "", JSON.stringify(err.response || err.message))
+            })
+            // .then(this.handelResponse)
+            // .then(response => {
+            //     if(response.data.accessToken) {
+            //         localStorage.setItem('user', JSON.stringify(response.data))
+            //     }
+            //     return response.data
+            // })
     }
+
     // Logout
     logout() {
         storage.setItem("jwt-auth-token", "")
@@ -62,15 +83,15 @@ class AuthService {
 
 
     // ??
-    handelResponse(response) {
-        if(response.status === 401) {
-            this.logout()
-            location.reload(true)
-            const error = response.data && response.data.message
-            return Promise.reject(error)
-        }
-        return Promise.resolve(response)
-    }
+    // handelResponse(response) {
+    //     if(response.status === 401) {
+    //         this.logout()
+    //         location.reload(true)
+    //         const error = response.data && response.data.message
+    //         return Promise.reject(error)
+    //     }
+    //     return Promise.resolve(response)
+    // }
 }
 
 export default new AuthService()
