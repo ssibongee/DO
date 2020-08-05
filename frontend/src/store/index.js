@@ -13,7 +13,7 @@ export default new Vuex.Store({
   },
   mutations: {
     logincheck(state) {
-      if (storage.getItem("jwt-auth-token") === 'undefiend') {
+      if (storage.getItem("jwt-auth-token") === 'undefined') {
         state.isLoggedIn = false
       } else {
         state.isLoggedIn = !!storage.getItem("jwt-auth-token")

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <!-- <Navbar/> -->
+    <Navbar/>
     <!-- 상단 탭 -->
     <v-tabs v-model="tab" grow class="nav">
       <v-tab v-for="item in items" :key="item">
@@ -67,11 +67,11 @@
 </template>
 
 <script>
-// import Navbar from '../components/Navbar.vue'
+import Navbar from '../components/Navbar.vue'
 import Sidebar from '../components/Sidebar.vue'
 import axios from 'axios'
 
-const API_URL = 'http://localhost:8399/'
+const API_URL = 'http://localhost:8081/'
 
 export default {
   name: 'Home',
@@ -98,7 +98,7 @@ export default {
     })
   },
   components: {
-    // Navbar,
+    Navbar,
     Sidebar
   },
   mounted() {

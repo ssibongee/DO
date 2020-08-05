@@ -2,39 +2,33 @@
   <nav class="navbar navbar-expand fixed-top navbar-light bg-light">
     <div class="container">
     <div class="navbar-brand">
-        <a href="/" class="nav-link">Albo7</a>
+        <router-link to="/" class="nav-link">Albo7</router-link>
       </div>
       <div class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a href="/wiki" class="nav-link">
-            Wiki
-          </a>
+          <router-link to="/wiki" class="nav-link">Wiki</router-link>
         </li>
       </div>
       <div v-if="!this.isLogin" class="navbar-nav ml-auto" >
         <li class="nav-item">
-          <a href="/register" class="nav-link">
-            회원가입
-          </a>
+          <router-link to="/register" class="nav-link">회원가입</router-link>
         </li>
         <li class="nav-item">
-          <a href="/login" class="nav-link">
-            로그인
-          </a>
+          <router-link to="/login" class="nav-link">로그인</router-link>
         </li>
       </div> 
 
       <!-- 로그인 했을때 -->
       <div v-if="this.isLogin" class="navbar-nav ml-auto" >
         <li class="nav-item">
-          <a href="/profile" class="nav-link">
+          <router-link to="/setting" class="nav-link">
             <font-awesome-icon icon="user" /> 내 정보
-          </a>
+          </router-link>
         </li>
         <li class="nav-item">
-          <a href class="nav-link" @click="logOut">
+          <router-link class="nav-link" @click="logOut">
             <font-awesome-icon icon="sign-out-alt" /> 로그아웃
-          </a>
+          </router-link>
         </li>
       </div>
       </div>
@@ -43,14 +37,12 @@
 </template>
 
 <script>
-// import store from '../store'
-// import axios from 'axios'
 
 export default {
   name: 'Navbar',
   data() {
     return {
-      isLogin: null,
+      isLogin: this.$store.state.isLoggedIn
     }
   },
   computed: {
@@ -63,12 +55,16 @@ export default {
         .then(() => this.$router.push('/'))
     },
     loginChecker() {
+      this.$store.commit('logincheck')
       this.isLogin = this.$store.getters.isAuthenticated
     }
   },
   created() {
     this.loginChecker()
   },
+  mounted() {
+    this.loginChecker()
+  }
 }
 </script>
 
