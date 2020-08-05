@@ -4,7 +4,7 @@
 <mapper namespace="com.backend.mapper.PostMapper">
 
         <!-- 글 작성 후 저장 -->
-        <insert id="save">
+        <insert id="save" useGeneratedKeys="true" keyProperty="pid" parameterType="com.backend.dto.post.Post">
                 insert into post values(default, #{uid}, default, #{author}, #{title}, #{content},
                 0, 0, null, default, null)
         </insert>
@@ -66,4 +66,27 @@
                 select title from post join taglist on post.pid = taglist.pid
                 where taglist.tid in (select tid from tag where name like #{tag})
         </select>
+
+        <!-- 태그가 존재하는지 검색 -->
+        <select id="findTagByName" resultType="Long">
+                select tid from tag where name like #{tag};
+        </select>
+
+        <!-- 새로운 태그를 등록 -->
+        <insert id="saveNewTag" useGeneratedKeys="true" keyProperty="tid" parameterType="com.backend.dto.post.Tag">
+                insert into tag values(default, #{name}, 1)
+        </insert>
+
+        <!-- 태그가 이미 존재하는 경우 태그 사용 횟수를 1 증가 -->
+        <update id="increaseTagHits">
+                update tag set hits = hits + 1 where name = #{tag}
+        </update>
+
+        <!-- 포스트가 사용중인 태그들을 태그리스트에 등록 -->
+        <insert id="savePostTagList">
+                insert into taglist values(#{pid}, #{tid})
+        </insert>
+
+
+        <!-- 글을 수정하거나 삭제할 때 사용한 태그 횟수도 감소하는게 필요함 -->
 </mapper>

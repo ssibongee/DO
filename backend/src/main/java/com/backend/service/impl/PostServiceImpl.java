@@ -2,6 +2,7 @@ package com.backend.service.impl;
 
 import com.backend.dao.PostDao;
 import com.backend.dto.post.Post;
+import com.backend.dto.post.Tag;
 import com.backend.service.PostService;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,21 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Long save(Post post) {
-        return postDao.save(post);
+
+        postDao.save(post);
+        Long pid = post.getPid();
+        for(String tag : post.getTag()) {
+            Long tid = postDao.findTagByName(tag);
+            if(tid != null) { // 태그가 이미 존재하는 경우
+                postDao.increaseTagHits(tag);
+            } else {
+                Tag newTag = new Tag(tag);
+                postDao.saveNewTag(newTag);
+                tid = newTag.getTid();
+            } // 태그가 존재하지 않는 경우
+            postDao.savePostTagList(pid, tid);
+        }
+        return 1L;
     }
 
     @Override
@@ -76,6 +91,7 @@ public class PostServiceImpl implements PostService {
     public List<String> findAllPostTags(Long pid) {
         return postDao.findAllPostTags(pid);
     }
+
 
 //    @Override
 //    public List<Post> findAll() {
