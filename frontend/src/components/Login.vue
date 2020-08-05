@@ -87,11 +87,8 @@ export default {
         email: this.email,
         password: this.password
       }).then(res => {
-        console.log(res.headers["jwt-auth-token"])
           if (res.data.status) {
-            console.log(res.headers["content-type"])
             this.message = res.data.request_body.email + "로 로그인 되었습니다."
-            console.dir(res.headers["jwt-auth-token"])
             this.setInfo(
               "성공",
               res.headers["jwt-auth-token"],
