@@ -56,7 +56,7 @@ import axios from 'axios'
 import User from '../models/user'
 
 const storage = window.sessionStorage
-const API_URL = 'http://localhost:8081/'
+const API_URL = 'http://localhost:8399/'
 
 export default {
   name: 'login',
@@ -69,6 +69,7 @@ export default {
       password: "",
       loading: false,
       message: "",
+      renderComponent: true,
     }
   },
   methods: {
@@ -81,7 +82,7 @@ export default {
         return
       }
 
-      if (this.user.email && this.user.password) {
+      if (this.email && this.password) {
         storage.setItem("jwt-auth-token", "")
         storage.setItem("login_user", "")
         axios.post(API_URL+'api/signin', {
@@ -117,6 +118,12 @@ export default {
         storage.setItem("jwt-auth-token", "");
       }
     },
+    forceRender() {
+      this.renderComponent = false
+      this.$nextTick(() => {
+        this.renderComponent = true
+      })
+    }
   },
   mounted() {
     this.init()
