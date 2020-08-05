@@ -2,6 +2,7 @@ package com.backend.dao.impl;
 
 import com.backend.dao.PostDao;
 import com.backend.dto.post.Post;
+import com.backend.dto.post.Tag;
 import com.backend.mapper.PostMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -73,6 +74,27 @@ public class PostDaoImpl implements PostDao {
     public List<String> findAllPostTags(Long pid) {
         return postMapper.findAllPostTags(pid);
     }
+
+    @Override
+    public Long findTagByName(String tag) {
+        return postMapper.findTagByName(tag);
+    }
+
+    @Override
+    public void saveNewTag(Tag tag) {
+        postMapper.saveNewTag(tag);
+    }
+
+    @Override
+    public void increaseTagHits(String tag) {
+        postMapper.increaseTagHits(tag);
+    }
+
+    @Override
+    public void savePostTagList(Long pid, Long tid) {
+        postMapper.savePostTagList(pid, tid);
+    }
+
 
 //    @Override
 //    public List<Post> findAll() {
