@@ -56,7 +56,7 @@ import axios from 'axios'
 import User from '../models/user'
 
 const storage = window.sessionStorage
-const API_URL = 'http://localhost:8399/'
+const API_URL = 'http://localhost:8081/'
 
 export default {
   name: 'login',
@@ -69,49 +69,42 @@ export default {
       password: "",
       loading: false,
       message: "",
-      status: "",
-      token: "",
-      info: ""
     }
   },
   methods: {
-    setInfo(status, token, info) {
-      this.status = status
-      this.token = token
-      this.info = info
-    },
     login() {
-      storage.setItem("jwt-auth-token", "")
-      storage.setItem("login_user", "")
-      axios.post(API_URL+'api/signin', {
-        email: this.email,
-        password: this.password
-      }).then(res => {
-          if (res.data.status) {
-            this.message = res.data.request_body.email + "로 로그인 되었습니다."
-            this.setInfo(
-              "성공",
-              res.headers["jwt-auth-token"],
-              JSON.stringify(res.data.request_body)
-            )
-            storage.setItem("jwt-auth-token", res.headers["jwt-auth-token"])
-            storage.setItem("login_user", res.data.request_body.email)
-            // this.$router.push('/')
-          } else {
-            this.setInfo("", "", "")
-            this.message = "로그인해주세요."
-            alert("입력 정보를 확인해주세요.")
-          }
-        })
-        .catch(err => {
-            this.setInfo("실패", "", JSON.stringify(err.response || err.message))
-        })
+      this.loading = true
+      this.$validator.validateAll()
+
+      if (this.errors.any()) {
+        this.loading = false
+        return
+      }
+
+      if (this.user.email && this.user.password) {
+        storage.setItem("jwt-auth-token", "")
+        storage.setItem("login_user", "")
+        axios.post(API_URL+'api/signin', {
+          email: this.email,
+          password: this.password
+        }).then(res => {
+            if (res.data.status) {
+              this.message = res.data.request_body.email + "로 로그인 되었습니다."
+              storage.setItem("jwt-auth-token", res.data["jwt-auth-token"])
+              storage.setItem("login_user", res.data.request_body.email)
+              this.$router.push('/')
+            } else {
+              this.message = "로그인해주세요."
+              alert("입력 정보를 확인해주세요.")
+            }
+          })
+          .catch(err => console.log(err))
+      }
     },
     logout() {
       storage.setItem("jwt-auth-token", "")
       storage.setItem("login_user", "")
       this.message = "로그인해주세요."
-      this.setInfo("로그아웃 성공", "", "")
     },
     
     // 로그인 했는지 체크
@@ -124,24 +117,6 @@ export default {
         storage.setItem("jwt-auth-token", "");
       }
     },
-    // handleLogin() {
-    //   this.loading = true
-    //   this.$validator.validateAll()
-
-    //   if (this.errors.any()) {
-    //     this.loading = false
-    //     return
-    //   }
-
-    //   if (this.user.email && this.user.password) {
-    //     this.$store.dispatch('login', this.user)
-    //       .then(() => {
-    //         // 로그인 성공하면 홈으로 보냄
-    //         this.$router.push('/')
-    //       })
-    //       .catch(err => console.log(err))
-    //   }
-    // },
   },
   mounted() {
     this.init()

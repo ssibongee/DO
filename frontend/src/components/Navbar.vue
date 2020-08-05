@@ -37,14 +37,12 @@
 </template>
 
 <script>
-// import store from '../store'
-// import axios from 'axios'
 
 export default {
   name: 'Navbar',
   data() {
     return {
-      isLogin: null,
+      isLogin: this.$store.state.isLoggedIn
     }
   },
   computed: {
@@ -57,13 +55,16 @@ export default {
         .then(() => this.$router.push('/'))
     },
     loginChecker() {
-      this.$store.mutations.loginChecker
+      this.$store.commit('logincheck')
       this.isLogin = this.$store.getters.isAuthenticated
     }
   },
   created() {
     this.loginChecker()
   },
+  mounted() {
+    this.loginChecker()
+  }
 }
 </script>
 
