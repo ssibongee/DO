@@ -28,8 +28,6 @@ export default {
         createAction() {
             var textdata = this.$refs.toastuiEditor.invoke("getMarkdown"); // content를 저장하는 액션 처리
             this.editorText = textdata
-            // this.$router.push({ name: 'postdetail', params: { username:'김현성', title:'이건 제목', content: this.editorText }})
-            // console.log(process.env.VUE_APP_FLICKR_API_KEY)
             axios.post(API_URL+'api/v2/1', {
                 author: '유저 이름',
                 title: '글 제목',
@@ -39,11 +37,5 @@ export default {
             .catch(err => console.log(err))
         }
     },
-    // hooks: {
-    //     addImageBlobHook: function (blob, callback) {
-    //         callback('11', 'alt text');
-    //         return false;
-    //     }
-    // }
 }
 </script>
