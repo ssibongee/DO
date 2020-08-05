@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand fixed-top navbar-light bg-light">
+  <nav class="navbar navbar-expand fixed-top navbar-light bg-light pa-0">
     <div class="container">
     <div class="navbar-brand">
         <a href="/" class="nav-link">Albo7</a>

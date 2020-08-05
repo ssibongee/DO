@@ -1,15 +1,17 @@
 <template>
   <!-- navbar(로고에 개인 블로그 이름 추가되야함) -->
-  <div class="container">
-    <div class="row">
+  <v-container>
+    <v-row>
       <!-- 왼쪽 사이드바(좋아요, 공유버튼) -->
-      <div class="col-lg-9 row">
-        
+      <v-col cols="1" class="pa-0"></v-col>
+      <v-col class="pa-0">  
+        <v-layout column="12">
         <!-- 제목 -->
-        <div class="col-lg-12">
-          <h2>{{ $route.params.title }}</h2>
-          <h6>작성자: {{ $route.params.username }}</h6>
-        </div>
+          <div class="title-area">
+            <h1>{{ $route.params.title }}</h1>
+            <h6>작성자: {{ $route.params.username }}</h6>
+          </div>
+        
         <!-- TextEditor 미리보기만(마크다운) -->
         <div class="col-lg-12">
           <Viewer :initialValue="this.content"/>
@@ -45,23 +47,22 @@
         <div v-for="comment in Comments" :key="comment.username" class="col-lg-12">
           <p>작성자: {{ comment.username }} 내용:{{ comment.content }}</p>
         </div>
-      </div>
+        </v-layout>
+      </v-col>
       <!-- 오른쪽 사이드바 -->
-      <div class="d-none d-lg-block d-xl-block col-3">
-        <Sidebar></Sidebar>
-      </div>
-    </div>
-  </div>
+      <v-col id="side" class="hidden-sm-and-down pa-0" cols="3">
+        <h3> 게시글 목차 </h3>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-import Sidebar from './Sidebar.vue'
 import { Viewer } from '@toast-ui/vue-editor'
 
 export default {
     name: 'postdetail',
     components: {
-      Sidebar,
       Viewer,
     },
     data() {
@@ -95,6 +96,10 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+#side {
+  margin-left:2vw;
+  position: sticky;
+  top : 130px;
+}
 </style>
