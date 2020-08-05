@@ -4,7 +4,6 @@ import Home from '../components/Home.vue'
 import Login from '../components/Login.vue';
 import MyPage from '../components/MyPage.vue';
 import Register from '../components/Register.vue'
-// import TextEditor from '../components/TextEditor.vue'
 import Post from '../components/Post.vue'
 import TextEditor from '../components/TextEditor.vue'
 import Setting from '../components/Setting.vue'
