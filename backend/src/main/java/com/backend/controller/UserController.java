@@ -38,8 +38,8 @@ public class UserController {
             // 로그인 성공했다면 토큰을 생성한다.
             String token = jwtService.create(loginUser);
             // 토큰 정보는 request의 헤더로 보내고 나머지는 Map에 담아둔다.
-            res.setHeader("jwt-auth-token", token);
-
+//            res.setHeader("jwt-auth-token", token);
+            resultMap.put("jwt-auth-token", token);
             resultMap.put("status", true);
             resultMap.put("request_body", user);
             status = HttpStatus.ACCEPTED;
