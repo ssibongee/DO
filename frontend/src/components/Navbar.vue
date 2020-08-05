@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand fixed-top navbar-light bg-light">
     <div class="container">
-    <div class="navbar-brand">
+    <div class="navbar-brand" v-if="renderComponent">
         <router-link to="/" class="nav-link">Albo7</router-link>
       </div>
       <div class="navbar-nav mr-auto">
@@ -9,7 +9,7 @@
           <router-link to="/wiki" class="nav-link">Wiki</router-link>
         </li>
       </div>
-      <div v-if="!this.isLogin" class="navbar-nav ml-auto" >
+      <div v-if="!isLogin" class="navbar-nav ml-auto" >
         <li class="nav-item">
           <router-link to="/register" class="nav-link">회원가입</router-link>
         </li>
@@ -19,21 +19,20 @@
       </div> 
 
       <!-- 로그인 했을때 -->
-      <div v-if="this.isLogin" class="navbar-nav ml-auto" >
+      <div v-if="isLogin" class="navbar-nav ml-auto" >
         <li class="nav-item">
           <router-link to="/setting" class="nav-link">
             <font-awesome-icon icon="user" /> 내 정보
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" @click="logOut">
+          <a class="nav-link" @click="onClickLogout">
             <font-awesome-icon icon="sign-out-alt" /> 로그아웃
-          </router-link>
+          </a>
         </li>
       </div>
-      </div>
+    </div>
   </nav>
-  <!-- <button v-if="isAuthenticated" @click.prevent="onClickLogout">Logout</button> -->
 </template>
 
 <script>
@@ -42,7 +41,8 @@ export default {
   name: 'Navbar',
   data() {
     return {
-      isLogin: this.$store.state.isLoggedIn
+      isLogin: this.$store.state.isLoggedIn,
+      renderComponent: true,
     }
   },
   computed: {
@@ -57,6 +57,12 @@ export default {
     loginChecker() {
       this.$store.commit('logincheck')
       this.isLogin = this.$store.getters.isAuthenticated
+    },
+    forceRender() {
+      this.renderComponent = false
+      this.$nextTick(() => {
+        this.renderComponent = true
+      })
     }
   },
   created() {
