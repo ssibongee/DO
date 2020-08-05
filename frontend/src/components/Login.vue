@@ -87,8 +87,9 @@ export default {
         email: this.email,
         password: this.password
       }).then(res => {
+        console.log(res.headers["jwt-auth-token"])
           if (res.data.status) {
-            console.log(res.headers)
+            console.log(res.headers["content-type"])
             this.message = res.data.request_body.email + "로 로그인 되었습니다."
             console.dir(res.headers["jwt-auth-token"])
             this.setInfo(
@@ -98,7 +99,7 @@ export default {
             )
             storage.setItem("jwt-auth-token", res.headers["jwt-auth-token"])
             storage.setItem("login_user", res.data.request_body.email)
-            this.$router.push('/')
+            // this.$router.push('/')
           } else {
             this.setInfo("", "", "")
             this.message = "로그인해주세요."
