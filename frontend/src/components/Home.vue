@@ -1,7 +1,10 @@
 <template>
   <v-container>
-    <Navbar/>
-    <!-- 상단 탭 -->
+    <!-- 네비게이션 바 -->
+    <v-col cols="12">
+      <Navbar></Navbar>
+    </v-col>
+    <!-- 게시글 탭 -->
     <v-tabs v-model="tab" grow class="nav">
       <v-tab v-for="item in items" :key="item">
         {{ item }}
@@ -9,7 +12,6 @@
     </v-tabs>
     <v-row>
       <v-col>
-        <!-- 카드 -->
         <v-tabs-items v-model="tab">
           <v-tab-item v-for="(item) in items" :key="item">
             <v-row v-if="posts.length">
