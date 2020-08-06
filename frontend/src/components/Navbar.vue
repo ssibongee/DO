@@ -28,7 +28,7 @@
         <v-icon small color="black" class="icon">fas fa-bell</v-icon>
       </div> -->
       <div v-if="isLogin" class="newpost">
-        <v-btn outlined tile><router-link to="/texteditor">새 글 작성</router-link></v-btn>
+        <v-btn rounded depressed=""><router-link to="/texteditor">새 글 작성</router-link></v-btn>
       </div>
       <div v-if="isLogin" class="info_blog"> 
         <div @click="profileshow">
@@ -136,6 +136,11 @@ h1{
 h1 a{
   text-decoration: none;
 }
+div > button {
+  text-decoration: none;
+  font-size: 13px;
+  font-family: 'Noto Sans DemiLight', 'sans-serif';
+}
 .logo_title{
 	display : inline-block;
 	width: 60px;
@@ -185,8 +190,6 @@ h1 a{
   background-color: aqua;
 }
 .newpost {
-  margin-right:30px;
-  font-size: 13px;
-  font-family: 'Noto Sans DemiLight', 'sans-serif';
+  margin-right:20px;
 }
 </style>
