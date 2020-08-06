@@ -73,8 +73,8 @@ import Navbar from '../components/Navbar.vue'
 import Sidebar from '../components/Sidebar.vue'
 import axios from 'axios'
 
-// const API_URL = 'http://i3a507.p.ssafy.io:8081/'
-const API_URL = 'http://localhost:8081/'
+const API_URL = 'http://i3a507.p.ssafy.io:8081/'
+// const API_URL = 'http://localhost:8081/'
 
 export default {
   name: 'Home',
