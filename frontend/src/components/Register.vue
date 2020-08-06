@@ -19,7 +19,7 @@
                 v-model="user.email"
                 v-validate="'required|email|max:50'"
               />
-              <button @click="validate()">Validate</button>
+              <!-- <button @click="validate()">Validate</button> -->
               <div
                 class="alert-danger"
                 v-if="submitted && errors.has('email')"
@@ -48,6 +48,7 @@
                 name="password"
                 v-model="user.password"
                 v-validate="'required|min:6|max:20'"
+                ref="password"
               />
               <div
                 class="alert-danger"
@@ -59,14 +60,15 @@
               <input
                 type="password"
                 class="form-control"
-                name="password_confirmation"
+                name="confirmPassword"
                 v-model="user.confirmPassword"
                 v-validate="'confirmed:password'"
+                data-vv-as="password"
               />
               <div
                 class="alert-danger"
-                v-if="submitted && errors.has('password_confirmation')"
-              >{{errors.first('password_confirmation')}}</div>
+                v-if="submitted && errors.has('confirmPassword')"
+              >{{errors.first('confirmPassword')}}</div>
             </div>
             <div class="form-group">
               <button class="btn btn-primary btn-block">회원가입 하기</button>
