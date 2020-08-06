@@ -5,10 +5,11 @@ import store from './store'
 import BootstrapVue from 'bootstrap-vue'
 // import 'bootstrap/dist/css/bootstrap.min.css'
 // import 'bootstrap-vue/dist/bootstrap-vue.min.css'
+// import VeeValidate, { localize  } from 'vee-validate'
 import VeeValidate from 'vee-validate'
+
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-
 import {
   faHome,
   faUser,
@@ -24,8 +25,23 @@ library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt)
 Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
-Vue.use(VeeValidate)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
+
+// localize({
+//   en: {
+//     messages: {
+//     },
+//     fields: {
+//       password: {
+//         required: 'Password cannot be empty!',
+//         max: 'Are you really going to remember that?',
+//         min: 'Too few, you want to get doxed?'
+//       }
+//     }
+//   }
+// });
+Vue.use(VeeValidate)
+
 
 new Vue({
   el: '#app',

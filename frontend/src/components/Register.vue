@@ -19,6 +19,7 @@
                 v-model="user.email"
                 v-validate="'required|email|max:50'"
               />
+              <button @click="validate()">Validate</button>
               <div
                 class="alert-danger"
                 v-if="submitted && errors.has('email')"
@@ -65,7 +66,7 @@
               <div
                 class="alert-danger"
                 v-if="submitted && errors.has('password_confirmation')"
-              >{{errors.first('password_confirmation')}}</div>
+              >{{errors.first('asdasdasd')}}</div>
             </div>
             <div class="form-group">
               <button class="btn btn-primary btn-block">회원가입 하기</button>
