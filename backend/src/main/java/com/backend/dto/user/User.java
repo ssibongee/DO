@@ -20,8 +20,4 @@ public class User {
     private String github;         // github 주소
     private String introduce;      // 프로필 소개
 
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
 }
