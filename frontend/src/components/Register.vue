@@ -1,90 +1,109 @@
 <template>
-  <div class="col-md-12">
-    <div class="card card-container">
-      <img
-        id="profile-img"
-        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-        class="profile-img-card"
-      />
-      <form name="form" @submit.prevent="handleRegister">
-        <div v-if="!successful">
-          <div class="form-group">
-            <label for="username">Username</label>
-            <input
-              type="text"
-              class="form-control"
-              name="username"
-              v-model="user.username"
-              v-validate="'required|min:3|max:20'"
-            />
-            <div
-              class="alert-danger"
-              v-if="submitted && errors.has('username')"
-            >{{errors.first('username')}}</div>
+  <div>
+    <Navbar/>
+    <div class="col-md-12">
+      <div class="card card-container">
+        <img
+          id="profile-img"
+          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
+          class="profile-img-card"
+        />
+        <form name="form" @submit.prevent="handleRegister">
+          <div v-if="!successful">
+            <div class="form-group">
+              <label for="email">이메일</label>
+              <input
+                type="email"
+                class="form-control"
+                name="email"
+                v-model="user.email"
+                v-validate="'required|email|max:50'"
+              />
+              <button @click="validate()">Validate</button>
+              <div
+                class="alert-danger"
+                v-if="submitted && errors.has('email')"
+              >{{errors.first('email')}}</div>
+            </div>
+            <div class="form-group">
+              <label for="username">닉네임</label>
+              <input
+                type="text"
+                class="form-control"
+                name="username"
+                v-model="user.username"
+                v-validate="'required|min:3|max:20'"
+              />
+              <div
+                class="alert-danger"
+                v-if="submitted && errors.has('username')"
+              >{{errors.first('username')}}</div>
+            </div>
+            
+            <div class="form-group">
+              <label for="password">비밀번호</label>
+              <input
+                type="password"
+                class="form-control"
+                name="password"
+                v-model="user.password"
+                v-validate="'required|min:6|max:20'"
+              />
+              <div
+                class="alert-danger"
+                v-if="submitted && errors.has('password')"
+              >{{errors.first('password')}}</div>
+            </div>
+            <div class="form-group">
+              <label for="password">비밀번호 확인</label>
+              <input
+                type="password"
+                class="form-control"
+                name="password_confirmation"
+                v-model="user.confirmPassword"
+                v-validate="'required|confirmed:password'"
+              />
+              <div
+                class="alert-danger"
+                v-if="submitted && errors.has('password_confirmation')"
+              >{{errors.first('asdasdasd')}}</div>
+            </div>
+            <div class="form-group">
+              <button class="btn btn-primary btn-block">회원가입 하기</button>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input
-              type="email"
-              class="form-control"
-              name="email"
-              v-model="user.email"
-              v-validate="'required|email|max:50'"
-            />
-            <div
-              class="alert-danger"
-              v-if="submitted && errors.has('email')"
-            >{{errors.first('email')}}</div>
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input
-              type="password"
-              class="form-control"
-              name="password"
-              v-model="user.password"
-              v-validate="'required|min:6|max:40'"
-            />
-            <div
-              class="alert-danger"
-              v-if="submitted && errors.has('password')"
-            >{{errors.first('password')}}</div>
-          </div>
-          <div class="form-group">
-            <button class="btn btn-primary btn-block">Sign Up</button>
-          </div>
-        </div>
-      </form>
+        </form>
 
-      <div
-        class="alert"
-        :class="successful ? 'alert-success' : 'alert-danger'"
-        v-if="message"
-      >{{message}}</div>
+        <div
+          class="alert"
+          :class="successful ? 'alert-success' : 'alert-danger'"
+          v-if="message"
+        >{{message}}</div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import Navbar from './Navbar.vue'
 import User from '../models/user'
 
 export default {
   name: 'register',
-  computed: {
-    loggedIn() {
-      return this.$store.getters.isAuthenticated
-    }
+  components: {
+    Navbar,
   },
   data() {
     return {
-      user: new User('', '', ''),
+      user: new User('', '', '', ''),
+      isLogin: this.$store.state.isLoggedIn,
       submitted: false,
       successful: false,
       message: ''
     }
   },
   mounted() {
-    if (this.loggedIn) {
+    if (this.isLogin) {
       this.$router.push('/')
     }
   },
@@ -112,12 +131,12 @@ export default {
     },
   computed: {
     loggedIn() {
-      return this.$store.state.auth.status.loggedIn;
-      }
-    },
-    mounted() {
-      if (this.loggedIn) {
-        this.$router.push('/profile');
+      return this.$store.getters.isAuthenticated
+    }
+  },
+  mounted() {
+    if (this.loggedIn) {
+      this.$router.push('/');
       }
     },
   }
