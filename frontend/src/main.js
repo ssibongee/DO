@@ -27,19 +27,6 @@ Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
-// localize({
-//   en: {
-//     messages: {
-//     },
-//     fields: {
-//       password: {
-//         required: 'Password cannot be empty!',
-//         max: 'Are you really going to remember that?',
-//         min: 'Too few, you want to get doxed?'
-//       }
-//     }
-//   }
-// });
 Vue.use(VeeValidate)
 
 
@@ -48,5 +35,17 @@ new Vue({
   router,
   store,
   vuetify,
+  mounted() {
+    this.$validator.localize('en', {
+      messages: {
+        email: () => "유효한 이메일 형식이 아닙니다.",
+        required: (field) => '* ' + field + '항목은 필수 항목 입니다',
+        confirmed: () =>  "password가 일치하지 않습니다",
+      },
+      attributes: {
+        email: 'Email'
+      } 
+    })
+  },
   render: h => h(App)
 })//.$mount('#app')

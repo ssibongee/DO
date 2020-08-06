@@ -61,12 +61,12 @@
                 class="form-control"
                 name="password_confirmation"
                 v-model="user.confirmPassword"
-                v-validate="'required|confirmed:password'"
+                v-validate="'confirmed:password'"
               />
               <div
                 class="alert-danger"
                 v-if="submitted && errors.has('password_confirmation')"
-              >{{errors.first('asdasdasd')}}</div>
+              >{{errors.first('password_confirmation')}}</div>
             </div>
             <div class="form-group">
               <button class="btn btn-primary btn-block">회원가입 하기</button>
@@ -139,6 +139,7 @@ export default {
       this.$router.push('/');
       }
     },
+    
   }
 }
 </script>
