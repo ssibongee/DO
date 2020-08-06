@@ -28,7 +28,7 @@
         <v-icon small color="black" class="icon">fas fa-bell</v-icon>
       </div> -->
       <div v-if="isLogin" class="newpost">
-        <v-btn rounded depressed=""><router-link to="/texteditor">새 글 작성</router-link></v-btn>
+        <router-link to="/texteditor"><v-btn rounded outlined depressed color="#6e8af8">새 글 작성</v-btn></router-link>
       </div>
       <div v-if="isLogin" class="info_blog"> 
         <div @click="profileshow">
@@ -133,13 +133,16 @@ h1{
 	font-size : 2em;
 	font-family: 'Inter', sans-serif;
 }
-h1 a{
+a{
   text-decoration: none;
 }
-div > button {
-  text-decoration: none;
-  font-size: 13px;
+div > .newpost > a >button{
   font-family: 'Noto Sans DemiLight', 'sans-serif';
+  font-size: 13px;
+}
+div > .newpost > a >button:hover {
+  background-color:#6e8af8;
+  color:white !important; 
 }
 .logo_title{
 	display : inline-block;
