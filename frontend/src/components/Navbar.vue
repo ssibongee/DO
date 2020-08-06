@@ -1,38 +1,59 @@
 <template>
-  <nav class="navbar navbar-expand fixed-top navbar-light bg-light pa-0">
-    <div class="container">
-      <div class="navbar-brand" v-if="renderComponent">
-        <router-link to="/" class="nav-link">Albo7</router-link>
-      </div>
-      <div class="navbar-nav mr-auto">
-        <li class="nav-item">
-          <router-link to="/wiki" class="nav-link">Wiki</router-link>
-        </li>
-      </div>
-      <div v-if="!isLogin" class="navbar-nav ml-auto" >
-        <li class="nav-item">
-          <router-link to="/register" class="nav-link">회원가입</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link to="/login" class="nav-link">로그인</router-link>
-        </li>
+  <v-app-bar
+      fixed
+      color="white"
+      elevate-on-scroll
+      scroll-target="#scrolling-techniques-7"
+			height="90px"
+			justify
+  >
+    <h1 class="logo_title"><router-link to="/">DO!</router-link></h1>
+      <v-toolbar-items v-for="item in nav" :key="item.text">
+         <v-btn text> {{item.text}} </v-btn>
+      </v-toolbar-items>
+      <div class="notice">
+        <v-icon small>fas fa-volume-down</v-icon>
+        <span>{{noticemsg}}</span>
+			</div>
+			<v-spacer></v-spacer>
+      <v-icon small color="black" class="icon" style="margin-top:5px;">fas fa-search</v-icon>
+      <!-- 로그인 안했을 때 -->
+      <div v-if="!isLogin" class="login">
+				<span><router-link to="/login">로그인</router-link></span>
+        <span>/</span>
+        <span><router-link to="/register">회원가입</router-link></span>
       </div> 
-
       <!-- 로그인 했을때 -->
-      <div v-if="isLogin" class="navbar-nav ml-auto" >
-        <li class="nav-item">
-          <router-link to="/setting" class="nav-link">
-            <font-awesome-icon icon="user" /> 내 정보
-          </router-link>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" @click="onClickLogout">
-            <font-awesome-icon icon="sign-out-alt" /> 로그아웃
-          </a>
-        </li>
+      <!-- <div v-if="isLogin" class="info_blog">
+        <v-icon small color="black" class="icon">fas fa-bell</v-icon>
+      </div> -->
+      <div v-if="isLogin" class="newpost">
+        <v-btn outlined tile><router-link to="/texteditor">새 글 작성</router-link></v-btn>
       </div>
-    </div>
-  </nav>
+      <div v-if="isLogin" class="info_blog"> 
+        <div @click="profileshow">
+          <img src="https://item.kakaocdn.net/do/437998cb670b87a9a8faca156155beeb8f324a0b9c48f77dbce3a43bd11ce785" class="thumb_profile" alt>
+        </div>
+        <!--프로필 클릭시 팝업되는 드롭다운 메뉴-->
+        <v-card class="shortcuts">
+          <v-list v-if="profile">
+            무림고수
+            <v-list-item>
+              내블로그 
+            </v-list-item>
+            <v-list-item>
+              <router-link to="/setting">설정</router-link>
+            </v-list-item>
+            <v-list-item @click="onClickLogout">
+              로그아웃
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </div>
+      <div v-if="isLogin" class="info_blog" @click="profileshow"> 
+        <v-icon small color="black" style="margin: 20px 4px 0px 0px">fas fa-angle-down</v-icon>
+      </div>
+  </v-app-bar>
 </template>
 
 <script>
@@ -40,8 +61,25 @@ export default {
   name: 'Navbar',
   data() {
     return {
+      profile: false,
       isLogin: this.$store.state.isLoggedIn,
-      renderComponent: true,
+      nav: [
+        {
+				text: '소개',
+				title: 'Our Contact info',
+				},
+				{
+				text: '피드',
+				title: '내가 구독하는 블로그',
+				},
+				{
+        
+				text: '포럼',
+				title: '에디터/관리자 추천 포스트',
+				},
+			]
+      ,noticemsg: '공지입니다.'
+      ,
     }
   },
   computed: {
@@ -63,6 +101,9 @@ export default {
         this.renderComponent = true
       })
     },
+    profileshow() {
+      this.profile = !this.profile
+    }
   },
   created() {
     this.loginChecker()
@@ -81,9 +122,71 @@ export default {
 </script>
 
 <style scoped>
-  @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
-  .nav-link {
-    font-size : 0.8 rem;
-    font-family : 'NanumSquare', sans-serif;
-  }
+@import url('https://rsms.me/inter/inter.css');
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+header{
+	padding : 0 10%;
+}
+h1{
+	font-size : 2em;
+	font-family: 'Inter', sans-serif;
+}
+h1 a{
+  text-decoration: none;
+}
+.logo_title{
+	display : inline-block;
+	width: 60px;
+	margin: 0 70px 0 0;
+	vertical-align: top;
+}
+.v-toolbar__items{
+	font-size: 16px;
+	font-family: 'Noto Sans KR', 'sans-serif';
+	font-weight: 400;
+	/* margin: 0 40px 0 0; */
+}
+.login span a{
+	color: black;
+	font-size: 13px;
+	font-family: 'Noto Sans DemiLight', 'sans-serif';
+	text-decoration: none;
+}
+.notice {
+	border-left: 1px solid lightgray;
+	margin : 0px 0px 0px 20px ;
+	padding: 0px 0px 0px 20px;
+}
+.notice i {
+	color : black;
+}
+.notice span {
+	margin-left: 10px;
+	font-size: 13px;
+	font-family: 'Noto Sans DemiLight', 'sans-serif';
+}
+.icon{
+  display: inline-block;
+  margin: 0px 31px 0px 0px;
+}
+.thumb_profile{
+  display: inline-block;
+  width:50px;
+  height:50px;
+  border-radius:50%;
+}
+.shortcuts{
+  position : fixed;
+  top: 80px;
+  width: 150px;
+  right: 10%;
+  background-color: aqua;
+}
+.newpost {
+  margin-right:30px;
+  font-size: 13px;
+  font-family: 'Noto Sans DemiLight', 'sans-serif';
+}
 </style>
