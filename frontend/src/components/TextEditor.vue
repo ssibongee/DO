@@ -32,7 +32,7 @@ export default {
             // 태그 데이터 정리해서 보내기
             let tagList = new Array()
             tagData.forEach(tag => {
-                tagList.push(tag)
+                tagList.push(tag["text"])
             })
             console.log(tagList)
             var textdata = this.$refs.toastuiEditor.invoke("getMarkdown"); // content를 저장하는 액션 처리
