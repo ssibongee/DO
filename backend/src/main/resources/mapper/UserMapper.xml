@@ -32,7 +32,7 @@
        email을 기준으로 회원정보 확인
        -->
     <select id="findByEmail" resultType="User" parameterType="String">
-        select * from user where email = #{email}
+        select * from user where email like #{email}
     </select>
 
     <!-- 회원 정보 수정
@@ -45,7 +45,7 @@
     </update>
 
     <select id="signin" resultType="User" parameterType="String">
-        select * from user where email = #{email} and password= #{password}
+        select * from user where email like #{email} and password like #{password}
     </select>
 
 </mapper>
