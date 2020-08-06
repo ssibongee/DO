@@ -95,6 +95,16 @@ public class PostDaoImpl implements PostDao {
         postMapper.savePostTagList(pid, tid);
     }
 
+    @Override
+    public Post findLatestNotice() {
+        return postMapper.findLatestNotice();
+    }
+
+    @Override
+    public void temporarily(Post post) {
+        postMapper.temporarily(post);
+    }
+
 
 //    @Override
 //    public List<Post> findAll() {

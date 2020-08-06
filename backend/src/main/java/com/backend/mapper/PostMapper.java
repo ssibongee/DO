@@ -45,4 +45,9 @@ public interface PostMapper {
 
     public void savePostTagList(Long pid, Long tid); // 태그리스트에 pid와 tid 를 매핑하여 저장
 
+    public Post findLatestNotice(); // 가장 최신 공지글을 조회
+
+    public void temporarily(Post post); // 포스트 임시저장
+
+
 }
