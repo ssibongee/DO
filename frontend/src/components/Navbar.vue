@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand fixed-top navbar-light bg-light pa-0">
     <div class="container">
-    <div class="navbar-brand" v-if="renderComponent">
+      <div class="navbar-brand" v-if="renderComponent">
         <router-link to="/" class="nav-link">Albo7</router-link>
       </div>
       <div class="navbar-nav mr-auto">
@@ -63,7 +63,7 @@ export default {
       this.$nextTick(() => {
         this.renderComponent = true
       })
-    }
+    },
   },
   created() {
     this.loginChecker()

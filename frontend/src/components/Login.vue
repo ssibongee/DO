@@ -114,7 +114,7 @@ export default {
       if (storage.getItem("jwt-auth-toekn")) {
         this.message = storage.getItem("login_user") + "로 로그인 되었습니다."
       } else {
-        // 토큰 없으면 제대로 로그인 접근한 사람이 아님
+        
         storage.setItem("jwt-auth-token", "");
       }
     },
