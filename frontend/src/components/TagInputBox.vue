@@ -104,6 +104,8 @@ export default {
 	},
 
 	watch: {
+		// 태그 글자수 20자 미만으로 제한 두기
+		// 태그 빈칸은 안받기, 빈칸 넣어두면 없애기
 		model (val, prev) {
 			if (prev.length > 5) {
 				return this.$nextTick(() => this.model.pop())
