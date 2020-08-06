@@ -92,6 +92,16 @@ public class PostServiceImpl implements PostService {
         return postDao.findAllPostTags(pid);
     }
 
+    @Override
+    public Post findLatestNotice() {
+        return postDao.findLatestNotice();
+    }
+
+    @Override
+    public void temporarily(Post post) {
+        postDao.temporarily(post);
+    }
+
 
 //    @Override
 //    public List<Post> findAll() {

@@ -4,6 +4,7 @@ drop table if exists taglist;
 create table `tag` (
 	`tid` bigint not null auto_increment,
     `name` varchar(255) NOT NULL,
+    `hits` bigint,
     primary key(`tid`),
     unique KEY(`name`)
 ) engine=InnoDB charset=utf8;

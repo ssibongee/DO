@@ -31,4 +31,8 @@ public interface PostService {
 
     public List<String> findAllPostTags(Long pid); // 포스트에 등록된 태그 정보를 가져온다.
 
+    public Post findLatestNotice(); // 가장 최신 공지글을 조회
+
+    public void temporarily(Post post); // 포스트 임시저장
+
 }
