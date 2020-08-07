@@ -3,7 +3,6 @@
       fixed
       color="white"
       elevate-on-scroll
-      scroll-target="#scrolling-techniques-7"
 			height="90px"
 			justify
   >
@@ -123,7 +122,6 @@ export default {
 
 <style scoped>
 @import url('https://rsms.me/inter/inter.css');
-@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 
 header{
@@ -136,13 +134,17 @@ h1{
 a{
   text-decoration: none;
 }
+button > span {
+  font-family: 'Noto Sans DemiLight', 'sans-serif';
+  font-size: 13px;
+}
 div > .newpost > a >button{
   font-family: 'Noto Sans DemiLight', 'sans-serif';
   font-size: 13px;
 }
 div > .newpost > a >button:hover {
   background-color:#6e8af8;
-  color:white !important; 
+  /* color:white !important;  */
 }
 .logo_title{
 	display : inline-block;

@@ -1,15 +1,15 @@
 <template>
-  <v-container>
-    <!-- 네비게이션 바 -->
-    <v-col cols="12">
-      <Navbar></Navbar>
-    </v-col>
+  <div id=app>
+  <!-- 네비게이션 바 -->
+  <Navbar></Navbar>
+    <v-container>
     <!-- 게시글 탭 -->
     <v-tabs v-model="tab" grow class="nav">
       <v-tab v-for="item in items" :key="item">
         {{ item }}
       </v-tab>
     </v-tabs>
+    
     <v-row>
       <v-col>
         <v-tabs-items v-model="tab">
@@ -66,6 +66,7 @@
       </v-col>
     </v-row>
   </v-container>
+  </div>
 </template>
 
 <script>
@@ -132,6 +133,9 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  padding-top : 120px;
+}
 #side {
   margin-left:2vw;
 }
