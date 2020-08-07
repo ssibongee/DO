@@ -48,57 +48,6 @@
         </v-form>
       </div>
     </v-container>
-
-    <!-- <div class="col-md-12">
-      <div class="card card-container">
-        <img
-          id="profile-img"
-          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-          class="profile-img-card"
-        />
-        <form name="form" @submit.prevent="login">
-          <div class="form-group">
-            <label for="username">email</label>
-            <input
-              type="email"
-              class="form-control"
-              name="email"
-              v-model="email"
-              v-validate="'required'"
-            />
-            <div
-              class="alert alert-danger"
-              role="alert"
-              v-if="errors.has('username')"
-            >Username is required!</div>
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input
-              type="password"
-              class="form-control"
-              name="password"
-              v-model="password"
-              v-validate="'required'"
-            />
-            <div
-              class="alert alert-danger"
-              role="alert"
-              v-if="errors.has('password')"
-            >Password is required!</div>
-          </div>
-          <div class="form-group">
-            <button class="btn btn-primary btn-block" :disabled="loading">
-              <span class="spinner-border spinner-border-sm" v-show="loading"></span>
-              <span>Login</span>
-            </button>
-          </div>
-          <div class="form-group">
-            <div class="alert alert-danger" role="alert" v-if="message">{{message}}</div>
-          </div>
-        </form>
-      </div>
-    </div> -->
   </div>
 </template>
 
