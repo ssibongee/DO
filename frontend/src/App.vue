@@ -22,8 +22,5 @@ export default {
 </script>
 
 <style>
- @import './assets/style/bootstrap.css';
- Navbar {
-   background-color : lightcoral;
- }
+ /* @import './assets/style/bootstrap.css'; */
 </style>
