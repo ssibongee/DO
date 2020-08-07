@@ -8,6 +8,7 @@ import Post from '../components/Post.vue'
 import TextEditor from '../components/TextEditor.vue'
 import Setting from '../components/Setting.vue'
 import PostDetail from '../components/PostDetail.vue'
+import FindID from '../components/user/FindID.vue'
 
 Vue.use(VueRouter)
 
@@ -54,6 +55,11 @@ export default new VueRouter({
       path: '/:username/:title',
       name: 'postdetail',
       component: PostDetail
+    },
+    {
+      path: '/findid',
+      name: 'findid',
+      component: FindID,
     },
   ]
 })
