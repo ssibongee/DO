@@ -5,27 +5,36 @@
     <v-container fluid fill-height>
       <div class="login_do">
         <span><h2>DO!에 로그인하세요</h2></span>
-        <form name="form" @submit.prevent="login" style="width:318px">
+        <v-form name="form" @submit.prevent style="width:318px">
           <v-text-field
             outlined
             placeholder="email"
             hide-details
             name="email"
             v-model="email"
-            v-validate="'required'"
           >
           </v-text-field>
           <v-text-field
+            @keyup.enter="login"
+            type="password"
             outlined
             placeholder="password"
             hide-details 
             sytle="top:-1px;"
             name="password"
             v-model="password"
-            v-validate="'required'"
           >
           </v-text-field>
-          <div class="login_btn">
+          
+          <div class="login_append">
+            <v-checkbox
+              dense
+              label="로그인 상태 유지"
+              color="#6e8af8"
+            ></v-checkbox>
+            <span>아이디/비밀번호 찾기</span> 
+          </div>
+          <div class="login_btn" @click="login">
             <v-btn 
               block 
               depressed 
@@ -36,15 +45,7 @@
               로그인
             </v-btn> 
           </div>
-          <div class="login_append">
-            <v-checkbox
-              dense
-              label="로그인 상태 유지"
-              color="#6e8af8"
-            ></v-checkbox>
-            <span>아이디/비밀번호 찾기</span> 
-          </div> 
-        </form>
+        </v-form>
       </div>
     </v-container>
 
@@ -129,14 +130,14 @@ export default {
   },
   methods: {
     login() {
-      this.loading = true
-      this.$validator.validateAll()
+      // this.loading = true
+      // this.$validator.validateAll()
 
-      if (this.errors.any()) {
-        this.loading = false
-        return
-      }
-
+      // if (this.errors.any()) {
+      //   this.loading = false
+      //   return
+      // }
+      console.log('TRY login')
       if (this.email && this.password) {
         storage.setItem("jwt-auth-token", "")
         storage.setItem("login_user", "")
@@ -178,6 +179,9 @@ export default {
       this.$nextTick(() => {
         this.renderComponent = true
       })
+    },
+    test() {
+      console.log('button OK')
     }
   },
   mounted() {
