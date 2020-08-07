@@ -44,7 +44,7 @@ export default {
                 content: this.editorText,
                 tag: tagList,
             })
-            .then(res => console.log(res))
+            .then(() => this.$router.push('/'))
             .catch(err => console.log(err))
         },
     },
