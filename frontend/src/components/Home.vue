@@ -84,6 +84,7 @@ export default {
       items: [
         'Latest', 'Hits', 'Likes'
       ],
+      // content 크기따라  주석 처리 
       posts : {
         pid: '',
         title: '',
@@ -91,14 +92,23 @@ export default {
         publishedTime: '',
         thumbnail:'',
       }
+      // posts: []
     }
   },
   created() {
     axios
     .get(API_URL+'api/v2/latest')
     .then(({data})=>{
-      // console.log(data)
-      this.posts = data;
+      // 콘텐츠 미리보기 슬라이스
+      data.forEach(el => {
+        if (el.content.length > 40) {
+          // 마크다운 사진 제외
+          el.content = el.content.replace(/!\[.*\)+/, "")
+          // 최대 길이 슬라이스
+          el.content = el.content.slice(0, 40)
+        }
+        this.posts = data
+      });
     })
   },
   components: {
@@ -116,7 +126,6 @@ export default {
           this.$router.push({name: 'postdetail', params: { username:res.data.author, title:res.data.title, content: res.data.content, data: res}})
         })
         .catch(err => console.log(err))
-        
     },
   }
 }
