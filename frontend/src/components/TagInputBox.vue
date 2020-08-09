@@ -91,7 +91,7 @@ export default {
 			editing: null,
 			index: -1,
 			items: [
-				{ header: '누르면 태그가 달립니다' },
+				{ header: '엔터를 누르면 태그가 끊깁니다.' },
 			],
 			nonce: 0,
 			menu: false,
