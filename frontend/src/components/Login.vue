@@ -1,65 +1,70 @@
 <template>
-  <div class="col-md-12">
-    <div class="card card-container">
-      <img
-        id="profile-img"
-        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-        class="profile-img-card"
-      />
-      <form name="form" @submit.prevent="login">
-        <div class="form-group">
-          <label for="username">email</label>
-          <input
-            type="email"
-            class="form-control"
+  <div id="#app">
+    <!-- 네비게이션 바 -->
+    <Navbar></Navbar>
+    <v-container fluid fill-height>
+      <div class="login_do">
+        <span><h2>DO!에 로그인하세요</h2></span>
+        <v-form name="form" @submit.prevent style="width:318px">
+          <v-text-field
+            outlined
+            placeholder="email"
+            hide-details
             name="email"
             v-model="email"
-            v-validate="'required'"
-          />
-          <div
-            class="alert alert-danger"
-            role="alert"
-            v-if="errors.has('username')"
-          >Username is required!</div>
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
+          >
+          </v-text-field>
+          <v-text-field
+            @keyup.enter="login"
             type="password"
-            class="form-control"
+            outlined
+            placeholder="password"
+            hide-details 
+            sytle="top:-1px;"
             name="password"
             v-model="password"
-            v-validate="'required'"
-          />
-          <div
-            class="alert alert-danger"
-            role="alert"
-            v-if="errors.has('password')"
-          >Password is required!</div>
-        </div>
-        <div class="form-group">
-          <button class="btn btn-primary btn-block" :disabled="loading">
-            <span class="spinner-border spinner-border-sm" v-show="loading"></span>
-            <span>Login</span>
-          </button>
-        </div>
-        <div class="form-group">
-          <div class="alert alert-danger" role="alert" v-if="message">{{message}}</div>
-        </div>
-      </form>
-    </div>
+          >
+          </v-text-field>
+          
+          <div class="login_append">
+            <v-checkbox
+              dense
+              label="로그인 상태 유지"
+              color="#6e8af8"
+            ></v-checkbox>
+            <span>아이디/비밀번호 찾기</span> 
+          </div>
+          <div class="login_btn" @click="login">
+            <v-btn 
+              block 
+              depressed 
+              color="#6e8af8"
+              height="48px"
+              class="white--text"
+            >
+              로그인
+            </v-btn> 
+          </div>
+        </v-form>
+      </div>
+    </v-container>
   </div>
 </template>
 
 <script>
+import Navbar from '../components/Navbar.vue'
 import axios from 'axios'
 import User from '../models/user'
 
 const storage = window.sessionStorage
-const API_URL = 'http://localhost:8399/'
+// const API_URL = 'http://localhost:8081/'
+const API_URL = 'http://i3a507.p.ssafy.io:8081/'
 
 export default {
   name: 'login',
+  components: {
+    Navbar,
+  },
   computed: {
   },
   data() {
@@ -74,14 +79,14 @@ export default {
   },
   methods: {
     login() {
-      this.loading = true
-      this.$validator.validateAll()
+      // this.loading = true
+      // this.$validator.validateAll()
 
-      if (this.errors.any()) {
-        this.loading = false
-        return
-      }
-
+      // if (this.errors.any()) {
+      //   this.loading = false
+      //   return
+      // }
+      console.log('TRY login')
       if (this.email && this.password) {
         storage.setItem("jwt-auth-token", "")
         storage.setItem("login_user", "")
@@ -104,12 +109,12 @@ export default {
           .catch(err => console.log(err))
       }
     },
-    logout() {
-      storage.setItem("jwt-auth-token", "")
-      storage.setItem("login_user", "")
-      storage.setItem("uid", "")
-      this.message = "로그인해주세요."
-    },
+    // logout() {
+    //   storage.setItem("jwt-auth-token", "")
+    //   storage.setItem("login_user", "")
+    //   storage.setItem("uid", "")
+    //   this.message = "로그인해주세요."
+    // },
     
     // 로그인 했는지 체크
     init() {
@@ -117,7 +122,7 @@ export default {
       if (storage.getItem("jwt-auth-toekn")) {
         this.message = storage.getItem("login_user") + "로 로그인 되었습니다."
       } else {
-        // 토큰 없으면 제대로 로그인 접근한 사람이 아님
+        
         storage.setItem("jwt-auth-token", "");
       }
     },
@@ -126,6 +131,9 @@ export default {
       this.$nextTick(() => {
         this.renderComponent = true
       })
+    },
+    test() {
+      console.log('button OK')
     }
   },
   mounted() {
@@ -139,36 +147,48 @@ export default {
 </script>
 
 <style scoped>
-label {
-  display: block;
-  margin-top: 10px;
+header {
+  background-color:transparent;
 }
 
-.card-container.card {
-  max-width: 350px !important;
-  padding: 40px 40px;
+.container {
+  padding-top:120px; 
+}
+/* login 영역 화면 가운데에 고정 어떻게 하지? */
+.login_do{
+  text-align: center;
+  margin : 120px auto;
+}
+.login_do > span{
+  display : inline-block;
+  margin-bottom : 30px;
+}
+.v-text-field{
+  border-radius: 0;
+}
+.login_btn{
+  margin : 20px 0 0 0;
 }
 
-.card {
-  background-color: #f7f7f7;
-  padding: 20px 25px 30px;
-  margin: 0 auto 25px;
-  margin-top: 50px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+.v-input{
+  margin : 0;
 }
 
-.profile-img-card {
-  width: 96px;
-  height: 96px;
-  margin: 0 auto 10px;
-  display: block;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
+.login_append {
+  margin : 12px 0 0 0;
+  font-size : 13px;
+}
+
+.login_append > .v-input {
+  display: inline-block;
+  float: left;
+}
+
+.login_append > span {
+  float:right;
+  padding-top:7px;
+}
+.v-input >>> label {
+  font-size: 13px;
 }
 </style>
