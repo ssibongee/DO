@@ -85,6 +85,7 @@ export default {
       if (this.email && this.password) {
         storage.setItem("jwt-auth-token", "")
         storage.setItem("login_user", "")
+        storage.setItem("uid", "")
         axios.post(API_URL+'api/signin', {
           email: this.email,
           password: this.password
@@ -93,6 +94,7 @@ export default {
               this.message = res.data.request_body.email + "로 로그인 되었습니다."
               storage.setItem("jwt-auth-token", res.data["jwt-auth-token"])
               storage.setItem("login_user", res.data.request_body.email)
+              storage.setItem("uid", res.data.request_body.uid)
               this.$router.push('/')
             } else {
               this.message = "로그인해주세요."
@@ -105,6 +107,7 @@ export default {
     logout() {
       storage.setItem("jwt-auth-token", "")
       storage.setItem("login_user", "")
+      storage.setItem("uid", "")
       this.message = "로그인해주세요."
     },
     
