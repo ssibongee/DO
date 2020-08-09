@@ -120,7 +120,6 @@ export default {
   },
   methods: {
     testpostdetail(pid) {
-      // console.log(this.posts.data)
       axios.get(API_URL+`api/v2/p/${pid}`)
         .then(res => {
           console.log(res)
