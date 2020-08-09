@@ -1,5 +1,12 @@
 <template>
 	<v-container>
+        <v-text-field
+            v-model="title"
+            :rules="[rules.required, rules.counter]"
+            label="글 제목을 입력해주세요"
+            counter
+            maxlength="20"
+          ></v-text-field>
         <editor ref="toastuiEditor" height="500px"/>
         <h3>태그 입력칸</h3>        
         <TagInputBox @event-data="createAction"/>
@@ -26,6 +33,7 @@ export default {
     data(){
         return {
             editorText: '',
+            title: '',
         }
     },
     methods: {
@@ -40,7 +48,7 @@ export default {
             this.editorText = textdata
             axios.post(API_URL+'api/v2/1', {
                 author: '유저 이름',
-                title: '글 제목',
+                title: this.title,
                 content: this.editorText,
                 tag: tagList,
             })
