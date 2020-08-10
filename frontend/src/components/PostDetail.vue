@@ -7,7 +7,7 @@
       <v-col cols="1" class="pa-0"></v-col>
       <v-col class="pa-0">  
         <v-layout column="12">
-        <!-- 제목 -->
+        <!-- 게시글 제목 -->
           <div class="title-area">
             <h1>{{ $route.params.title }}</h1>
             <h6>작성자: {{ $route.params.username }}</h6>
@@ -17,11 +17,11 @@
         <div class="col-lg-12">
           <Viewer :initialValue="this.content"/>
         </div>
+        <!-- 게시글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
+
         <!-- 블로그 작성자 Thumnail -->
-        
         <!-- 짧은 자기 소개 -->
-        
-        <!-- 설정한 SNS주소 있으면 나오게 -->
+        <!-- 설정한 SNS주소 있으면 나오게(이미지 버튼으로) -->
 
         <!-- 다음글 이전글 버튼-->
 
@@ -41,8 +41,9 @@
         <!-- 댓글 -->
         <h1>댓글창</h1>
         <div v-for="comment in Comments" :key="comment.username" class="col-lg-12">
-          <p>작성자: {{ comment.username }} 내용:{{ comment.content }}</p>
+          <p>작성자: {{ comment.author }} 내용:{{ comment.content }}</p>
         </div>
+        <!-- 댓글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
         </v-layout>
       </v-col>
       <!-- 오른쪽 사이드바 -->
@@ -70,18 +71,9 @@ export default {
     },
     data() {
         return {
-          Comments:[
-            {
-              username: '우주호',
-              content: 'hello'
-            },
-            {
-              username: '안시원',
-              content: 'hihi'
-            },
-          ],
-          CommentInput: '',
           content: '',
+          Comments: this.$route.params.data.comments,
+          CommentInput: '',
         }
     },
     mounted() {
@@ -98,8 +90,10 @@ export default {
       CommentCreate() {
         console.log('TRY create')
         axios.post(API_URL + 'api/v3/', {
+          author: storage.getItem("login_user"),
           content: this.CommentInput,
           uid: storage.getItem("uid"),
+          pid: this.$route.params.data.pid
         })
         .then(res => console.log(res))
         .catch(err => console.log(err))
