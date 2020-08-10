@@ -51,6 +51,7 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public Map<String, Object> get(String jwt) {
         Jws<Claims> claims = null;
+        System.out.println("JWT:" + jwt);
         try{
             claims = Jwts.parser().setSigningKey(salt.getBytes()).parseClaimsJws(jwt);
         }catch(final Exception e){
