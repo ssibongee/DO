@@ -56,6 +56,16 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
+    public void update(Post post) {
+        postMapper.update(post);
+    }
+
+    @Override
+    public void delete(Long pid) {
+        postMapper.delete(pid);
+    }
+
+    @Override
     public void increaseHits(Long pid) {
         postMapper.increaseHits(pid);
     }

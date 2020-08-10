@@ -130,7 +130,7 @@ public class PostController {
     /**
      * 임시저장 기능 : 넘겨받은 글의 내용을 수정하고 isTemp 속성을 1로 만든다.
      * @param post
-     * 나중에 임시저장이 아닌 저장이 된 글들에 대한 처리가 필요함s
+     * 나중에 임시저장이 아닌 저장이 된 글들에 대한 처리가 필요함
      */
     @ApiOperation(value = "임시저장", notes = "임시저장을 눌렀을 포스트 처리")
     @PutMapping("/api/v2/temp")
@@ -138,4 +138,24 @@ public class PostController {
         postService.temporarily(post);
     }
 
+
+    /**
+     * 게시글 삭제 기능 : pid 에 해당하는 게시글을 삭제한다. 이 때 관련 댓글도 같이 삭제됨
+     * @param pid : 게시글 번호
+     */
+    @ApiOperation(value = "게시글 삭제", notes = "pid와 일치하는 게시글 삭제")
+    @DeleteMapping("/api/v2/{pid}")
+    public void delete(@PathVariable Long pid) {
+        postService.delete(pid);
+    }
+
+    /**
+     * 게시글 수정 : 해당 게시물을 수정완료 버튼을 눌렀을 때 임시저장 상태의 글은 저장완료 상태로 바뀜
+     * @param post
+     */
+    @ApiOperation(value = "게시글 수정", notes = "게시글 수정, 임시저장 글을 수정완료할 경우 상태 변경")
+    @PutMapping("/api/v2")
+    public void update(Post post) {
+        postService.update(post);
+    }
 }
