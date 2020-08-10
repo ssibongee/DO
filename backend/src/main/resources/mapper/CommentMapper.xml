@@ -5,7 +5,7 @@
 
     <!-- 댓글 작성 후 저장 -->
     <insert id="save">
-        insert into comment values(default , #{pid}, #{uid}, default, default, #{author}, #{content})
+        insert into comment values(default , #{pid}, #{uid}, null, default, #{author}, #{content})
     </insert>
 
     <!-- 대댓글 작성 후 저장 -->
