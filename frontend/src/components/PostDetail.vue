@@ -31,17 +31,12 @@
             clearable
             label="댓글 작성"
             placeholder="댓글을 작성하세요"
-            :value="CommentInput"
-          ></v-textarea><!-- <v-textarea
-            clearable
-            clear-icon="지우기"
-            label="댓글 작성"
-            placeholder="댓글을 작성하세요"
-            :value="CommentInput"
-          ></v-textarea> -->
-        </div>
-        <div class="col-lg-3">
-          <button>작성 완료</button>
+            v-model="CommentInput"
+          ></v-textarea>
+          <v-btn
+            @click="CommentCreate"
+          >댓글 작성
+          </v-btn>
         </div>
         <!-- 댓글 -->
         <h1>댓글창</h1>
@@ -62,6 +57,11 @@
 import { Viewer } from '@toast-ui/vue-editor'
 import Navbar from './Navbar.vue'
 
+import axios from 'axios'
+
+const storage = window.sessionStorage
+const API_URL = 'http://i3a507.p.ssafy.io:8081/'
+
 export default {
     name: 'postdetail',
     components: {
@@ -80,8 +80,8 @@ export default {
               content: 'hihi'
             },
           ],
-          CommentInput: null,
-          content: 'hello everyone'
+          CommentInput: '',
+          content: '',
         }
     },
     mounted() {
@@ -94,6 +94,15 @@ export default {
         if (this.$route.params.content) {
           this.content = this.$route.params.content
         }
+      },
+      CommentCreate() {
+        console.log('TRY create')
+        axios.post(API_URL + 'api/v3/', {
+          content: this.CommentInput,
+          uid: storage.getItem("uid"),
+        })
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
       }
     }
 }

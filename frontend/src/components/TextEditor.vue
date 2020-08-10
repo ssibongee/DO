@@ -1,16 +1,15 @@
 <template>
-	<v-container>
+    <v-container>
         <v-text-field
             v-model="title"
-            :rules="[rules.required, rules.counter]"
+            :counter="20"
             label="글 제목을 입력해주세요"
-            counter
-            maxlength="20"
-          ></v-text-field>
+            required
+        ></v-text-field>
         <editor ref="toastuiEditor" height="500px"/>
         <h3>태그 입력칸</h3>        
         <TagInputBox @event-data="createAction"/>
-	</v-container>
+    </v-container>
 </template>
 <script>
 import 'tui-editor/dist/tui-editor.css';
@@ -20,6 +19,7 @@ import { Editor } from '@toast-ui/vue-editor'
 import axios from 'axios'
 import TagInputBox from './TagInputBox.vue'
 
+const storage = window.sessionStorage
 // const API_URL = 'http://localhost:8081/'
 const API_URL = 'http://i3a507.p.ssafy.io:8081/'
 // const FLICKR_URL = 'https://up.flickr.com/services/upload/'
@@ -46,13 +46,13 @@ export default {
             console.log(tagList)
             var textdata = this.$refs.toastuiEditor.invoke("getMarkdown"); // content를 저장하는 액션 처리
             this.editorText = textdata
-            axios.post(API_URL+'api/v2/1', {
+            axios.post(API_URL+'api/v2/'+storage.getItem("uid"), {
                 author: '유저 이름',
                 title: this.title,
                 content: this.editorText,
                 tag: tagList,
             })
-            .then(() => this.$router.push('/'))
+            .then(res => console.log(res))
             .catch(err => console.log(err))
         },
     },

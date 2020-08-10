@@ -54,7 +54,7 @@
 <script>
 import Navbar from '../components/Navbar.vue'
 import axios from 'axios'
-import User from '../models/user'
+// import User from '../models/user'
 
 const storage = window.sessionStorage
 // const API_URL = 'http://localhost:8081/'
@@ -68,8 +68,8 @@ export default {
   computed: {
   },
   data() {
+    // user: new User('', ''),
     return {
-      user: new User('', ''),
       email: "",
       password: "",
       loading: false,
@@ -90,6 +90,7 @@ export default {
       if (this.email && this.password) {
         storage.setItem("jwt-auth-token", "")
         storage.setItem("login_user", "")
+        storage.setItem("uid", "")
         axios.post(API_URL+'api/signin', {
           email: this.email,
           password: this.password
@@ -98,6 +99,7 @@ export default {
               this.message = res.data.request_body.email + "로 로그인 되었습니다."
               storage.setItem("jwt-auth-token", res.data["jwt-auth-token"])
               storage.setItem("login_user", res.data.request_body.email)
+              storage.setItem("uid", res.data.request_body.uid)
               this.$router.push('/')
             } else {
               this.message = "로그인해주세요."
@@ -110,6 +112,7 @@ export default {
     // logout() {
     //   storage.setItem("jwt-auth-token", "")
     //   storage.setItem("login_user", "")
+    //   storage.setItem("uid", "")
     //   this.message = "로그인해주세요."
     // },
     

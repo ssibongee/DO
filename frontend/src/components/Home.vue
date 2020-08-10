@@ -120,11 +120,10 @@ export default {
   },
   methods: {
     testpostdetail(pid) {
-      // console.log(this.posts.data)
       axios.get(API_URL+`api/v2/p/${pid}`)
         .then(res => {
-          console.log(res)
-          this.$router.push({name: 'postdetail', params: { username:res.data.author, title:res.data.title, content: res.data.content, data: res}})
+          // console.log(res)
+          this.$router.push({name: 'postdetail', params: { username:res.data.author, title:res.data.title, content: res.data.content, data: res.data}})
         })
         .catch(err => console.log(err))
     },
