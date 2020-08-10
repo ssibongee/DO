@@ -1,13 +1,67 @@
 <template>
   <div>
     <Navbar/>
+    <v-container fluid fill-height>
+      <div class="login_do">
+        <span><h2>Sign up</h2></span>
+        <p>DO!를 시작해보세요.</p>
+        <v-form name="form" @submit.prevent="handleRegister" style="width:318px">
+          <strong class="tit_step">회원 정보 입력</strong>
+          <div class="cont_data" v-if="!successful">
+            <div>
+              <v-text-field
+                outlined
+                placeholder="이메일 주소를 입력해주세요"
+                hide-details
+                name="email"
+                v-model="user.email"
+                v-validate="'required|email|max:50'"
+                type="email"
+              >
+              </v-text-field>
+              <div class="alert-danger" v-if="submitted && errors.has('email')">
+                {{errors.first('email')}}
+              </div>
+            </div>
+
+            <v-text-field
+              @keyup.enter="login"
+              type="password"
+              outlined
+              placeholder="password"
+              hide-details 
+              sytle="top:-1px;"
+              name="password"
+              v-model="password"
+            >
+            </v-text-field>
+            
+            <div class="login_append">
+              <v-checkbox
+                dense
+                label="로그인 상태 유지"
+                color="#6e8af8"
+              ></v-checkbox>
+              <span>아이디/비밀번호 찾기</span> 
+            </div>
+            <div class="login_btn" @click="login">
+              <v-btn 
+                block 
+                depressed 
+                color="#6e8af8"
+                height="48px"
+                class="white--text"
+              >
+                로그인
+              </v-btn> 
+            </div>
+          </div>
+        </v-form>
+      </div>
+    </v-container>
+
     <div class="col-md-12">
       <div class="card card-container">
-        <img
-          id="profile-img"
-          src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-          class="profile-img-card"
-        />
         <form name="form" @submit.prevent="handleRegister">
           <div v-if="!successful">
             <div class="form-group">
@@ -147,36 +201,48 @@ export default {
 </script>
 
 <style scoped>
-label {
-  display: block;
-  margin-top: 10px;
+header {
+  background-color:transparent;
 }
 
-.card-container.card {
-  max-width: 350px !important;
-  padding: 40px 40px;
+.container {
+  padding-top:120px; 
+}
+/* login 영역 화면 가운데에 고정 어떻게 하지? */
+.login_do{
+  text-align: center;
+  margin : 120px auto;
+}
+.login_do > span{
+  display : inline-block;
+  margin-bottom : 30px;
+}
+.v-text-field{
+  border-radius: 0;
+}
+.login_btn{
+  margin : 20px 0 0 0;
 }
 
-.card {
-  background-color: #f7f7f7;
-  padding: 20px 25px 30px;
-  margin: 0 auto 25px;
-  margin-top: 50px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+.v-input{
+  margin : 0;
 }
 
-.profile-img-card {
-  width: 96px;
-  height: 96px;
-  margin: 0 auto 10px;
-  display: block;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
+.login_append {
+  margin : 12px 0 0 0;
+  font-size : 13px;
+}
+
+.login_append > .v-input {
+  display: inline-block;
+  /* float: left; */
+}
+
+.login_append > span {
+  float:right;
+  padding-top:7px;
+}
+.v-input >>> label {
+  font-size: 13px;
 }
 </style>
