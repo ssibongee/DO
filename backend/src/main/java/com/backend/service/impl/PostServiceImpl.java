@@ -77,6 +77,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public void update(Post post) {
+        postDao.update(post);
+    }
+
+    @Override
+    public void delete(Long pid) {
+        postDao.delete(pid);
+    }
+
+    @Override
     public void onClickLikes(Long pid, boolean status) {
         if(status) {// 좋아요 활성화
             postDao.increaseLikes(pid);
