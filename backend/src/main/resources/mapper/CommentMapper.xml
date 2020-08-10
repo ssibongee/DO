@@ -15,7 +15,7 @@
 
     <!-- 해당 글의 모든 댓글 조회 -->
     <select id="findAllComment" resultType="com.backend.dto.comment.Comment">
-        select * from comment where pid = #{pid} and parent = 0
+        select * from comment where pid = #{pid} and parent = null
     </select>
     <!-- 해당 댓글의 모든 대댓글 조회 -->
     <select id="findAllChildComment" resultType="com.backend.dto.comment.Comment">
