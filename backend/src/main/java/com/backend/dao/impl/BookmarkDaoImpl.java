@@ -1,9 +1,12 @@
 package com.backend.dao.impl;
 
 import com.backend.dao.BookmarkDao;
+import com.backend.dto.post.Post;
 import com.backend.mapper.BookmarkMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class BookmarkDaoImpl implements BookmarkDao {
@@ -25,5 +28,10 @@ public class BookmarkDaoImpl implements BookmarkDao {
     @Override
     public Long isBookmark(Long uid, Long pid) {
         return bookmarkMapper.isBookmark(uid, pid);
+    }
+
+    @Override
+    public List<Post> findAllBookmarks(Long uid) {
+        return bookmarkMapper.findAllBookmarks(uid);
     }
 }

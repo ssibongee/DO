@@ -17,4 +17,9 @@
         select uid from bookmark where uid = #{uid} and pid = #{pid}
     </select>
 
+    <!-- 해당 유저의 모든 북마크를 불러 읽어옴 -->
+    <select id="findAllBookmarks" resultType="com.backend.dto.post.Post">
+        select * from post where pid in (select pid from bookmark where uid = #{uid})
+    </select>
+
 </mapper>
