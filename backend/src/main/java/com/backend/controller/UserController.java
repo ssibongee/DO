@@ -1,10 +1,14 @@
 package com.backend.controller;
 
+import com.backend.dto.post.Post;
+import com.backend.service.BookmarkService;
 import com.backend.service.JWTDecoding;
 import com.backend.service.JwtService;
 import com.backend.service.UserService;
 import com.backend.dto.user.User;
 import io.jsonwebtoken.Jwt;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -31,6 +36,9 @@ public class UserController {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private BookmarkService bookmarkService;
 
     @PostMapping("/googlelogin")
     public Object googleLogin(@RequestHeader final HttpHeaders header) throws Exception {
@@ -191,5 +199,18 @@ public class UserController {
             errorMessage = err + "<== error";
             return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
         }
+    }
+
+    // 사용자의 모든 북마크 읽어오기
+
+    /**
+     * 사용자의 모든 북마크 읽어오기
+     * @param uid
+     * @return 메인의 카드뉴스 형식처럼 북마크로 등록된 모든 포스트를 읽어온다.
+     */
+    @ApiOperation(value = "사용자의 모든 북마크 가져오기", notes = "사용자의 모든 북마크를 읽어온다.")
+    @GetMapping("/api/v1/likes/{uid}")
+    public List<Post> findAllBookmarks(@PathVariable Long uid) {
+        return bookmarkService.findAllBookmarks(uid);
     }
 }
