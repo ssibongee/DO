@@ -80,7 +80,7 @@
 </template>
 
 <script>
-// import Navbar from '../components/Navbar.vue'
+import Navbar from '../components/Navbar.vue'
 import axios from 'axios'
 import GoogleLogin from 'vue-google-login';
 
@@ -125,6 +125,7 @@ export default {
         storage.setItem("jwt-auth-token", "")
         storage.setItem("login_user", "")
         storage.setItem("uid", "")
+        storage.setItem("google_login", "")
         axios.post(API_URL+'api/signin', {
           email: this.email,
           password: this.password
@@ -134,6 +135,7 @@ export default {
               storage.setItem("jwt-auth-token", res.data["jwt-auth-token"])
               storage.setItem("login_user", res.data.request_body.email)
               storage.setItem("uid", res.data.request_body.uid)
+              storage.setItem("google_login", false)
               this.$router.push('/')
             } else {
               this.message = "로그인해주세요."
@@ -165,6 +167,7 @@ export default {
       storage.setItem("jwt-auth-token", "")
       storage.setItem("login_user", "")
       storage.setItem("uid", "")
+      storage.setItem("google_login", "")
       let id_token = googleUser.wc.id_token;
       const config = {
         headers: {Authorization: `Bearer ${id_token}`}
@@ -175,6 +178,7 @@ export default {
         storage.setItem("jwt-auth-token", res.data["jwt-auth-token"])
         storage.setItem("login_user", res.data.request_body.email)
         storage.setItem("uid", res.data.request_body.uid)
+        storage.setItem("google_login", true)
         this.$router.push('/')
       })
       // .catch((err) => console.log(err))
