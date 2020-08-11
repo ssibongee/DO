@@ -2,6 +2,7 @@
   <div id="#app">
     <!-- 네비게이션 바 -->
     <Navbar></Navbar>
+    <!-- 유효성 검사 추가해야함 -->
     <v-container fluid fill-height>
       <div class="login_do">
         <span><h2>DO!에 로그인하세요</h2></span>
@@ -43,9 +44,21 @@
               class="white--text"
             >
               로그인
-            </v-btn> 
+            </v-btn>
           </div>
         </v-form>
+        <!-- 소셜 로그인 단 -->
+        <div class="google mt-2">
+          <v-btn 
+            block 
+            depressed 
+            color="#ff7f00"
+            height="48px"
+            class="white--text"
+          >
+            <GoogleLogin class="big-button" :renderParams="renderParams" :params="params" :onSuccess="onSuccess" :onFailure="onFailure"> Google Login</GoogleLogin>
+          </v-btn>
+        </div>
       </div>
     </v-container>
   </div>
@@ -54,7 +67,7 @@
 <script>
 import Navbar from '../components/Navbar.vue'
 import axios from 'axios'
-// import User from '../models/user'
+import GoogleLogin from 'vue-google-login';
 
 const storage = window.sessionStorage
 // const API_URL = 'http://localhost:8081/'
@@ -64,17 +77,23 @@ export default {
   name: 'login',
   components: {
     Navbar,
+    GoogleLogin
   },
   computed: {
   },
   data() {
     // user: new User('', ''),
     return {
+      isLogin: this.$store.state.isLoggedIn,
       email: "",
       password: "",
       loading: false,
       message: "",
       renderComponent: true,
+      params :{
+        client_id : '464615746303-dj9932cqlcukr92o1ig3eci1ubc5vlui.apps.googleusercontent.com',
+        scope : 'email profile'
+      },
     }
   },
   methods: {
@@ -107,14 +126,10 @@ export default {
             }
           })
           .catch(err => console.log(err))
+      } else {
+        alert('이메일 또는 패스워드를 입력하지 않았습니다.')
       }
     },
-    // logout() {
-    //   storage.setItem("jwt-auth-token", "")
-    //   storage.setItem("login_user", "")
-    //   storage.setItem("uid", "")
-    //   this.message = "로그인해주세요."
-    // },
     
     // 로그인 했는지 체크
     init() {
@@ -122,7 +137,6 @@ export default {
       if (storage.getItem("jwt-auth-toekn")) {
         this.message = storage.getItem("login_user") + "로 로그인 되었습니다."
       } else {
-        
         storage.setItem("jwt-auth-token", "");
       }
     },
@@ -132,14 +146,29 @@ export default {
         this.renderComponent = true
       })
     },
-    test() {
-      console.log('button OK')
+    onSuccess(googleUser){
+      storage.setItem("jwt-auth-token", "")
+      storage.setItem("login_user", "")
+      storage.setItem("uid", "")
+      let id_token = googleUser.wc.id_token;
+      const config = {
+        headers: {Authorization: `Bearer ${id_token}`}
+      }
+      axios.post(API_URL + 'googlelogin', null, config)
+      .then(res => {
+        console.log(res)
+        storage.setItem("jwt-auth-token", res.data["jwt-auth-token"])
+        storage.setItem("login_user", res.data.request_body.email)
+        storage.setItem("uid", res.data.request_body.uid)
+        this.$router.push('/')
+      })
+      // .catch((err) => console.log(err))
     }
   },
   mounted() {
     this.init()
     // 로그인한 상태로 로그인 페이지에 진입하면 홈으로 돌려보냄
-    if (this.loggedIn) {
+    if (this.isLogin) {
       this.$router.push('/')
     }
   },
