@@ -1,10 +1,13 @@
 package com.backend.controller;
 
+import com.backend.service.JWTDecoding;
 import com.backend.service.JwtService;
 import com.backend.service.UserService;
 import com.backend.dto.user.User;
+import io.jsonwebtoken.Jwt;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +27,71 @@ public class UserController {
 
     @Autowired
     UserService service;
+    User userDao;
 
     @Autowired
     private JwtService jwtService;
 
+    @PostMapping("/googlelogin")
+    public Object googleLogin(@RequestHeader final HttpHeaders header) throws Exception {
+
+        String jwtToken = header.get("authorization").get(0).substring(7);
+
+        // id_token decode해서 메일/picture 변환.
+        String email = JWTDecoding.decode(jwtToken);
+        String picture = JWTDecoding.getImg(jwtToken);
+        String subPassword = JWTDecoding.getHashuid(jwtToken);
+        String nickname = JWTDecoding.getNickname(jwtToken);
+
+        // String Check
+//        System.out.println(email);
+//        System.out.println(picture);
+//        System.out.println(subPassword);
+//        System.out.println(nickname);
+
+        // 로그인할 때 사용할 인스턴스 초기화
+        Map<String, Object> resultMap = new HashMap<>();
+        HttpStatus status = null;
+
+        // email 가입 여부 확인
+        User memberVo = service.findByEmail(email);
+
+        
+        if (memberVo == null) { // google 계정 회원가입
+            User newUser = new User();
+            newUser.setEmail(email);
+            newUser.setProfileImage(picture);
+            newUser.setPassword(subPassword);
+            newUser.setNickname(nickname);
+            signup(newUser); // 회원가입
+
+        }else if(memberVo != null){ // google 계정 로그인
+            // 이미 로그인된 유저
+        }
+
+        try{
+
+            //로그인
+            User loginUser = service.signin(email, subPassword);
+
+            // 로그인 성공했다면 토큰을 생성한다.
+            String loginToken = jwtService.create(loginUser);
+
+            // 토큰 정보는 request의 헤더로 보내고 나머지는 Map에 담아둔다.
+            resultMap.put("jwt-auth-token", header);
+            resultMap.put("status", true);
+            resultMap.put("request_body", loginUser);
+            status = HttpStatus.ACCEPTED;
+
+        } catch(RuntimeException e){
+            log.error("정보조회 실패", e);
+            resultMap.put("message", e.getMessage());
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+        return new ResponseEntity<Map<String, Object>>(resultMap, status);
+
+    }
+    
     @PostMapping("/api/signin")
     public ResponseEntity<Map<String, Object>> signin(@RequestBody User user, HttpServletResponse res){
         Map<String, Object> resultMap = new HashMap<>();
@@ -37,14 +101,10 @@ public class UserController {
 
             User loginUser = service.signin(user.getEmail(), user.getPassword());
 
-            // 이메일로 uid 가져오기.
-//            User user2 = service.findByEmail(user.getEmail());
-//            System.out.println("user2:"+user2);
 
             // 로그인 성공했다면 토큰을 생성한다.
             String token = jwtService.create(loginUser);
             // 토큰 정보는 request의 헤더로 보내고 나머지는 Map에 담아둔다.
-//            res.setHeader("jwt-auth-token", token);
             resultMap.put("jwt-auth-token", token);
             resultMap.put("status", true);
             resultMap.put("request_body", loginUser);
@@ -65,7 +125,7 @@ public class UserController {
      */
 
     @PostMapping("/api/emailduplicate")
-    public boolean isemailAvailable (@RequestBody User  loginVo) {    //HTTP요청의 내용을 객체에 매핑하기 위해 @RequestBody 를 설정.
+    public boolean isemailAvailable (@RequestBody User loginVo) {    //HTTP요청의 내용을 객체에 매핑하기 위해 @RequestBody 를 설정.
         // @Controller인 경우 @ResponseBody를 적어야한다.
         String in_email = loginVo.getEmail();
 
@@ -84,7 +144,7 @@ public class UserController {
     @PostMapping("/api/v1")
     public ResponseEntity<?> signup(@RequestBody User user)
     {
-        System.out.println(user.toString());
+        System.out.println("회원가입: " +user.toString());
         try{
             service.save(user);
             return new ResponseEntity<>("회원가입 완료",HttpStatus.OK);
