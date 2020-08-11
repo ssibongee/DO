@@ -46,6 +46,8 @@ class AuthService {
     logout() {
         storage.setItem("jwt-auth-token", "")
         storage.setItem("login_user", "")
+        storage.setItem("uid", "")
+        storage.setItem("google_login", "")
         // this.message = "로그인 해주세요"
         // this.setInfo("로그아웃 성공", "", "")
     }

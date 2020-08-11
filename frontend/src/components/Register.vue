@@ -60,7 +60,7 @@
       </div>
     </v-container>
 
-    <div class="col-md-12">
+    <!-- <div class="col-md-12">
       <div class="card card-container">
         <form name="form" @submit.prevent="handleRegister">
           <div v-if="!successful">
@@ -73,7 +73,6 @@
                 v-model="user.email"
                 v-validate="'required|email|max:50'"
               />
-              <!-- <button @click="validate()">Validate</button> -->
               <div
                 class="alert-danger"
                 v-if="submitted && errors.has('email')"
@@ -136,7 +135,7 @@
           v-if="message"
         >{{message}}</div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
