@@ -24,8 +24,9 @@ public interface PostService {
     public List<Post> findAllOrderedByPublishedTime(); // 최신글 순으로 조회
     //public List<Post> findAll(); // 모든 글을 조회
 
-//    public void update(Long id); // 게시글 수정
-//    public void delete(Long id); // 게시글 삭제
+    public void update(Post post); // 게시글 수정
+
+    public void delete(Long pid); // 게시글 삭제
 
     public void onClickLikes(Long pid, boolean status); // 좋아요 버튼을 눌렀을 경우
 
