@@ -32,23 +32,12 @@ public class UserController {
     @Autowired
     private JwtService jwtService;
 
-//    @PostMapping("/googlelogin")
-//    public Object googleLogin(@RequestHeader final HttpHeaders header) throws Exception {
-//
-//        System.out.println("Header:" + header);
-//
-//        String id_token = header.get("id_token").get(0);
-//        System.out.println(id_token);
-//        return null;
-//        return new ResponseEntity<>(res, HttpStatus.OK);
-//    }
     @PostMapping("/googlelogin")
-    public Object googleLogin(@RequestBody HashMap<String, String> token) throws Exception {
+    public Object googleLogin(@RequestHeader final HttpHeaders header) throws Exception {
 
-        String jwtToken = token.get("id_token");
-//        System.out.println("jwtToken: "+jwtToken);
+        String jwtToken = header.get("authorization").get(0).substring(7);
 
-        // id_token decode해서 이메일/picture 변환.
+        // id_token decode해서 메일/picture 변환.
         String email = JWTDecoding.decode(jwtToken);
         String picture = JWTDecoding.getImg(jwtToken);
         String subPassword = JWTDecoding.getHashuid(jwtToken);
@@ -67,8 +56,8 @@ public class UserController {
         // email 가입 여부 확인
         User memberVo = service.findByEmail(email);
 
+        
         if (memberVo == null) { // google 계정 회원가입
-            System.out.println("회원가입");
             User newUser = new User();
             newUser.setEmail(email);
             newUser.setProfileImage(picture);
@@ -77,7 +66,7 @@ public class UserController {
             signup(newUser); // 회원가입
 
         }else if(memberVo != null){ // google 계정 로그인
-            System.out.println("이미 로그인 유저");
+            // 이미 로그인된 유저
         }
 
         try{
@@ -89,7 +78,7 @@ public class UserController {
             String loginToken = jwtService.create(loginUser);
 
             // 토큰 정보는 request의 헤더로 보내고 나머지는 Map에 담아둔다.
-            resultMap.put("jwt-auth-token", token);
+            resultMap.put("jwt-auth-token", header);
             resultMap.put("status", true);
             resultMap.put("request_body", loginUser);
             status = HttpStatus.ACCEPTED;
@@ -100,9 +89,9 @@ public class UserController {
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
+
     }
-
-
+    
     @PostMapping("/api/signin")
     public ResponseEntity<Map<String, Object>> signin(@RequestBody User user, HttpServletResponse res){
         Map<String, Object> resultMap = new HashMap<>();
