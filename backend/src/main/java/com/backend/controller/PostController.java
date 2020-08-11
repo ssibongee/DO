@@ -1,6 +1,7 @@
 package com.backend.controller;
 
 import com.backend.dto.post.Post;
+import com.backend.service.BookmarkService;
 import com.backend.service.CommentService;
 import com.backend.service.PostService;
 import io.swagger.annotations.Api;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @Api(tags = {"Post"})
@@ -26,13 +28,15 @@ public class PostController {
     @Autowired
     CommentService commentService;
 
+    @Autowired
+    BookmarkService bookmarkService;
+
     /**
      * @param newPost : 사용자가 작성한 Post
-     * @param uid     : 사용자 아이디
      * @return 글이 정상적으로 등록된 경우 HttpStatus 201 반환
      */
     @ApiOperation(value = "글 작성", notes = "새로운 포스트를 작성한다.")
-    @PostMapping("/api/v2/{uid}")
+    @PostMapping("/api/v2/")
     public HttpStatus save(@RequestBody Post newPost) throws Exception {
         try {
             postService.save(newPost);
@@ -50,8 +54,9 @@ public class PostController {
     @GetMapping("/api/v2/p/{pid}")
     public Post findById(@PathVariable Long pid) {
         Post post = postService.findById(pid);
-        post.setTag(postService.findAllPostTags(pid));
-        post.setComments(commentService.findAllCommentsInPost(pid));
+        post.setTag(postService.findAllPostTags(pid)); // 게시글의 모든 태그를 불러옴
+        post.setComments(commentService.findAllCommentsInPost(pid)); // 게시글의 모든 댓글을 불러옴
+        post.setIsLike(bookmarkService.isBookmark(post.getUid(), post.getPid()) != null ? true : false);
         return post;
     }
 
@@ -109,13 +114,18 @@ public class PostController {
     }
 
     /**
-     * @param pid    : 포스트의 pid
-     * @param status : 좋아요 토글 상태값 true : 좋아요 활성 false : 좋아요 비활성
+     * pid, uid, status 값을 JSON 형태로 전달받음
+     * status = True : 좋아요 활성화 및 북마크 등록
+     * status = False : 좋아요 비활성화 및 북마크 삭제
      */
     @ApiOperation(value = "좋아요 이벤트 처리", notes = "좋아요를 누른 게시물과 토글 상태값을 넘겨받는다")
-    @PutMapping("/api/v2/likes/{pid}/{status}")
-    public void updateLikes(@PathVariable Long pid, @PathVariable boolean status) {
-        postService.onClickLikes(pid, status);
+    @PutMapping("/api/v2/likes")
+    public void updateLikes(@RequestBody Map<String, String> likes) {
+        Long pid = Long.parseLong(likes.get("pid"));
+        Long uid = Long.parseLong(likes.get("uid"));
+        Boolean status = Boolean.parseBoolean(likes.get("status"));
+
+        postService.onClickLikes(pid, uid, status);
     }
 
     /**
@@ -158,4 +168,7 @@ public class PostController {
     public void update(Post post) {
         postService.update(post);
     }
+
+    // 글 읽어올 때 좋아요 표시한 게시물인지 판단해서 좋아요 활성 비활성 하는 것 해야함
+
 }
