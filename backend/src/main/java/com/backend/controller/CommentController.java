@@ -39,7 +39,24 @@ public class CommentController {
     }
 
 
-    // 댓글 삭제
+    /**
+     * 댓글 삭제 하위 대댓글도 모두 삭제됨
+     * @param cid : 댓글 고유 아이디
+     */
+    @ApiOperation(value = "댓글 삭제", notes = "댓글 삭제시 대댓글도 삭제")
+    @DeleteMapping("/api/v3/{cid}")
+    public void delete(@PathVariable Long cid) {
+        commentService.delete(cid);
+    }
 
-    // 댓글 수정
+
+    /**
+     * 댓글 수정
+     * @param comment
+     */
+    @ApiOperation(value = "댓글 수정", notes = "댓글 수정")
+    @PutMapping("/api/v3")
+    public void update(@RequestBody Comment comment) {
+        commentService.update(comment);
+    }
 }
