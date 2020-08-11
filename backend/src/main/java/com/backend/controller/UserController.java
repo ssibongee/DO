@@ -78,7 +78,7 @@ public class UserController {
             String loginToken = jwtService.create(loginUser);
 
             // 토큰 정보는 request의 헤더로 보내고 나머지는 Map에 담아둔다.
-            resultMap.put("jwt-auth-token", header);
+            resultMap.put("jwt-auth-token", loginToken);
             resultMap.put("status", true);
             resultMap.put("request_body", loginUser);
             status = HttpStatus.ACCEPTED;
