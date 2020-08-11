@@ -43,8 +43,11 @@
             <v-list-item>
               <router-link to="/setting">설정</router-link>
             </v-list-item>
-            <v-list-item @click="onClickLogout">
+            <v-list-item v-if="!google_login" @click="onClickLogout">
               로그아웃
+            </v-list-item>
+            <v-list-item v-if="google_login" @click="onClickLogout">
+              <GoogleLogin :params="params" :logoutButton=true>로그아웃</GoogleLogin>
             </v-list-item>
           </v-list>
         </v-card>
@@ -56,8 +59,14 @@
 </template>
 
 <script>
+const storage = window.sessionStorage
+import GoogleLogin from 'vue-google-login';
+
 export default {
   name: 'Navbar',
+  component: {
+    GoogleLogin
+  },
   data() {
     return {
       profile: false,
@@ -76,9 +85,9 @@ export default {
 				text: '포럼',
 				title: '에디터/관리자 추천 포스트',
 				},
-			]
-      ,noticemsg: '공지입니다.'
-      ,
+      ],
+      noticemsg: '공지입니다.',
+      google_login: storage.getItem("google_login"),
     }
   },
   computed: {
