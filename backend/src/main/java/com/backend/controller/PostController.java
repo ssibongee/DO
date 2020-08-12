@@ -182,10 +182,10 @@ public class PostController {
         String originFileName = fullFileName.substring(0, fullFileName.indexOf('.')); // 순수 파일명 확장자 제거
         String extension = fullFileName.substring(fullFileName.indexOf('.')); // 파일 확장자
 
-        SHA512 sha512 = new SHA512(originFileName); // 파일명 SHA-512 암호화
-
+        SHA512 filename = new SHA512(originFileName); // 파일명 SHA-512 암호화
+        SHA512 sha512Title = new SHA512(title);
         String rootPath = FileSystemView.getFileSystemView().getHomeDirectory().toString(); // 루트 경로
-        String basePath = rootPath + "/vlog/" + author + "/" + title; // 루트경로 + 사용자 이메일 + 글 제목
+        String basePath = rootPath + "/vlog/" + author + "/" + sha512Title; // 루트경로 + 사용자 이메일 + 글 제목
 
         File dir = new File(basePath); // 경로에 디렉토리가 존재하지 않을 경우 폴더 생성
         if(!dir.exists()) {
@@ -193,7 +193,7 @@ public class PostController {
             System.out.println("폴더 생성 완료");
         }
 
-        String filePath = basePath + "/" + sha512.getSha512() + extension;
+        String filePath = basePath + "/" + filename.getSha512() + extension;
         System.out.println(filePath);
         File location = new File(filePath);
         file.transferTo(location);
