@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = {"*"})
 public class CommentController {
@@ -58,5 +60,16 @@ public class CommentController {
     @PutMapping("/api/v3")
     public void update(@RequestBody Comment comment) {
         commentService.update(comment);
+    }
+
+    /**
+     * pid 에 해당하는 포스트의 모든 댓글들을 다시 읽어온다.
+     * @param pid
+     * @return
+     */
+    @ApiOperation(value = "포스트의 모든 댓글 읽어옴", notes = "댓글 갱신을 위한 모든 댓글 리로드")
+    @GetMapping("/api/v3/{pid}")
+    public List<Comment> findAllComment(@PathVariable Long pid) {
+        return commentService.findAllCommentsInPost(pid);
     }
 }
