@@ -7,8 +7,8 @@
     <v-container>
       <!-- 게시글 탭 -->
       <v-tabs v-model="tab" grow class="nav">
-        <v-tab v-for="item in items" :key="item">
-          {{ item }}
+        <v-tab @click="postread(item)" v-for="item in items" :key="item">
+          <div>{{ item }}</div>
         </v-tab>
       </v-tabs>
       <!-- 게시글 미리보기 -->
@@ -93,22 +93,7 @@ export default {
     }
   },
   created() {
-    axios
-    .get(API_URL+'api/v2/latest')
-    .then(({data})=>{
-      // 콘텐츠 미리보기 슬라이스
-      data.forEach(el => {
-        if (el.content.length > 40) {
-          // 마크다운 사진 제외
-          el.content = el.content.replace(/!\[.*\)+/, "")
-          // 최대 길이 슬라이스
-          el.content = el.content.slice(0, 40)
-          // 작성 날짜만 보이게 수정
-          el.publishedTime = el.publishedTime.slice(0, 10)
-        }
-        this.posts = data
-      });
-    })
+    
   },
   components: {
     Navbar
@@ -128,6 +113,25 @@ export default {
               data: res.data}})
         })
     },
+    postread(item) {
+      let lowercase_item = item.toLowerCase()
+      axios.get(API_URL+`api/v2/${lowercase_item}`)
+      .then(({data})=>{
+        // 콘텐츠 미리보기 슬라이스
+        data.forEach(el => {
+          if (el.content.length > 40) {
+            // 마크다운 사진 제외
+            el.content = el.content.replace(/!\[.*\)+/, "")
+            // 최대 길이 슬라이스
+            el.content = el.content.slice(0, 40)
+            // 작성 날짜만 보이게 수정
+            el.publishedTime = el.publishedTime.slice(0, 10)
+          }
+          this.posts = data
+        });
+      })
+      .catch(err => console.log(err))
+    }
   }
 }
 </script>
