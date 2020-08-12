@@ -92,6 +92,10 @@ export default {
   },
   computed: {
     // 현재 로그인 한 상태인지 아닌지 체크
+    init() {
+      this.loginChecker()
+      return this.$store.state.isLoggedIn
+    }
   },
   methods: {
     onClickLogout() {
@@ -114,6 +118,9 @@ export default {
     }
   },
   created() {
+    this.loginChecker()
+  },
+  mounted() {
     this.loginChecker()
   },
   // computed() {

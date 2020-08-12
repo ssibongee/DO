@@ -119,10 +119,12 @@ export default {
         password: this.password
       }
       this.$store.dispatch('login', user)
-      .then(() => {
-        this.isLogin = this.$store.getters.isAuthenticated
-        this.$router.push('/')
-      })
+        .then(() => {
+          this.isLogin = this.$store.getters.isAuthenticated
+          if (this.isLogin) {
+            this.$router.push('/')
+          }
+        })
       .catch(err => console.log(err))
     },
     
@@ -156,10 +158,13 @@ export default {
       // .catch((err) => console.log(err))
     }
   },
+  created() {
+    this.isLogin = this.$store.state.isLoggedIn
+  },
   mounted() {
     this.init()
     // 로그인한 상태로 로그인 페이지에 진입하면 홈으로 돌려보냄
-    if (this.isLogin) {
+    if (storage.getItem("jwt-auth-toekn")) {
       this.$router.push('/')
     }
   },

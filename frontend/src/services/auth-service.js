@@ -1,4 +1,5 @@
 import axios from 'axios'
+import store from '../router/index.js'
 
 const API_URL = 'http://i3a507.p.ssafy.io:8081/'
 // const API_URL = 'http://localhost:8081/'
@@ -30,9 +31,9 @@ class AuthService {
                 storage.setItem("login_user", res.data.request_body.email)
                 storage.setItem("uid", res.data.request_body.uid)
                 storage.setItem("google_login", false)
+                store.app.$store.commit('logincheck')
                 // this.$router.push('/')
               } else {
-                this.message = "로그인해주세요."
                 alert("입력 정보를 확인해주세요.")
               }
             })

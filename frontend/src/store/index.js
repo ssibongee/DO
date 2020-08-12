@@ -20,7 +20,7 @@ export default new Vuex.Store({
       }
     },
     loginSuccess(state, user) {
-      state.status = {loggedIn: true}
+      state.status = {isLoggedIn: true}
       state.user = user
     },
     loginFailure(state){
@@ -37,35 +37,26 @@ export default new Vuex.Store({
     registerFailure(state){
         state.status = {}
     },
-    // login(state) {
-    //   state.pending = true;
-    // },
-    // logout(state) {
-    //   state.isLoggedIn = false;
-    // }
   },
   actions: {
     login({ commit }, user){
-      console.log(commit)
-      // console.log(user)
-      return AuthService.login(user)
-        // .then(
-        // user => {
-        //   commit('loginSuccess', user)
-        //   return Promise.resolve(user)
-        //   console.log(user)
-        // },
-        // error => {
-        //   commit('loginFailure')
-        //   return Promise.reject(error.response.data)
-        //   console.log(error)
-        // }
+      console.log('TRY login')
+      AuthService.login(user, commit)
+      console.log(this.state["isLoggedIn"])
+      //   .then(
+      //   user => {
+      //     commit('loginSuccess', user)
+      //     return Promise.resolve(user)
+      //   },
+      //   error => {
+      //     commit('loginFailure')
+      //     return Promise.reject(error.response.data)
+      //   }
       // )
     },
     logout({commit}) {
       console.log(this.state)
       this.state["isLoggedIn"] = false
-      // console.log(typeof(isLoggedIn))
       AuthService.logout()
       commit('logout')
     },
