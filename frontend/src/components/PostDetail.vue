@@ -89,14 +89,19 @@ export default {
       },
       CommentCreate() {
         console.log('TRY create')
-        axios.post(API_URL + 'api/v3/', {
-          author: storage.getItem("login_user"),
-          content: this.CommentInput,
-          uid: storage.getItem("uid"),
-          pid: this.$route.params.data.pid
-        })
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
+        if (storage.getItem("login_user")) {
+          const tmp_comment = {
+            author: storage.getItem("login_user"),
+            content: this.CommentInput,
+            uid: storage.getItem("uid"),
+            pid: this.$route.params.data.pid
+          } 
+          axios.post(API_URL + 'api/v3/', tmp_comment)
+            .then(() => this.Comments.push(tmp_comment))
+            .catch(err => console.log(err))
+        } else {
+          alert('로그인한 유저만 댓글을 달 수 있습니다.')
+        }
       }
     }
 }
