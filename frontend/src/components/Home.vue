@@ -33,8 +33,8 @@
 
                     <v-card-text class="text--primary">
                       <div>{{post.content}}</div>
-
-                      <div>{{post.publishedTime}}</div>
+                      <div v-if="!post.content">게시글 내용이 비어있습니다.</div>
+                      <div>작성 날짜: {{post.publishedTime}}</div>
                     </v-card-text>
 
                     <v-card-actions>
@@ -107,6 +107,8 @@ export default {
           el.content = el.content.replace(/!\[.*\)+/, "")
           // 최대 길이 슬라이스
           el.content = el.content.slice(0, 40)
+          // 작성 날짜만 보이게 수정
+          el.publishedTime = el.publishedTime.slice(0, 10)
         }
         this.posts = data
       });
