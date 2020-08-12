@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
 		<header>
 			<Navbar></Navbar>
 			<div class="search">
@@ -7,32 +7,46 @@
 					<h2>검색</h2>
 					<p class="do_txt">다른 Do!블로그가 궁금하다면?</p>
 						<v-select
-							v-model="e1"
+							v-model="select"
 							:items="options"
+							item-text="name"
+							item-value="abbr"
 							menu-props="auto"
 							hide-details
 							label="Solo field"
 							solo
 							flat
 							style="display:inline-block; width:20%; margin: 0 5px 0 0;"
+							return-object
 						></v-select>
 						<v-text-field
+							v-model="kword"
 							hide-details
 							flat
 							solo
 							autofocus
-							append-icon="fas fa-search"
-							:append-icon-cb="postList"
-							color="black"
 							style="display:inline-block; width:79%"
-						/>
+							@keyup.enter="postList()"
+						>
+							<template v-slot:append>
+								<v-btn depressed text color="#5c7bf4" 
+									:disabled="kword.length<1 ? true:false" 
+									@click="postList()"
+									><v-icon>fas fa-search</v-icon></v-btn>
+							</template>
+						</v-text-field>
 				</div>
 			</div>
 		</header>
 		<div class="content_list">
 		검색 페이지 입니다.
-			<div v-for="post in posts" :key="post">
-				
+			<div v-for="post in posts" :key="post.pid">
+				<div class="post_list">
+					<div class="author_info">
+						{{post.author}}
+					</div>
+				</div>
+				{{post}}
 			</div>
 		</div>
   </div>
@@ -44,8 +58,8 @@ import Navbar from '../components/Navbar.vue'
 
 import axios from 'axios'
 
-// const API_URL = 'http://i3a507.p.ssafy.io:8081/'
-const API_URL = 'http://localhost:8081/'
+const API_URL = 'http://i3a507.p.ssafy.io:8081/'
+// const API_URL = 'http://localhost:8081/'
 
 export default {
 	name: 'Introduce',
@@ -54,8 +68,11 @@ export default {
 	},
 	data() {
 		return{
-			e1: '태그',
-			options: ['태그', '키워드', '작성자'],
+			select: { name: '키워드', abbr: 't'},
+			options: [{name: '태그', abbr: 'a'}
+							, {name: '작성자', abbr: 'u'}
+							, {name: '키워드', abbr: 't'},],
+			kword:'',
 			posts : {
 				pid: '',
 				author: '',
@@ -66,15 +83,21 @@ export default {
       }
 		}
 	},
-	created(){
-		axios.get(API_URL+'/api/v2/find/a/{tag}')
-			.then(({data})=>{
-				console.log(data);
-			})
-	},
+	// created(){
+	// 	axios.get(API_URL+'/api/v2/find/a/{tag}')
+	// 		.then(({data})=>{
+	// 			console.log(data);
+	// 		})
+	// },
 	methods: {
 		postList(){
-			console.log("hellooooooooooo")
+			console.log(this.select.abbr)
+			console.log(this.kword)
+			axios
+				.get(API_URL+`api/v2/find/${this.select.abbr}/${this.kword}`)
+				.then(({data})=>{
+					this.posts = data;
+				})
 		}
 	}
 }
@@ -98,5 +121,8 @@ export default {
 	width: 1000px;
 	padding: 0 15px;
 	margin : 54px auto 0;
+}
+.post_list {
+	margin : 0 auto;
 }
 </style>
