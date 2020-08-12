@@ -4,9 +4,10 @@ import com.backend.dto.post.Post;
 import com.backend.service.BookmarkService;
 import com.backend.service.CommentService;
 import com.backend.service.PostService;
+import com.backend.util.SHA512;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.jdbc.SQL;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -174,20 +174,30 @@ public class PostController {
 
     // 글 읽어올 때 좋아요 표시한 게시물인지 판단해서 좋아요 활성 비활성 하는 것 해야함
 
-    @PostMapping("/api/test")
-    public String uploadThumbnailImages(@RequestParam("files") MultipartFile file, @RequestParam("title") String title) throws Exception {
-        String rootPath = FileSystemView.getFileSystemView().getHomeDirectory().toString();
-        String basePath = rootPath + "/" + title;
-        File baseDir = new File(basePath);
-        if(!baseDir.exists()) {
-            baseDir.mkdir();
+    @PostMapping(value = "/api/test", consumes = {"multipart/form-data", "application/json"})
+    public String uploadThumbnailImages(@RequestParam("file") MultipartFile file, @RequestParam("title") String title,
+                                        @RequestParam("author") String author) throws Exception {
+
+        String fullFileName = file.getOriginalFilename(); // 파일명 + 확장자
+        String originFileName = fullFileName.substring(0, fullFileName.indexOf('.')); // 순수 파일명 확장자 제거
+        String extension = fullFileName.substring(fullFileName.indexOf('.')); // 파일 확장자
+
+        SHA512 sha512 = new SHA512(originFileName); // 파일명 SHA-512 암호화
+
+        String rootPath = FileSystemView.getFileSystemView().getHomeDirectory().toString(); // 루트 경로
+        String basePath = rootPath + "/vlog/" + author + "/" + title; // 루트경로 + 사용자 이메일 + 글 제목
+
+        File dir = new File(basePath); // 경로에 디렉토리가 존재하지 않을 경우 폴더 생성
+        if(!dir.exists()) {
+            dir.mkdirs();
             System.out.println("폴더 생성 완료");
         }
-        String filePath = basePath + "/" + file.getOriginalFilename();
+
+        String filePath = basePath + "/" + sha512.getSha512() + extension;
         System.out.println(filePath);
         File location = new File(filePath);
         file.transferTo(location);
-        System.out.println(rootPath);
+
         return filePath;
     }
 }
