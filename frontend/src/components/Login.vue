@@ -125,41 +125,6 @@ export default {
       })
       .catch(err => console.log(err))
     },
-    // login() {
-    //   // this.loading = true
-    //   // this.$validator.validateAll()
-
-    //   // if (this.errors.any()) {
-    //   //   this.loading = false
-    //   //   return
-    //   // }
-    //   console.log('TRY login')
-    //   if (this.email && this.password) {
-    //     storage.setItem("jwt-auth-token", "")
-    //     storage.setItem("login_user", "")
-    //     storage.setItem("uid", "")
-    //     storage.setItem("google_login", "")
-    //     axios.post(API_URL+'api/signin', {
-    //       email: this.email,
-    //       password: this.password
-    //     }).then(res => {
-    //         if (res.data.status) {
-    //           this.message = res.data.request_body.email + "로 로그인 되었습니다."
-    //           storage.setItem("jwt-auth-token", res.data["jwt-auth-token"])
-    //           storage.setItem("login_user", res.data.request_body.email)
-    //           storage.setItem("uid", res.data.request_body.uid)
-    //           storage.setItem("google_login", false)
-    //           this.$router.push('/')
-    //         } else {
-    //           this.message = "로그인해주세요."
-    //           alert("입력 정보를 확인해주세요.")
-    //         }
-    //       })
-    //       .catch(err => console.log(err))
-    //   } else {
-    //     alert('이메일 또는 패스워드를 입력하지 않았습니다.')
-    //   }
-    // },
     
     // 로그인 했는지 체크
     init() {
@@ -169,12 +134,6 @@ export default {
       } else {
         storage.setItem("jwt-auth-token", "");
       }
-    },
-    forceRender() {
-      this.renderComponent = false
-      this.$nextTick(() => {
-        this.renderComponent = true
-      })
     },
     onSuccess(googleUser){
       storage.setItem("jwt-auth-token", "")
