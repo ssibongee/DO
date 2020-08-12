@@ -93,7 +93,7 @@ export default {
     }
   },
   created() {
-    
+    this.postread('latest')
   },
   components: {
     Navbar
