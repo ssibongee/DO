@@ -21,7 +21,7 @@
                   <v-col col="12" md="6" lg="4" v-for="(post, index) in posts" :key="index+'_posts'">
                     <v-card
                       hover
-                      @click="testpostdetail(post.pid)"
+                      @click="postdetail(post.pid)"
                     >
                       <v-img
                         class="white--text align-end"
@@ -116,12 +116,17 @@ export default {
   mounted() {
   },
   methods: {
-    testpostdetail(pid) {
+    postdetail(pid) {
       axios.get(API_URL+`api/v2/p/${pid}`)
         .then(res => {
-          this.$router.push({name: 'postdetail', params: { username:res.data.author, title:res.data.title, content: res.data.content, data: res.data}})
+          this.$router.push({
+            name: 'postdetail', 
+            params: { 
+              username:res.data.author, 
+              title:res.data.title, 
+              content: res.data.content, 
+              data: res.data}})
         })
-        // .catch(err => console.log(err))
     },
   }
 }
