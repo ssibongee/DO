@@ -1,7 +1,9 @@
 <template>
   <div id=app>
   <!-- 네비게이션 바 -->
-  <Navbar></Navbar>
+    <div>
+      <Navbar></Navbar>
+    </div>
     <v-container>
     <!-- 게시글 탭 -->
     <v-tabs v-model="tab" grow class="nav">
@@ -9,7 +11,7 @@
         {{ item }}
       </v-tab>
     </v-tabs>
-    
+    <!-- 게시글 미리보기 -->
     <v-row>
       <v-col>
         <v-tabs-items v-model="tab">
@@ -65,7 +67,7 @@
         <Sidebar/>
       </v-col>
     </v-row>
-  </v-container>
+    </v-container>
   </div>
 </template>
 
@@ -75,7 +77,6 @@ import Sidebar from '../components/Sidebar.vue'
 import axios from 'axios'
 
 const API_URL = 'http://i3a507.p.ssafy.io:8081/'
-// const API_URL = 'http://localhost:8081/'
 
 export default {
   name: 'Home',
@@ -93,7 +94,6 @@ export default {
         publishedTime: '',
         thumbnail:'',
       }
-      // posts: []
     }
   },
   created() {
@@ -124,10 +124,9 @@ export default {
     testpostdetail(pid) {
       axios.get(API_URL+`api/v2/p/${pid}`)
         .then(res => {
-          // console.log(res)
           this.$router.push({name: 'postdetail', params: { username:res.data.author, title:res.data.title, content: res.data.content, data: res.data}})
         })
-        .catch(err => console.log(err))
+        // .catch(err => console.log(err))
     },
   }
 }
@@ -140,7 +139,4 @@ export default {
 #side {
   margin-left:2vw;
 }
-/* .colortest {
-  background-color : 
-} */
 </style>
