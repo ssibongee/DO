@@ -185,7 +185,7 @@ public class PostController {
         SHA512 filename = new SHA512(originFileName); // 파일명 SHA-512 암호화
         SHA512 sha512Title = new SHA512(title);
         String rootPath = FileSystemView.getFileSystemView().getHomeDirectory().toString(); // 루트 경로
-        String basePath = rootPath + "/vlog/" + author + "/" + sha512Title.getSha512(); // 루트경로 + 사용자 이메일 + 글 제목
+        String basePath = rootPath + "/dist/dist/img/" + author + "/" + sha512Title.getSha512(); // 루트경로 + 사용자 이메일 + 글 제목
 
         File dir = new File(basePath); // 경로에 디렉토리가 존재하지 않을 경우 폴더 생성
         if(!dir.exists()) {
@@ -197,7 +197,7 @@ public class PostController {
         System.out.println(filePath);
         File location = new File(filePath);
         file.transferTo(location);
-
+        filePath.replace("/home/ubuntu/dist/dist/", "i3a507.p.ssafy.io");
         return filePath;
     }
 }
