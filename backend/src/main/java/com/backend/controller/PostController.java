@@ -197,7 +197,7 @@ public class PostController {
         System.out.println(filePath);
         File location = new File(filePath);
         file.transferTo(location);
-
+        filePath.replace("/home/ubuntu/dist/dist/", "i3a507.p.ssafy.io");
         return filePath;
     }
 }
