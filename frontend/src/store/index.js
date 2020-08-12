@@ -45,17 +45,22 @@ export default new Vuex.Store({
     // }
   },
   actions: {
-    login({commit}, user){
-      return AuthService.login(user).then(
-        user => {
-          commit('loginSuccess', user)
-          return Promise.resolve(user)
-        },
-        error => {
-          commit('loginFailure')
-          return Promise.reject(error.response.data)
-        }
-      )
+    login({ commit }, user){
+      console.log(commit)
+      // console.log(user)
+      return AuthService.login(user)
+        // .then(
+        // user => {
+        //   commit('loginSuccess', user)
+        //   return Promise.resolve(user)
+        //   console.log(user)
+        // },
+        // error => {
+        //   commit('loginFailure')
+        //   return Promise.reject(error.response.data)
+        //   console.log(error)
+        // }
+      // )
     },
     logout({commit}) {
       console.log(this.state)
