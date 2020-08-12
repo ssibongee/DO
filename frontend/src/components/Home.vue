@@ -73,6 +73,7 @@ import Navbar from '../components/Navbar.vue'
 import axios from 'axios'
 
 const API_URL = 'http://i3a507.p.ssafy.io:8081/'
+const storage = window.sessionStorage
 
 export default {
   name: 'Home',
@@ -102,8 +103,10 @@ export default {
   },
   methods: {
     postdetail(pid) {
+      storage.removeItem("pid")
       axios.get(API_URL+`api/v2/p/${pid}`)
         .then(res => {
+          storage.setItem("pid", pid)
           this.$router.push({
             name: 'postdetail', 
             params: { 
