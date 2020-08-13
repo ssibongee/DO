@@ -83,7 +83,6 @@ export default {
       items: [
         'Latest', 'Hits', 'Likes'
       ],
-      // content 크기따라  주석 처리 
       posts : {
         pid: '',
         title: '',
