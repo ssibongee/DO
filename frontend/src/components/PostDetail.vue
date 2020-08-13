@@ -1,7 +1,8 @@
 <template>
+  <div id="app">
   <!-- navbar(로고에 개인 블로그 이름 추가되야함) -->
+  <Navbar/>
   <v-container>
-    <Navbar />
     <v-row>
       <!-- 왼쪽 사이드바(좋아요, 공유버튼) -->
       <v-col cols="1" class="pa-0">
@@ -68,6 +69,7 @@
       </v-col>
     </v-row>
   </v-container>
+  </div>
 </template>
 
 <script>
@@ -77,8 +79,8 @@ import Navbar from './Navbar.vue'
 import axios from 'axios'
 
 const storage = window.sessionStorage
-// const API_URL = 'http://i3a507.p.ssafy.io:8081/'
-const API_URL = 'http://localhost:8081/'
+const API_URL = 'http://i3a507.p.ssafy.io:8081/'
+// const API_URL = 'http://localhost:8081/'
 
 export default {
     name: 'postdetail',

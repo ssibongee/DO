@@ -133,6 +133,7 @@ header{
 h1{
 	font-size : 2em;
 	font-family: 'Inter', sans-serif;
+  font-weight: 800;
 }
 a{
   color : black !important;
