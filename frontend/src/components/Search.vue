@@ -44,7 +44,8 @@
 				<!-- kword에 밑줄 어떻게 긋지? -->
 				<h3><span>{{kword}}</span>에 대한 검색 결과는 <strong>{{postcnt}}</strong>개입니다.</h3>
 			</div>
-			<div v-for="post in posts" :key="post.pid" class="post_list">
+			<div v-if="posts.length>0">
+				<div v-for="post in posts" :key="post.pid" class="post_list">
 					<div class="profile">
 						<!-- 작성자 프로필 이미지. 클릭 시 개인 블로그로 이동-->
 						<a><img :src="post.thumbnail"></a>
@@ -58,6 +59,7 @@
 						{{post.publishedTime}}
 					</div>
 				</div>
+			</div>
 		</div>
   </div>
 </template>
