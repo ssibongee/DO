@@ -9,6 +9,8 @@ import TextEditor from '../components/TextEditor.vue'
 import Setting from '../components/Setting.vue'
 import PostDetail from '../components/PostDetail.vue'
 import FindID from '../components/user/FindID.vue'
+import Introduce from '../components/Introduce.vue'
+import Search from '../components/Search.vue'
 
 Vue.use(VueRouter)
 
@@ -20,6 +22,11 @@ export default new VueRouter({
       path: '/',
       name: 'home',
       component: Home,
+    },
+    {
+      path:'/introduce',
+      name:'introduce',
+      component: Introduce
     },
     {
       path: '/login',
@@ -62,5 +69,10 @@ export default new VueRouter({
       name: 'findid',
       component: FindID,
     },
+    {
+      path: '/search',
+      name: 'search',
+      component: Search
+    }
   ]
 })

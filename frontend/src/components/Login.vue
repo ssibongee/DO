@@ -3,19 +3,6 @@
     <!-- 네비게이션 바 -->
     <Navbar></Navbar>
     <!-- 유효성 검사 추가해야함 -->
-    <v-app-bar
-      fixed
-      color="white"
-			height="90px"
-			justify
-      flat
-    >
-      <h1 class="logo_title"><router-link to="/">DO!</router-link></h1>
-			<v-spacer></v-spacer>
-      <div class="login">
-				<span><router-link to="/register">회원가입</router-link></span>
-      </div> 
-    </v-app-bar>
     <!-- navbar end -->
 
     <v-container fluid fill-height>
@@ -205,7 +192,7 @@ header {
 /* login 영역 화면 가운데에 고정 어떻게 하지? */
 .login_do{
   text-align: center;
-  margin : 120px auto;
+  margin : 50px auto;
 }
 .login_do > span{
   display : inline-block;
@@ -238,83 +225,5 @@ header {
 }
 .v-input >>> label {
   font-size: 13px;
-}
-
-/* navbar css */
-@import url('https://rsms.me/inter/inter.css');
-@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
-
-header{
-	padding : 0 10%;
-}
-h1{
-	font-size : 2em;
-	font-family: 'Inter', sans-serif;
-}
-a{
-  text-decoration: none;
-}
-button > span {
-  font-family: 'Noto Sans DemiLight', 'sans-serif';
-  font-size: 13px;
-}
-div > .newpost > a >button{
-  font-family: 'Noto Sans DemiLight', 'sans-serif';
-  font-size: 13px;
-}
-div > .newpost > a >button:hover {
-  background-color:#6e8af8;
-  /* color:white !important;  */
-}
-.logo_title{
-	display : inline-block;
-	width: 60px;
-	margin: 0 70px 0 0;
-	vertical-align: top;
-}
-.v-toolbar__items{
-	font-size: 16px;
-	font-family: 'Noto Sans KR', 'sans-serif';
-	font-weight: 400;
-	/* margin: 0 40px 0 0; */
-}
-.login span a{
-	color: black;
-	font-size: 13px;
-	font-family: 'Noto Sans DemiLight', 'sans-serif';
-	text-decoration: none;
-}
-.notice {
-	border-left: 1px solid lightgray;
-	margin : 0px 0px 0px 20px ;
-	padding: 0px 0px 0px 20px;
-}
-.notice i {
-	color : black;
-}
-.notice span {
-	margin-left: 10px;
-	font-size: 13px;
-	font-family: 'Noto Sans DemiLight', 'sans-serif';
-}
-.icon{
-  display: inline-block;
-  margin: 0px 31px 0px 0px;
-}
-.thumb_profile{
-  display: inline-block;
-  width:50px;
-  height:50px;
-  border-radius:50%;
-}
-.shortcuts{
-  position : fixed;
-  top: 80px;
-  width: 150px;
-  right: 10%;
-  background-color: aqua;
-}
-.newpost {
-  margin-right:20px;
 }
 </style>

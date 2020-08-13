@@ -2,118 +2,82 @@
   <div>
     <Navbar/>
     <v-container fluid fill-height>
-      <div class="login_do">
-        <span><h2>Sign up</h2></span>
-        <p>DO!를 시작해보세요.</p>
-        <v-form name="form" @submit.prevent="handleRegister" style="width:318px">
+      <div class="reg_do">
+        <v-form name="form" @submit.prevent>
+          <div class="cont_data">
+          <span><h2>Sign up</h2></span>
+          <p>DO!를 시작해보세요.</p>
           <strong class="tit_step">회원 정보 입력</strong>
-          <div class="cont_data" v-if="!successful">
-            <div>
+          <table v-if="!successful" style="border:1px solid #ddd">
+            <tr>
+              <td class="def">
+                아이디
+              </td>
+              <td>
+                <v-text-field
+                  solo
+                  flat
+                  hide-details
+                  placeholder="이메일 주소를 입력해주세요"
+                  name="email"
+                  v-model="user.email"
+                  v-validate="'required|email|max:50'"
+                  type="email"
+                  style="padding : 0px"
+                />
+                <div class="alert-danger" v-if="submitted && errors.has('email')">
+                  {{errors.first('email')}}
+                </div>
+                <!-- 아이디 중복체크 메세지 -->
+                <div
+                  class="alert"
+                  :class="successful ? 'alert-success' : 'alert-danger'"
+                  v-if="message">
+                  {{message}}
+                </div>
+              </td>
+              <td style="width:5%; min-width: 63px; padding:0;">
+                <div class="dup_check" @click="dupCheck">
+                  <!-- 중복이 아닌 메일을 입력했다가 중복인 메일을 입력했을 때 -->
+                  <v-btn x-small depressed color="#6e8af8" class="white--text">                
+                    중복체크
+                  </v-btn>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="def">
+                비밀번호
+              </td>
+              <td>
+                <v-text-field
+                  solo
+                  flat
+                  placeholder="영문, 숫자, 특수문자를 조합하여 8자 이상 적어주세요"
+                  hide-details
+                  name="password"
+                  v-model="user.password"
+                  v-validate="'required|min:8|max:20'"
+                  type="password"
+                  ref="password"
+                />
+                <div class="alert-danger" v-if="submitted && errors.has('password')">
+                  {{errors.first('password')}}
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="def">
+                비밀번호 확인
+              </td>
+              <!-- <label for="password">비밀번호 확인</label> -->
+              <td>
               <v-text-field
-                outlined
-                placeholder="이메일 주소를 입력해주세요"
+                solo
+                flat
+                placeholder="비밀번호를 한 번 더 입력해주세요"
                 hide-details
-                name="email"
-                v-model="user.email"
-                v-validate="'required|email|max:50'"
-                type="email"
-              >
-              </v-text-field>
-              <div class="alert-danger" v-if="submitted && errors.has('email')">
-                {{errors.first('email')}}
-              </div>
-            </div>
-
-            <v-text-field
-              @keyup.enter="login"
-              type="password"
-              outlined
-              placeholder="password"
-              hide-details 
-              sytle="top:-1px;"
-              name="password"
-              v-model="password"
-            >
-            </v-text-field>
-            
-            <div class="login_append">
-              <v-checkbox
-                dense
-                label="로그인 상태 유지"
-                color="#6e8af8"
-              ></v-checkbox>
-              <span>아이디/비밀번호 찾기</span> 
-            </div>
-            <div class="login_btn" @click="login">
-              <v-btn 
-                block 
-                depressed 
-                color="#6e8af8"
-                height="48px"
-                class="white--text"
-              >
-                로그인
-              </v-btn> 
-            </div>
-          </div>
-        </v-form>
-      </div>
-    </v-container>
-
-    <div class="col-md-12">
-      <div class="card card-container">
-        <form name="form" @submit.prevent="handleRegister">
-          <div v-if="!successful">
-            <div class="form-group">
-              <label for="email">이메일</label>
-              <input
-                type="email"
-                class="form-control"
-                name="email"
-                v-model="user.email"
-                v-validate="'required|email|max:50'"
-              />
-              <!-- <button @click="validate()">Validate</button> -->
-              <div
-                class="alert-danger"
-                v-if="submitted && errors.has('email')"
-              >{{errors.first('email')}}</div>
-            </div>
-            <div class="form-group">
-              <label for="username">닉네임</label>
-              <input
-                type="text"
-                class="form-control"
-                name="username"
-                v-model="user.username"
-                v-validate="'required|min:3|max:20'"
-              />
-              <div
-                class="alert-danger"
-                v-if="submitted && errors.has('username')"
-              >{{errors.first('username')}}</div>
-            </div>
-            
-            <div class="form-group">
-              <label for="password">비밀번호</label>
-              <input
                 type="password"
-                class="form-control"
-                name="password"
-                v-model="user.password"
-                v-validate="'required|min:6|max:20'"
-                ref="password"
-              />
-              <div
-                class="alert-danger"
-                v-if="submitted && errors.has('password')"
-              >{{errors.first('password')}}</div>
-            </div>
-            <div class="form-group">
-              <label for="password">비밀번호 확인</label>
-              <input
-                type="password"
-                class="form-control"
                 name="confirmPassword"
                 v-model="user.confirmPassword"
                 v-validate="'confirmed:password'"
@@ -123,26 +87,59 @@
                 class="alert-danger"
                 v-if="submitted && errors.has('confirmPassword')"
               >{{errors.first('confirmPassword')}}</div>
-            </div>
-            <div class="form-group">
-              <button class="btn btn-primary btn-block">회원가입 하기</button>
-            </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="defination">
+                닉네임
+              </td>
+              <!-- <label for="password">비밀번호 확인</label> -->
+              <td>
+                <v-text-field
+                  @keyup.enter="handleRegister"
+                  solo
+                  flat
+                  hide-details
+                  placeholder="닉네임을 지어 주세요(3~20자)"
+                  name="username"
+                  v-model="user.username"
+                  v-validate="'required|min:3|max:20'"
+                  data-vv-as="password"
+                />
+                <div
+                  class="alert-danger" v-if="submitted && errors.has('username')">
+                  {{errors.first('username')}}
+                </div>
+              </td>
+            </tr>
+          </table>
+          <!-- user field와 중복체크를 했을 때만 활성화-->
+          <div class="reg_btn" style="text-align:right;">
+            <v-btn 
+              rounded
+              depressed 
+              color="#6e8af8"
+              class="white--text"
+              style="display:inline-block"
+              @click="handleRegister" 
+            >
+              회원가입
+            </v-btn> 
           </div>
-        </form>
-
-        <div
-          class="alert"
-          :class="successful ? 'alert-success' : 'alert-danger'"
-          v-if="message"
-        >{{message}}</div>
+          </div>
+        </v-form>
       </div>
-    </div>
+    </v-container>
   </div>
 </template>
 
 <script>
 import Navbar from './Navbar.vue'
 import User from '../models/user'
+
+import axios from 'axios'
+// const API_URL = 'http://localhost:8081/'
+const API_URL = 'http://i3a507.p.ssafy.io:8081/'
 
 export default {
   name: 'register',
@@ -155,7 +152,9 @@ export default {
       isLogin: this.$store.state.isLoggedIn,
       submitted: false,
       successful: false,
-      message: ''
+      message: '',
+      dupcheck: false,//중복체크 했는지
+      fillcheck: false,
     }
   },
   mounted() {
@@ -163,7 +162,46 @@ export default {
       this.$router.push('/')
     }
   },
+  watch: {
+    fillCheck(user){ 
+      user = this.user.email;
+      console.log(user)
+      // if(){
+      // }
+      if(this.user.email && this.user.password && this.user.confirmPassword && this.user.name){
+        this.fillcheck= true;
+        return true;
+      }
+      else {
+        this.fillcheck = false;
+        return false;
+      }
+    },
+  },
   methods: {
+    dupCheck(){
+      //이메일 정규식
+      var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+      axios.post(API_URL+'api/emailduplicate',{
+        email : this.user.email
+      }).then(res=>{
+        console.log(res.data)
+        if(res.data){
+          if(regExp.test(this.user.email)){
+            this.dupcheck = true;
+            this.message = "사용할 수 있는 이메일입니다."
+          }
+          else {
+            this.dupcheck = false;
+            this.message = "아이디로 사용할 수 없는 이메일 주소입니다. 다시 입력해주세요."
+          }
+        } 
+        else {
+          this.dupcheck = false;
+          this.message = "이미 사용 중인 이메일입니다. 다시 입력해주세요."
+        }
+      }).catch(err => console.log(err))
+    },
     handleRegister() {
       this.message = ''
       this.submitted = true
@@ -195,7 +233,6 @@ export default {
       this.$router.push('/');
       }
     },
-    
   }
 }
 </script>
@@ -204,23 +241,31 @@ export default {
 header {
   background-color:transparent;
 }
-
+table {
+  width:100%
+}
+td {
+  vertical-align: top;
+  text-align: left;
+  padding: 18px 0px 16px 19px; 
+}
+.def{
+  width:20%
+}
 .container {
-  padding-top:120px; 
+  padding-top:150px; 
 }
 /* login 영역 화면 가운데에 고정 어떻게 하지? */
-.login_do{
-  text-align: center;
-  margin : 120px auto;
+.reg_do{
+  width: 100%;
 }
-.login_do > span{
+.reg_do > span{
   display : inline-block;
-  margin-bottom : 30px;
 }
 .v-text-field{
   border-radius: 0;
 }
-.login_btn{
+.reg_btn{
   margin : 20px 0 0 0;
 }
 
@@ -245,4 +290,16 @@ header {
 .v-input >>> label {
   font-size: 13px;
 }
+
+.cont_data {
+  text-align: left;
+  width: 700px;
+  margin: auto;
+}
+
+.alert-danger {
+  padding: 0 0 0 9px;
+  color:red;
+}
+
 </style>
