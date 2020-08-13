@@ -227,6 +227,7 @@ public class UserController {
      */
     @ApiOperation(value = "사용자 프로필 이미지 업로드", notes = "사용자 프로필 이미지 업로드, 파일, 사용자 닉네임")
     @PostMapping(value = "/api/v1/img")
+    @CrossOrigin("*")
     public String uploadThumbnailImages(@RequestParam("file") MultipartFile file,
                                         @RequestParam("nickname") String nickname) throws Exception {
 
