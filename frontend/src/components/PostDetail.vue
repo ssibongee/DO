@@ -18,7 +18,7 @@
           <Viewer :initialValue="this.content"/>
         </div>
         <!-- 게시글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
-
+        <div ></div>
         <!-- 블로그 작성자 Thumnail -->
         <!-- 짧은 자기 소개 -->
         <!-- 설정한 SNS주소 있으면 나오게(이미지 버튼으로) -->
@@ -34,16 +34,22 @@
             v-model="CommentInput"
           ></v-textarea>
           <v-btn
-            @click="CommentCreate"
+            @click="onCommentCreate"
           >댓글 작성
           </v-btn>
         </div>
-        <!-- 댓글 -->
+        <!-- 댓글 목록 -->
         <h1>댓글창</h1>
+        <!-- 댓글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
         <div v-for="comment in Comments" :key="comment.username" class="col-lg-12">
           <p>작성자: {{ comment.author }} 내용:{{ comment.content }}</p>
+          <v-btn 
+            v-if="comment.isauthor"
+            @click="onCommentDelete(comment)"
+          >
+          삭제</v-btn>
         </div>
-        <!-- 댓글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
+        
         </v-layout>
       </v-col>
       <!-- 오른쪽 사이드바 -->
@@ -77,10 +83,15 @@ export default {
           CommentInput: '',
         }
     },
-    mounted() {
-    },
     created(){
       this.fetchData()
+      this.isPostauthor()
+      this.isCommentauthor(this.Comments)
+    },
+    mounted() {
+      this.isPostauthor()
+    },
+    computed() {
     },
     methods: {
       fetchData(){
@@ -88,16 +99,51 @@ export default {
           this.content = this.$route.params.content
         }
       },
-      CommentCreate() {
-        console.log('TRY create')
-        axios.post(API_URL + 'api/v3/', {
-          author: storage.getItem("login_user"),
-          content: this.CommentInput,
-          uid: storage.getItem("uid"),
-          pid: this.$route.params.data.pid
+      // 글 작성자인지 확인
+      isPostauthor() {
+        console.log(this.$route.params.data)
+      },
+      // 댓글 Create 메서드
+      onCommentCreate() {
+        if (storage.getItem("login_user")) {
+          const tmp_comment = {
+            author: storage.getItem("login_user"),
+            content: this.CommentInput,
+            uid: storage.getItem("uid"),
+            pid: storage.getItem("pid")
+          }
+          // 서버에 댓글 작성 요청 보냄
+          axios.post(API_URL + 'api/v3/', tmp_comment)
+            .then(() => {
+              // 댓글 작성 완료 후 새로 댓글 받아옴
+              axios.get(API_URL+'api/v3/'+storage.getItem("pid"))
+                .then(res => this.Comments = this.isCommentauthor(res.data))
+              this.CommentInput = ""
+            })
+        } else {
+          alert('로그인한 유저만 댓글을 달 수 있습니다.')
+        }
+      },
+      // 작성자 비교 후 삭제 버튼 flag 설정하는 메서드
+      isCommentauthor(Comments) {
+        Comments.forEach(one_comment => {
+          if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
+            one_comment.isauthor = true
+          } else {
+            one_comment.isauthor = false
+          }
         })
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
+        return Comments
+      },
+      // 댓글 Delete 메서드
+      onCommentDelete(one_comment) {
+        if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
+          this.Comments.splice(this.Comments.indexOf(one_comment),1)
+          axios.delete(API_URL + `api/v3/${one_comment.cid}`)
+            .then(() => {})
+        } else {
+          alert('비정상적인 접근입니다')
+        }
       }
     }
 }

@@ -74,7 +74,10 @@
 				</v-list-item-action>
 			</template>
 		</v-combobox>
-	<b-button @click="onSubmitButton">저장하기</b-button>
+		<v-btn 
+			@click="onSubmitButton"
+			color="success"
+		>저장하기</v-btn>
 	</div>
 </template>
 

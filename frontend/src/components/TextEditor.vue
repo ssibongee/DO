@@ -19,9 +19,8 @@ import { Editor } from '@toast-ui/vue-editor'
 import axios from 'axios'
 import TagInputBox from './TagInputBox.vue'
 
-const storage = window.sessionStorage
-const API_URL = 'http://localhost:8081/'
-// const API_URL = 'http://i3a507.p.ssafy.io:8081/'
+// const API_URL = 'http://localhost:8081/'
+const API_URL = 'http://i3a507.p.ssafy.io:8081/'
 // const FLICKR_URL = 'https://up.flickr.com/services/upload/'
 
 export default {
@@ -43,16 +42,16 @@ export default {
             tagData.forEach(tag => {
                 tagList.push(tag["text"])
             })
-            console.log(tagList)
+            // console.log(tagList)
             var textdata = this.$refs.toastuiEditor.invoke("getMarkdown"); // content를 저장하는 액션 처리
             this.editorText = textdata
-            axios.post(API_URL+'api/v2/'+storage.getItem("uid"), {
+            axios.post(API_URL+'api/v2/', {
                 author: '유저 이름',
                 title: this.title,
                 content: this.editorText,
                 tag: tagList,
             })
-            .then(res => console.log(res))
+            .then(() => this.$router.push('/'))
             .catch(err => console.log(err))
         },
     },
