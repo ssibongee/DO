@@ -41,22 +41,42 @@
         <!-- 댓글 목록 -->
         <h1>댓글창</h1>
         <!-- 댓글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
-        <div v-for="comment in Comments" :key="comment.username" class="col-lg-12">
-          <p>작성자: {{ comment.author }} 내용:{{ comment.content }}</p>
-          <v-btn 
-            v-if="comment.isauthor"
-            @click="onCommentDelete(comment)"
-          >
-          삭제</v-btn>
-          <v-btn 
-            v-if="comment.isauthor"
-            @click="onCommentUpdate(comment)"
-          >
-          수정</v-btn>
-          <div v-if="isCommentChild(comment.child)">대댓글 테스트 <p>{{ comment }}</p></div>
-          <div v-else class="mt-2"><p>대댓글이 없습니다. ㅠㅠ</p></div>
+        <div v-for="comment in Comments" :key="comment.cid" class="col-lg-12">
+          <div class="test">
+            <p>작성자: {{ comment.author }} 내용:{{ comment.content }}</p>
+            <v-btn 
+              v-if="comment.isauthor"
+              @click="onCommentDelete(comment)"
+            >
+            삭제</v-btn>
+            <v-btn 
+              v-if="comment.isauthor"
+              @click="onCommentUpdate(comment)"
+            >
+            수정</v-btn>
+          </div>
+          <div class="test">
+            <v-btn @click="onClickChildBtn" class="mx-2" fab x-small dark color="indigo">
+              <v-icon dark>mdi-plus</v-icon>
+            </v-btn>
+            <p class="my-auto" v-if="!isCommentChild(comment.child)">{{ comment.child.length }}개의 대댓글</p>
+            <!-- <div v-if="ChildFlag">
+              대댓글 테스트
+              <p v-for="child in comment.child" :key="child.cid">{{ child }}</p></div>
+            <div v-else>
+              <p class="my-auto">대댓글이 없습니다. ㅠㅠ</p>
+            </div> -->
+          </div>
+          <div v-if="ChildFlag">
+            <v-text-field
+              :id="comment.cid"
+              v-model="ChildCommentInput"
+              solo="true"
+              dense="true"
+              clearable="true"
+            ></v-text-field>
+          </div>
         </div>
-        
         </v-layout>
       </v-col>
       <!-- 오른쪽 사이드바 -->
@@ -74,8 +94,8 @@ import Navbar from './Navbar.vue'
 import axios from 'axios'
 
 const storage = window.sessionStorage
-// const API_URL = 'http://i3a507.p.ssafy.io:8081/'
-const API_URL = 'http://localhost:8081/'
+const API_URL = 'http://i3a507.p.ssafy.io:8081/'
+// const API_URL = 'http://localhost:8081/'
 
 export default {
     name: 'postdetail',
@@ -88,6 +108,8 @@ export default {
           content: '',
           Comments: this.$route.params.data.comments,
           CommentInput: '',
+          ChildFlag: false,
+          ChildCommentInput: '',
         }
     },
     created(){
@@ -129,7 +151,7 @@ export default {
           alert('로그인한 유저만 댓글을 달 수 있습니다.')
         }
       },
-      // 해당 Post의 모든 Comment 읽어오기 & 인풋 초기화33
+      // 해당 Post의 모든 Comment 읽어오기 & 인풋 초기화
       CommentRead() {
         axios.get(API_URL+'api/v3/'+storage.getItem("pid"))
           .then(res => this.Comments = this.isCommentauthor(res.data))
@@ -175,6 +197,9 @@ export default {
       isCommentChild(one_comment_child) {
         if (one_comment_child == '[]') return true
         return false
+      },
+      onClickChildBtn() {
+        this.ChildFlag = !this.ChildFlag
       }
     }
 }
@@ -185,5 +210,8 @@ export default {
   margin-left:2vw;
   position: sticky;
   top : 130px;
+}
+.test {
+  display: flex
 }
 </style>
