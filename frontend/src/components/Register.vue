@@ -253,7 +253,7 @@ td {
   width:20%
 }
 .container {
-  padding-top:120px; 
+  padding-top:150px; 
 }
 /* login 영역 화면 가운데에 고정 어떻게 하지? */
 .reg_do{
