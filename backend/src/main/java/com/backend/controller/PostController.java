@@ -174,7 +174,16 @@ public class PostController {
 
     // 글 읽어올 때 좋아요 표시한 게시물인지 판단해서 좋아요 활성 비활성 하는 것 해야함
 
-    @PostMapping(value = "/api/test", consumes = {"multipart/form-data", "application/json"})
+    /**
+     *
+     * @param file
+     * @param title
+     * @param author
+     * @return
+     * @throws Exception
+     */
+    @ApiOperation(value = "섬네일 이미지 업로드", notes = "섬네일 이미지 업로드, 파일, 게시글 제목, 작성자")
+    @PostMapping(value = "/api/v2/img")
     public String uploadThumbnailImages(@RequestParam("file") MultipartFile file, @RequestParam("title") String title,
                                         @RequestParam("author") String author) throws Exception {
 
@@ -189,15 +198,13 @@ public class PostController {
         File dir = new File(basePath); // 경로에 디렉토리가 존재하지 않을 경우 폴더 생성
         if(!dir.exists()) {
             dir.mkdirs();
-            System.out.println("폴더 생성 완료");
         }
 
         String filePath = basePath + "/" + filename.getSha512() + extension;
         System.out.println(filePath);
         File location = new File(filePath);
         file.transferTo(location);
-        filePath.replace("/home/ubuntu/dist/dist/", "i3a507.p.ssafy.io/");
-        System.out.println(filePath);
-        return filePath;
+        String url = filePath.replace("/home/ubuntu/dist/dist/", "i3a507.p.ssafy.io/");
+        return url;
     }
 }

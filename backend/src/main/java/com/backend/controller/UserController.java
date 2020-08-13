@@ -213,4 +213,38 @@ public class UserController {
     public List<Post> findAllBookmarks(@PathVariable Long uid) {
         return bookmarkService.findAllBookmarks(uid);
     }
+
+
+    /**
+     * 사용자 프로필 이미지 업로드
+     * @param file
+     * @param nickname
+     * @return
+     * @throws Exception
+     */
+//    @ApiOperation(value = "사용자 프로필 이미지 업로드", notes = "사용자 프로필 이미지 업로드, 파일, 사용자 닉네임")
+//    @PostMapping(value = "/api/v1/img")
+//    public String uploadThumbnailImages(@RequestParam("file") MultipartFile file,
+//                                        @RequestParam("nickname") String nickname) throws Exception {
+//
+//        String fullFileName = file.getOriginalFilename(); // 파일명 + 확장자
+//        String originFileName = fullFileName.substring(0, fullFileName.indexOf('.')); // 순수 파일명 확장자 제거
+//        String extension = fullFileName.substring(fullFileName.indexOf('.')); // 파일 확장자
+//
+//        SHA512 filename = new SHA512(originFileName); // 파일명 SHA-512 암호화
+//
+//        String basePath = "/home/ubuntu/dist/dist/img/" + nickname + "/profile/"; // 루트경로 + 사용자 명  + 프로필
+//
+//        File dir = new File(basePath); // 경로에 디렉토리가 존재하지 않을 경우 폴더 생성
+//        if(!dir.exists()) {
+//            dir.mkdirs();
+//        }
+//
+//        String filePath = basePath + "/" + filename.getSha512() + extension;
+//        System.out.println(filePath);
+//        File location = new File(filePath);
+//        file.transferTo(location);
+//        String url = filePath.replace("/home/ubuntu/dist/dist/", "i3a507.p.ssafy.io/");
+//        return url;
+//    }
 }
