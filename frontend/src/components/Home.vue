@@ -1,9 +1,7 @@
 <template>
   <div id=app>
   <!-- 네비게이션 바 -->
-    <div>
-      <Navbar></Navbar>
-    </div>
+  <Navbar></Navbar>
     <v-container>
       <!-- 게시글 탭 -->
       <v-tabs v-model="tab" grow class="nav">
@@ -21,7 +19,7 @@
                   <v-col col="12" md="6" lg="4" v-for="(post, index) in posts" :key="index+'_posts'">
                     <v-card
                       hover
-                      @click="postdetail(post.pid)"
+                      @click="postdetail(post)"
                     >
                       <v-img
                         class="white--text align-end"
@@ -73,6 +71,7 @@ import Navbar from '../components/Navbar.vue'
 import axios from 'axios'
 
 const API_URL = 'http://i3a507.p.ssafy.io:8081/'
+// const API_URL = 'http://localhost:8081/'
 const storage = window.sessionStorage
 
 export default {
@@ -83,7 +82,6 @@ export default {
       items: [
         'Latest', 'Hits', 'Likes'
       ],
-      // content 크기따라  주석 처리 
       posts : {
         pid: '',
         title: '',
@@ -102,19 +100,10 @@ export default {
   mounted() {
   },
   methods: {
-    postdetail(pid) {
+    postdetail(one_post) {
       storage.removeItem("pid")
-      axios.get(API_URL+`api/v2/p/${pid}`)
-        .then(res => {
-          storage.setItem("pid", pid)
-          this.$router.push({
-            name: 'postdetail', 
-            params: { 
-              username:res.data.author, 
-              title:res.data.title, 
-              content: res.data.content, 
-              data: res.data}})
-        })
+      storage.setItem("pid", one_post.pid)
+      this.$router.push({name: 'postdetail', params: {data: one_post}})
     },
     postread(item) {
       let lowercase_item = item.toLowerCase()
@@ -123,6 +112,7 @@ export default {
         // 콘텐츠 미리보기 슬라이스
         data.forEach(el => {
           if (el.content.length > 40) {
+            el.tmp = el.content
             // 마크다운 사진 제외
             el.content = el.content.replace(/!\[.*\)+/, "")
             // 최대 길이 슬라이스

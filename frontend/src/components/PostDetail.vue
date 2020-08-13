@@ -1,29 +1,31 @@
 <template>
+  <div id="app">
   <!-- navbar(로고에 개인 블로그 이름 추가되야함) -->
+  <Navbar/>
   <v-container>
-    <Navbar />
     <v-row>
       <!-- 왼쪽 사이드바(좋아요, 공유버튼) -->
-      <v-col cols="1" class="pa-0"></v-col>
+      <v-col cols="1" class="pa-0">
+
+      </v-col>
+      <!-- 게시글, 댓글  -->
       <v-col class="pa-0">  
         <v-layout column="12">
-        <!-- 게시글 제목 -->
+          <!-- 게시글 제목 -->
           <div class="title-area">
-            <h1>{{ $route.params.title }}</h1>
-            <h6>작성자: {{ $route.params.username }}</h6>
+            <h1>글 제목 : {{ post.title }}</h1>
+            <h6>작성자: {{ post.author }}</h6>
           </div>
-        
-        <!-- TextEditor 미리보기만(마크다운) -->
-        <div class="col-lg-12">
-          <Viewer :initialValue="this.content"/>
-        </div>
-        <!-- 게시글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
-        <div ></div>
-        <!-- 블로그 작성자 Thumnail -->
-        <!-- 짧은 자기 소개 -->
-        <!-- 설정한 SNS주소 있으면 나오게(이미지 버튼으로) -->
 
-        <!-- 다음글 이전글 버튼-->
+          <!-- TextEditor 미리보기만(마크다운) -->
+          <div class="col-lg-12">
+            <Viewer :initialValue="this.content"/>
+          </div>
+          <!-- 게시글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
+          <div></div>
+          <!-- 블로그 작성자 Thumnail -->
+
+          <!-- 짧은 자기 소개 -->
 
         <!-- 댓글 작성창 -->
         <div class="col-lg-9">          
@@ -79,12 +81,14 @@
         </div>
         </v-layout>
       </v-col>
+
       <!-- 오른쪽 사이드바 -->
       <v-col id="side" class="hidden-sm-and-down pa-0" cols="3">
         <h3> 게시글 목차 </h3>
       </v-col>
     </v-row>
   </v-container>
+  </div>
 </template>
 
 <script>
@@ -105,32 +109,53 @@ export default {
     },
     data() {
         return {
-          content: '',
-          Comments: this.$route.params.data.comments,
+          post: {
+            title: '',
+            author: '',
+            content: '',
+          },
+          content: this.$route.params.data.tmp,
+          Comments: null,
           CommentInput: '',
           ChildFlag: false,
           ChildCommentInput: '',
         }
     },
     created(){
-      this.fetchData()
-      this.isPostauthor()
-      this.isCommentauthor(this.Comments)
+      axios.get(API_URL + 'api/v2/p/' + storage.getItem("pid"))
+        .then(res => {
+          // this.post = res.data
+          this.post.title = res.data.title
+          this.post.author = res.data.author
+          this.post.content = res.data.content
+          console.log(this.post)
+          this.Comments = res.data.comments
+          this.isCommentauthor(this.Comments)
+          this.isPostauthor(this.isPostauthor)
+      })
     },
     mounted() {
-      this.isPostauthor()
     },
-    computed() {
-    },
+    // computed() {
+    // },
     methods: {
-      fetchData(){
-        if (this.$route.params.content) {
-          this.content = this.$route.params.content
-        }
+      fetchData() {
+        axios.get(API_URL + 'api/v2/p/' + storage.getItem("pid"))
+          .then(res => {
+            this.post = res.data
+            console.log(this.post)
+            this.Comments = res.data.comments
+            this.isCommentauthor(this.Comments)
+            this.isPostauthor(this.isPostauthor)
+          })
       },
       // 글 작성자인지 확인
       isPostauthor() {
-        console.log(this.$route.params.data)
+        if (this.post.author && storage.getItem("login_user") && this.post.uid && storage.getItem("uid")) {
+          return true
+        } else {
+          return false
+        }
       },
       // 댓글 Create 메서드
       onCommentCreate() {
@@ -184,7 +209,7 @@ export default {
           console.log('onClickCommentBtn')
         }
       },
-      // 댓글 수정
+      // 댓글 수정(아직 수정 필요함)
       onCommentUpdate(one_comment) {
         if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
           // this.Comments.splice(this.Comments.indexOf(one_comment),1)
