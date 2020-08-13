@@ -330,11 +330,11 @@ export default {
 
 		// 업로드 이미지
 		uploadImage(e){
-			var imageForm = new FormData();
+			var file = new FormData();
 			const image = e.target.files[0];
-			imageForm.append("photo", image);
+			file.append("file", image);
 
-			console.log("imageForm : "+imageForm);
+			console.log("file : "+file);
 
 			// 미리보기용
 			const reader = new FileReader();
@@ -342,18 +342,15 @@ export default {
 			reader.onload = e =>{
 				this.userinfo.profileImage = e.target.result; // profileImage 설정
 			};
-			
 
 			// **추가** POST문으로 서버에 이미지 파일 전송
-			axios.post(
-				API_URL+'api/v1/img?nickname='+this.userinfo.nickname,
-				{
-					file : imageForm
-				},
+			axios.post(API_URL+'api/v1/img?nickname='+this.userinfo.nickname,
+				file,
 				{
 					headers:{
-						"Content-Type": "multipart/form-data"
-					}
+						'Content-Type': 'multipart/form-data',
+						'Accept': 'application/json'
+					}	
 				}
 			)
 			.then(function (response){
