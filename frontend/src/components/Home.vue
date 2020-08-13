@@ -2,13 +2,27 @@
   <div id=app>
   <!-- 네비게이션 바 -->
   <Navbar></Navbar>
-    <v-container>
+  <div class="toptab">
+    <div></div>
+    <p class="doasis">
+      <span><em style="color: #6987f7; padding-left:3px">D</em>eveloper</span>
+      <span><em style="color: #08d3bc;">O</em>asis</span>
+    </p>
+    <v-tabs v-model="tab" 
+      class="nav"
+      background-color="transparent"
+      color="black"
+      slider-color="#6987f7"
+      slider-size="6"
+      >
+      <v-tab @click="postread(item)" v-for="item in items" :key="item">
+        <div>{{ item }}</div>
+      </v-tab>
+    </v-tabs>
+  </div>
+  <div class="contain">
+    <div class="content_area">
       <!-- 게시글 탭 -->
-      <v-tabs v-model="tab" grow class="nav">
-        <v-tab @click="postread(item)" v-for="item in items" :key="item">
-          <div>{{ item }}</div>
-        </v-tab>
-      </v-tabs>
       <!-- 게시글 미리보기 -->
       <v-row>
         <v-col>
@@ -62,13 +76,15 @@
           </v-tabs-items>
         </v-col>
       </v-row>
-    </v-container>
+    </div>
+    </div>
   </div>
 </template>
 
 <script>
 import Navbar from '../components/Navbar.vue'
 import axios from 'axios'
+import ScrollOut from "scroll-out";
 
 const API_URL = 'http://i3a507.p.ssafy.io:8081/'
 const storage = window.sessionStorage
@@ -79,7 +95,7 @@ export default {
     return {
       tab: null,
       items: [
-        'Latest', 'Hits', 'Likes'
+        '최신', '조회수', '좋아요'
       ],
       posts : {
         pid: '',
@@ -97,6 +113,9 @@ export default {
     Navbar
   },
   mounted() {
+    this.so = ScrollOut({
+      scope:this.$el
+    })
   },
   methods: {
     postdetail(one_post) {
@@ -129,10 +148,42 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  padding-top : 120px;
+/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap'); */
+@import url('http://fonts.googleapis.com/earlyaccess/notosanskr.css');
+
+.doasis{
+  position: relative;
+  top: -50px;
+  line-height: 0.9;
+  letter-spacing: 1px;
 }
-#side {
-  margin-left:2vw;
+.doasis span {
+  display: block;
+  font-size:48px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+}
+em {
+  font-style:normal;
+}
+.toptab {
+  padding-top : 150px;
+  padding-left: 20px;
+  max-width: 1150px;
+  margin: 35px auto 0;
+}
+.contain {
+  /* padding-top : 150px; */
+  max-width: 1150px;
+  margin: 35px auto 0;
+  padding: 0 20px;
+}
+.v-tab {
+  letter-spacing: -2px;
+  margin-right:20px;
+  font-size: 30px;
+  font-family: 'Noto Sans DemiLight','Apple SD Gothic','맑은고딕','Nanum Gothic',sans-serif;;
+}
+.content_area {
 }
 </style>
