@@ -87,6 +87,7 @@ import axios from 'axios'
 import ScrollOut from "scroll-out";
 
 const API_URL = 'http://i3a507.p.ssafy.io:8081/'
+// const API_URL = 'http://localhost:8081/'
 const storage = window.sessionStorage
 
 export default {

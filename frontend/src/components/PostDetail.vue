@@ -27,27 +27,24 @@
 
           <!-- 짧은 자기 소개 -->
 
-          <!-- 설정한 SNS주소 있으면 나오게(이미지 버튼으로) -->
-
-          <!-- 다음글 이전글 버튼-->
-          
-          <!-- 댓글 작성창 -->
-          <div class="col-lg-9">          
-            <v-textarea
-              clearable
-              label="댓글 작성"
-              placeholder="댓글을 작성하세요"
-              v-model="CommentInput"
-            ></v-textarea>
-            <v-btn
-              @click="onCommentCreate"
-            >댓글 작성
-            </v-btn>
-          </div>
-          <!-- 댓글 목록 -->
-          <h1>댓글창</h1>
-          <!-- 댓글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
-          <div v-for="comment in Comments" :key="comment.username" class="col-lg-12">
+        <!-- 댓글 작성창 -->
+        <div class="col-lg-9">          
+          <v-textarea
+            clearable
+            label="댓글 작성"
+            placeholder="댓글을 작성하세요"
+            v-model="CommentInput"
+          ></v-textarea>
+          <v-btn
+            @click="onCommentCreate"
+          >댓글 작성
+          </v-btn>
+        </div>
+        <!-- 댓글 목록 -->
+        <h1>댓글창</h1>
+        <!-- 댓글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
+        <div v-for="comment in Comments" :key="comment.cid" class="col-lg-12">
+          <div class="test">
             <p>작성자: {{ comment.author }} 내용:{{ comment.content }}</p>
             <v-btn 
               v-if="comment.isauthor"
@@ -60,6 +57,28 @@
             >
             수정</v-btn>
           </div>
+          <div class="test">
+            <v-btn @click="onClickChildBtn" class="mx-2" fab x-small dark color="indigo">
+              <v-icon dark>mdi-plus</v-icon>
+            </v-btn>
+            <p class="my-auto" v-if="!isCommentChild(comment.child)">{{ comment.child.length }}개의 대댓글</p>
+            <!-- <div v-if="ChildFlag">
+              대댓글 테스트
+              <p v-for="child in comment.child" :key="child.cid">{{ child }}</p></div>
+            <div v-else>
+              <p class="my-auto">대댓글이 없습니다. ㅠㅠ</p>
+            </div> -->
+          </div>
+          <div v-if="ChildFlag">
+            <v-text-field
+              :id="comment.cid"
+              v-model="ChildCommentInput"
+              solo="true"
+              dense="true"
+              clearable="true"
+            ></v-text-field>
+          </div>
+        </div>
         </v-layout>
       </v-col>
 
@@ -98,6 +117,8 @@ export default {
           content: this.$route.params.data.tmp,
           Comments: null,
           CommentInput: '',
+          ChildFlag: false,
+          ChildCommentInput: '',
         }
     },
     created(){
@@ -149,13 +170,17 @@ export default {
           axios.post(API_URL + 'api/v3/', tmp_comment)
             .then(() => {
               // 댓글 작성 완료 후 새로 댓글 받아옴
-              axios.get(API_URL+'api/v3/'+storage.getItem("pid"))
-                .then(res => this.Comments = this.isCommentauthor(res.data))
-              this.CommentInput = ""
+              this.CommentRead()
             })
         } else {
           alert('로그인한 유저만 댓글을 달 수 있습니다.')
         }
+      },
+      // 해당 Post의 모든 Comment 읽어오기 & 인풋 초기화
+      CommentRead() {
+        axios.get(API_URL+'api/v3/'+storage.getItem("pid"))
+          .then(res => this.Comments = this.isCommentauthor(res.data))
+        this.CommentInput = ""
       },
       // 작성자 비교 후 삭제 버튼 flag 설정하는 메서드
       isCommentauthor(Comments) {
@@ -178,8 +203,28 @@ export default {
           alert('비정상적인 접근입니다')
         }
       },
+      // 댓글 수정 버튼
+      onClickCommentUpdateBtn(one_comment) {
+        if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) { 
+          console.log('onClickCommentBtn')
+        }
+      },
+      // 댓글 수정(아직 수정 필요함)
       onCommentUpdate(one_comment) {
-        console.log("수정 버튼", one_comment)
+        if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
+          // this.Comments.splice(this.Comments.indexOf(one_comment),1)
+          axios.put(API_URL + `api/v3/${one_comment.cid}`)
+            .then(() => {})
+        } else {
+          alert('비정상적인 접근입니다')
+        }
+      },
+      isCommentChild(one_comment_child) {
+        if (one_comment_child == '[]') return true
+        return false
+      },
+      onClickChildBtn() {
+        this.ChildFlag = !this.ChildFlag
       }
     }
 }
@@ -190,5 +235,8 @@ export default {
   margin-left:2vw;
   position: sticky;
   top : 130px;
+}
+.test {
+  display: flex
 }
 </style>
