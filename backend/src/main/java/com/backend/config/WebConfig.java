@@ -17,6 +17,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://i3a507.p.ssafy.io/*")
                 .allowedMethods("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                 .allowedHeaders("*")
+                .exposedHeaders("http://i3a507.p.ssafy.io")
                 .exposedHeaders("swagger-ui.html")
                 .exposedHeaders("jwt-auth-token");
     }
