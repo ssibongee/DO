@@ -29,7 +29,7 @@ import java.util.Optional;
 import static java.awt.SystemColor.info;
 
 @RestController
-@CrossOrigin(origins = "*", allowedHeaders = {"Content-Type", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Method", "Access-Control-Request-Headers"}, exposedHeaders = {"Access-Control-Allow-Origin"})
+@CrossOrigin(origins = "*")
 @Slf4j
 public class UserController {
 
