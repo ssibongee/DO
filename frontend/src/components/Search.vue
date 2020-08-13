@@ -36,18 +36,28 @@
 							</template>
 						</v-text-field>
 				</div>
+				
 			</div>
 		</header>
 		<div class="content_list">
-		검색 페이지 입니다.
-			<div v-for="post in posts" :key="post.pid">
-				<div class="post_list">
-					<div class="author_info">
-						{{post.author}}
+			<div class="postcount" v-if="postcnt>-1">
+				<!-- kword에 밑줄 어떻게 긋지? -->
+				<h3><span>{{kword}}</span>에 대한 검색 결과는 <strong>{{postcnt}}</strong>개입니다.</h3>
+			</div>
+			<div v-for="post in posts" :key="post.pid" class="post_list">
+					<div class="profile">
+						<!-- 작성자 프로필 이미지. 클릭 시 개인 블로그로 이동-->
+						<a><img :src="post.thumbnail"></a>
+						<div class="nickname">
+							{{post.author}}
+						</div>
+					</div>
+					<div class="post_info">
+						<h2>{{post.title}}</h2>
+						<p class="post_content">{{post.content}}</p>
+						{{post.publishedTime}}
 					</div>
 				</div>
-				{{post}}
-			</div>
 		</div>
   </div>
 </template>
@@ -80,30 +90,44 @@ export default {
         content: '',
         publishedTime: '',
         thumbnail:'',
-      }
+			},
+			postcnt:-1,
+			date: '',
 		}
 	},
-	// created(){
-	// 	axios.get(API_URL+'/api/v2/find/a/{tag}')
-	// 		.then(({data})=>{
-	// 			console.log(data);
-	// 		})
-	// },
+	mounted(){
+		console.log(this.posts);
+	},
 	methods: {
 		postList(){
-			console.log(this.select.abbr)
-			console.log(this.kword)
+			// console.log(this.select.abbr)
+			// console.log(this.kword)
 			axios
 				.get(API_URL+`api/v2/find/${this.select.abbr}/${this.kword}`)
 				.then(({data})=>{
 					this.posts = data;
-				})
-		}
+					this.postcnt = data.length;
+				});
+			// console.log(this.getFormatDate(this.posts.publishedTime));
+		},
+		// getFormatDate(date){
+		// 	let year = date.getFullYear();
+		// 	let month = (1+date.getMonth());
+		// 	let day = date.getDate();
+		// 	return year+"년 "+month+"월 "+day+"일" 
+		// }
 	}
 }
 </script>
 
 <style scoped>
+span {
+	top:10px;
+	height: 4px;
+	display: inline-block;
+	background-color: #08d3bc;
+  /* padding-bottom:2px; */
+}
 .search {
 	height: 370px;
 	padding-top: 170px;
@@ -117,12 +141,40 @@ export default {
 	margin: 0 auto;
 	min-width: 530px;
 }
+
+/* 검색결과 */
 .content_list {
-	width: 1000px;
+	width: 65%;
 	padding: 0 15px;
-	margin : 54px auto 0;
+	margin : 0 auto;
+	min-width: 712px;
+}
+.postcount{
+	font-size: 1.125rem;
+	margin-top: 1rem;
 }
 .post_list {
 	margin : 0 auto;
+	padding: 4rem 0;
+	border-bottom : 1px solid #ddd;
+}
+
+.profile {
+	display : flex;
+	align-items: center;
+	margin-bottom: 1.5rem;
+}
+.profile a {
+	color : black;
+	margin-right: 1rem;
+}
+.profile img  {
+	display: block;
+	width: 3rem;
+	height: 3rem;
+	border-radius: 1.5rem;
+}
+.post_content {
+	margin : 0.5rem 0 2rem 0;
 }
 </style>
