@@ -236,7 +236,7 @@ public class UserController {
 
         SHA512 filename = new SHA512(originFileName); // 파일명 SHA-512 암호화
 
-        String basePath = "/home/ubuntu/dist/dist/img/" + nickname + "/profile/"; // 루트경로 + 사용자 명  + 프로필
+        String basePath = "/home/ubuntu/dist/dist/img/" + nickname + "/profile"; // 루트경로 + 사용자 명  + 프로필
 
         File dir = new File(basePath); // 경로에 디렉토리가 존재하지 않을 경우 폴더 생성
         if(!dir.exists()) {
