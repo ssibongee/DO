@@ -1,9 +1,7 @@
 <template>
   <div id=app>
   <!-- 네비게이션 바 -->
-    <div>
-      <Navbar></Navbar>
-    </div>
+  <Navbar></Navbar>
     <v-container>
       <!-- 게시글 탭 -->
       <v-tabs v-model="tab" grow class="nav">
