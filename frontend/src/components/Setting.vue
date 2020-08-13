@@ -5,7 +5,7 @@
 			<v-col cols="12" md="3">
 				<div class="wrapper">
 					<div class="inner">
-						<img src="http://i3a507.p.ssafy.io/img/ssafy/30d512f96f6c55318745d4e81cd2c78428407f26491e88af88d52787f6d8f10d3d9109e433ddcda8ac4adf2c4eec9303df0d831e9e6138e6db2c7294173dab08/1e67b068654a279608f42750ac4b6596a800724fa6422f0c3a77249469294a376ef61645eb0453ed46fa1afde336bc3df53e5e788b5e978a0f77bfdd28cc6477.png" height="200" width="200">
+						<!-- <img src="http://i3a507.p.ssafy.io/img/ssafy/30d512f96f6c55318745d4e81cd2c78428407f26491e88af88d52787f6d8f10d3d9109e433ddcda8ac4adf2c4eec9303df0d831e9e6138e6db2c7294173dab08/1e67b068654a279608f42750ac4b6596a800724fa6422f0c3a77249469294a376ef61645eb0453ed46fa1afde336bc3df53e5e788b5e978a0f77bfdd28cc6477.png" height="200" width="200"> -->
 						<!-- <img src="/home/ubuntu/vlog/ssafy/30d512f96f6c55318745d4e81cd2c78428407f26491e88af88d52787f6d8f10d3d9109e433ddcda8ac4adf2c4eec9303df0d831e9e6138e6db2c7294173dab08/777c534fd04b2cc000819eaf0a63bfa135a62b42777ea4650c2743ca297b3ac6d33c001c664485c7cb3cd3a08475cd80c434be670c01f16d61218f7f9fe0bde5.png"/> -->
 
 						<div class="circle">
@@ -114,14 +114,14 @@
 							prefix="https://facebook.com/"
 							></v-text-field>
 						</div>
-						<div>
-							<!-- 자신 email로 고정 -->
+						<!-- 자신 email로 고정 -->
+						<!-- <div>
 							<v-text-field 
 							disabled
 							prepend-icon="far fa-envelope"
 							v-model="userinfo.emailaddr"
 							></v-text-field>
-						</div>
+						</div> -->
 						<div class="my-2">
 							<v-btn depressed small class="btn-success" @click="updateSNS">수정완료</v-btn>
 						</div>
@@ -142,13 +142,21 @@
 									<h3>Donation QR 코드 업로드</h3>
 							</v-col>
 							<v-col cols="9">
-								<!-- 데이터베이스에서 email 값 가져오기 -->
-								<img v-bind:src="userinfo.qrImage" alt="profile">
+								<!-- 데이터베이스에서 QR 이미지 가져오기 -->
+								<img v-bind:src="userinfo.qrImage" alt="QR코드 생성방법" width="200px" height="200px">
 							</v-col>
+								
 							<div class="my-2">
 								<!-- 모달 창으로 이미지 업로드 -->
-								<v-btn>QR 이미지 업로드</v-btn>
+								<!-- <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input"> -->
+								<!-- <v-file-input width="120px" type="file" accept="image/*" @change="onChange">이미지 변경</v-file-input> -->
+								<input type="file" accept="image/*" @change="uploadQR($event)" id="file-input">
+								<!-- <div> -->
+									<!-- <img v-bind:src="userinfo.profileImage" class="uploading-image"/> -->
+									<!-- <input type="file" accept="image/jpeg" @change=uploadImage> -->
+								<!-- </div> -->
 							</div>
+							<!-- <v-btn>QR 이미지 업로드</v-btn> -->
 								<v-col cols="12" class="msg">
 								후원 받을 QR코드를 이미지 파일로 등록해주세요.
 						</v-col>
@@ -159,7 +167,7 @@
 									<h3>Email Address</h3>
 							</v-col>
 								<v-col cols="9">
-								<!-- 데이터베이스에서 QR 이미지 가져오기 -->
+								<!-- 데이터베이스에서 email 값 가져오기 -->
 									{{userinfo.emailaddr}}
 							</v-col>
 							<v-col cols="12" class="msg">
@@ -189,47 +197,29 @@
 							</v-col>
 							<v-col cols="9">
 								<!-- 회원탈퇴 누를 경우 delete 요청 -->
-									<v-btn class="ma-2" tile outlined color="error" @click="handle_toggle">
-											회원탈퇴
-									</v-btn>
-									<!-- #2 : Modal Window -->
-									<div v-show="is_show">
-										<h5>뷰하!</h5>
-										<p>v-if와 v-show로 모달창을 띄워봅시다.</p>
-
-										<button @click="handle_toggle" type="button">
-											확인
-										</button>
+								<!-- 회원탈퇴 모달 창 -->
+								<div>
+									<div class="mb-1">
+										<b-button @click="showMsgBoxTwo">회원 탈퇴</b-button>
+									
 									</div>
+								</div>
+									
 
 							</v-col>
-							<v-col cols="12" class="msg">
-									탈퇴 시 작성하신 포스트 및 댓글이 모두 삭제되며 복구되지 않습니다.
-							</v-col>
-
-							<button id="show-modal" @click="showModal = true">Show Modal</button>
-							<!-- use the modal component, pass in the prop -->
-							<modal v-if="showModal" @close="showModal = false">
-								<!--
-								you can use custom content here to overwrite
-								default content
-								-->
-								<h3 slot="header">custom header</h3>
-							</modal>
+							
 					</v-row>
 					<hr>
 		</v-flex>
   </v-container>
 </template>
 
-
-
 <script>
 import axios from 'axios'
 
 
-// const API_URL = 'http://i3a507.p.ssafy.io:8081/'
-const API_URL = 'http://localhost:8081/'
+const API_URL = 'http://i3a507.p.ssafy.io:8081/'
+// const API_URL = 'http://localhost:8081/'
 
 export default {
 	props: {
@@ -257,14 +247,16 @@ export default {
 			mandatory : false,
 			commentAlarm : false,
 			updateAlarm : false,
-			showModal: false,
+			boxTwo: '', // 회원 탈퇴
+
 			userinfo : {
+				uid : '',
 				profileImage : '',
 				nickname : '',
 				introduce : '',
 				blogtitle : '',
 				github : '',
-				facebook : 'ff',
+				facebook : '',
 				instagram : '',
 				emailaddr : '',
 				qrImage : ''
@@ -293,9 +285,6 @@ export default {
 			if(this.clicksns===false){
 				this.clicksns = true;
 			}
-			
-
-
 		},
 
 
@@ -303,7 +292,7 @@ export default {
 		updateNickname() {
 			if(this.clickprofile===true){
 				this.clickprofile = false;
-				axios.put(API_URL+'api/v1/25',{
+				axios.put(API_URL+'api/v1/'+this.userinfo.uid,{
 					email : this.userinfo.emailaddr,
 					nickname : this.userinfo.nickname,
 					introduce : this.userinfo.introduce,
@@ -323,7 +312,7 @@ export default {
 		updateSNS() {
 			if(this.clicksns===true){
 				this.clicksns = false;
-				axios.put(API_URL+'api/v1/25',{
+				axios.put(API_URL+'api/v1/{uid}',{
 					email : this.userinfo.emailaddr,
 					instagram : this.userinfo.instagram,
 					github : this.userinfo.github,
@@ -345,16 +334,34 @@ export default {
 			const image = e.target.files[0];
 			imageForm.append("photo", image);
 
-			console.log("imageForm : "+image);
+			console.log("imageForm : "+imageForm);
 
+			// 미리보기용
 			const reader = new FileReader();
 			reader.readAsDataURL(image); 
 			reader.onload = e =>{
 				this.userinfo.profileImage = e.target.result; // profileImage 설정
 			};
 			
-			// **추가** POST문으로 서버에 이미지 파일 전송
 
+			// **추가** POST문으로 서버에 이미지 파일 전송
+			axios.post(
+				API_URL+'api/v1/img?nickname='+this.userinfo.nickname,
+				{
+					file : imageForm
+				},
+				{
+					headers:{
+						"Content-Type": "multipart/form-data"
+					}
+				}
+			)
+			.then(function (response){
+				console.log(response);
+			})
+			.catch(function(error){
+				console.log(error);
+			})
 
 		},
 		// 업로드 이미지 삭제
@@ -362,16 +369,70 @@ export default {
 			this.userinfo.profileImage = "";
 			// **추가** POST문으로 서버에 이미지 파일 삭제
 		},
+		
+		// 업로드 QR코드
+		uploadQR(e){
+			var imageForm = new FormData();
+			const image = e.target.files[0];
+			imageForm.append("photo", image);
+
+			console.log("QRform : "+image);
+
+			const reader = new FileReader();
+			reader.readAsDataURL(image); 
+			reader.onload = e =>{
+				this.userinfo.qrImage = e.target.result; // profileImage 설정
+			};
+			
+			// **추가** POST문으로 서버에 이미지 파일 전송
+
+
+		},
+		
 		// 회원탈퇴 토글 -> 모달창
-	
+		handle_toggle: function(){ 
+			this.is_show = !this.is_show; // #2, #3
+		},
+		showMsgBoxTwo() {
+			this.boxTwo = ''
+			this.$bvModal.msgBoxConfirm('탈퇴 시 작성하신 포스트 및 댓글이 모두 삭제되며 복구되지 않습니다.', {
+				title: '회원탈퇴',
+				size: 'lg',
+				buttonSize: 'lg',
+				okVariant: 'danger',
+				okTitle: '네, 탈퇴하겠습니다.',
+				cancelTitle: '아니요',
+				footerClass: 'p-2',
+				hideHeaderClose: false,
+				centered: true
+			})
+			.then(value => {
+				this.boxTwo = value
+				if(value === true){
+					axios.delete(API_URL+'api/v1/'+this.userinfo.uid)
+					.then(function (response){
+						console.log(response);
+					})
+					.catch(function(error){
+						console.log(error);
+					});
+				}
+			})
+			.catch(err => {
+			// An error occurred
+				console.log(err)
+			})
+		}
 	},
 	created(){
 		// String userinfo = storage.get("")
+		var uid = sessionStorage.uid;
 		axios
-		.get(API_URL+'api/v1/25')
+		.get(API_URL+'api/v1/'+uid)
 		.then(({data})=>{
 			// this.userinfo.nickname = ~~ 
 			console.log(data);
+			this.userinfo.uid = data.uid;
 			this.userinfo.profileImage = data.profileImage;
 			this.userinfo.nickname = data.nickname;
 			this.userinfo.introduce = data.introduce,
@@ -383,6 +444,7 @@ export default {
 			console.log(this.userinfo)
 		})
 	},
+	
 }
 </script>
 

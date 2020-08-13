@@ -20,6 +20,11 @@ import {
 
 import vuetify from './plugins/vuetify';
 
+// bootStrap
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
 library.add(faHome, faUser, faUserPlus, faSignInAlt, faSignOutAlt)
 
 Vue.config.productionTip = false
@@ -28,7 +33,7 @@ Vue.config.productionTip = false
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.use(VeeValidate)
-
+Vue.use(BootstrapVue)
 
 new Vue({
   el: '#app',

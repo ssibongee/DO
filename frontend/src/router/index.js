@@ -12,6 +12,7 @@ import FindID from '../components/user/FindID.vue'
 
 Vue.use(VueRouter)
 
+
 export default new VueRouter({
   mode: 'history'
   , routes: [
