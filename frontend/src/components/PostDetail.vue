@@ -48,6 +48,13 @@
             @click="onCommentDelete(comment)"
           >
           삭제</v-btn>
+          <v-btn 
+            v-if="comment.isauthor"
+            @click="onCommentUpdate(comment)"
+          >
+          수정</v-btn>
+          <div v-if="isCommentChild(comment.child)">대댓글 테스트 <p>{{ comment }}</p></div>
+          <div v-else class="mt-2"><p>대댓글이 없습니다. ㅠㅠ</p></div>
         </div>
         
         </v-layout>
@@ -116,13 +123,17 @@ export default {
           axios.post(API_URL + 'api/v3/', tmp_comment)
             .then(() => {
               // 댓글 작성 완료 후 새로 댓글 받아옴
-              axios.get(API_URL+'api/v3/'+storage.getItem("pid"))
-                .then(res => this.Comments = this.isCommentauthor(res.data))
-              this.CommentInput = ""
+              this.CommentRead()
             })
         } else {
           alert('로그인한 유저만 댓글을 달 수 있습니다.')
         }
+      },
+      // 해당 Post의 모든 Comment 읽어오기 & 인풋 초기화33
+      CommentRead() {
+        axios.get(API_URL+'api/v3/'+storage.getItem("pid"))
+          .then(res => this.Comments = this.isCommentauthor(res.data))
+        this.CommentInput = ""
       },
       // 작성자 비교 후 삭제 버튼 flag 설정하는 메서드
       isCommentauthor(Comments) {
@@ -144,6 +155,26 @@ export default {
         } else {
           alert('비정상적인 접근입니다')
         }
+      },
+      // 댓글 수정 버튼
+      onClickCommentUpdateBtn(one_comment) {
+        if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) { 
+          console.log('onClickCommentBtn')
+        }
+      },
+      // 댓글 수정
+      onCommentUpdate(one_comment) {
+        if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
+          // this.Comments.splice(this.Comments.indexOf(one_comment),1)
+          axios.put(API_URL + `api/v3/${one_comment.cid}`)
+            .then(() => {})
+        } else {
+          alert('비정상적인 접근입니다')
+        }
+      },
+      isCommentChild(one_comment_child) {
+        if (one_comment_child == '[]') return true
+        return false
       }
     }
 }
