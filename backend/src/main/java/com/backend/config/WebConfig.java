@@ -13,11 +13,9 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("*")
-                .allowedOrigins("http://i3a507.p.ssafy.io:8080")
-                .allowedOrigins("http://i3a507.p.ssafy.io/*")
+                .allowedOrigins("http://i3a507.p.ssafy.io")
                 .allowedMethods("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                 .allowedHeaders("*")
-                .exposedHeaders("http://i3a507.p.ssafy.io")
                 .exposedHeaders("swagger-ui.html")
                 .exposedHeaders("jwt-auth-token");
     }
