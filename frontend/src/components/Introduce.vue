@@ -1,22 +1,21 @@
 <template>
   <div>
-      <v-container>
       <Navbar></Navbar>
-      소개 페이지 입니다.
-      </v-container>
+        소개 페이지 입니다.
   </div>
 </template>
 
 <script>
 import Navbar from '../components/Navbar.vue'
+
 export default {
     name: 'Introduce',
     components: {
         Navbar,
     },
     data() {
-        return{
-
+        return {
+            
         }
     }
 }
