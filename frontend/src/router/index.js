@@ -14,6 +14,7 @@ import Search from '../components/Search.vue'
 
 Vue.use(VueRouter)
 
+
 export default new VueRouter({
   mode: 'history'
   , routes: [
