@@ -117,7 +117,7 @@ export default {
   //     if (val !== prev) {
   //       val = this.$store.getters.isAuthenticated
   //     }
-  //   }
+  //   
   // }
 }
 </script>
@@ -127,7 +127,8 @@ export default {
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 
 header{
-	padding : 0 10%;
+	padding : 0 4rem;
+  min-width:1100px;
 }
 h1{
 	font-size : 2em;
