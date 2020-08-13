@@ -4,54 +4,64 @@
     <Navbar />
     <v-row>
       <!-- 왼쪽 사이드바(좋아요, 공유버튼) -->
-      <v-col cols="1" class="pa-0"></v-col>
+      <v-col cols="1" class="pa-0">
+
+      </v-col>
+      <!-- 게시글, 댓글  -->
       <v-col class="pa-0">  
         <v-layout column="12">
-        <!-- 게시글 제목 -->
+          <!-- 게시글 제목 -->
           <div class="title-area">
-            <h1>{{ $route.params.title }}</h1>
-            <h6>작성자: {{ $route.params.username }}</h6>
+            <h1>글 제목 : {{ post.title }}</h1>
+            <h6>작성자: {{ post.author }}</h6>
           </div>
-        
-        <!-- TextEditor 미리보기만(마크다운) -->
-        <div class="col-lg-12">
-          <Viewer :initialValue="this.content"/>
-        </div>
-        <!-- 게시글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
-        <div ></div>
-        <!-- 블로그 작성자 Thumnail -->
-        <!-- 짧은 자기 소개 -->
-        <!-- 설정한 SNS주소 있으면 나오게(이미지 버튼으로) -->
 
-        <!-- 다음글 이전글 버튼-->
+          <!-- TextEditor 미리보기만(마크다운) -->
+          <div class="col-lg-12">
+            <Viewer :initialValue="this.content"/>
+          </div>
+          <!-- 게시글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
+          <div></div>
+          <!-- 블로그 작성자 Thumnail -->
 
-        <!-- 댓글 작성창 -->
-        <div class="col-lg-9">          
-          <v-textarea
-            clearable
-            label="댓글 작성"
-            placeholder="댓글을 작성하세요"
-            v-model="CommentInput"
-          ></v-textarea>
-          <v-btn
-            @click="onCommentCreate"
-          >댓글 작성
-          </v-btn>
-        </div>
-        <!-- 댓글 목록 -->
-        <h1>댓글창</h1>
-        <!-- 댓글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
-        <div v-for="comment in Comments" :key="comment.username" class="col-lg-12">
-          <p>작성자: {{ comment.author }} 내용:{{ comment.content }}</p>
-          <v-btn 
-            v-if="comment.isauthor"
-            @click="onCommentDelete(comment)"
-          >
-          삭제</v-btn>
-        </div>
-        
+          <!-- 짧은 자기 소개 -->
+
+          <!-- 설정한 SNS주소 있으면 나오게(이미지 버튼으로) -->
+
+          <!-- 다음글 이전글 버튼-->
+          
+          <!-- 댓글 작성창 -->
+          <div class="col-lg-9">          
+            <v-textarea
+              clearable
+              label="댓글 작성"
+              placeholder="댓글을 작성하세요"
+              v-model="CommentInput"
+            ></v-textarea>
+            <v-btn
+              @click="onCommentCreate"
+            >댓글 작성
+            </v-btn>
+          </div>
+          <!-- 댓글 목록 -->
+          <h1>댓글창</h1>
+          <!-- 댓글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
+          <div v-for="comment in Comments" :key="comment.username" class="col-lg-12">
+            <p>작성자: {{ comment.author }} 내용:{{ comment.content }}</p>
+            <v-btn 
+              v-if="comment.isauthor"
+              @click="onCommentDelete(comment)"
+            >
+            삭제</v-btn>
+            <v-btn 
+              v-if="comment.isauthor"
+              @click="onCommentUpdate(comment)"
+            >
+            수정</v-btn>
+          </div>
         </v-layout>
       </v-col>
+
       <!-- 오른쪽 사이드바 -->
       <v-col id="side" class="hidden-sm-and-down pa-0" cols="3">
         <h3> 게시글 목차 </h3>
@@ -77,30 +87,51 @@ export default {
     },
     data() {
         return {
-          content: '',
-          Comments: this.$route.params.data.comments,
+          post: {
+            title: '',
+            author: '',
+            content: '',
+          },
+          content: this.$route.params.data.tmp,
+          Comments: null,
           CommentInput: '',
         }
     },
     created(){
-      this.fetchData()
-      this.isPostauthor()
-      this.isCommentauthor(this.Comments)
+      axios.get(API_URL + 'api/v2/p/' + storage.getItem("pid"))
+        .then(res => {
+          // this.post = res.data
+          this.post.title = res.data.title
+          this.post.author = res.data.author
+          this.post.content = res.data.content
+          console.log(this.post)
+          this.Comments = res.data.comments
+          this.isCommentauthor(this.Comments)
+          this.isPostauthor(this.isPostauthor)
+      })
     },
     mounted() {
-      this.isPostauthor()
     },
-    computed() {
-    },
+    // computed() {
+    // },
     methods: {
-      fetchData(){
-        if (this.$route.params.content) {
-          this.content = this.$route.params.content
-        }
+      fetchData() {
+        axios.get(API_URL + 'api/v2/p/' + storage.getItem("pid"))
+          .then(res => {
+            this.post = res.data
+            console.log(this.post)
+            this.Comments = res.data.comments
+            this.isCommentauthor(this.Comments)
+            this.isPostauthor(this.isPostauthor)
+          })
       },
       // 글 작성자인지 확인
       isPostauthor() {
-        console.log(this.$route.params.data)
+        if (this.post.author && storage.getItem("login_user") && this.post.uid && storage.getItem("uid")) {
+          return true
+        } else {
+          return false
+        }
       },
       // 댓글 Create 메서드
       onCommentCreate() {
@@ -143,6 +174,9 @@ export default {
         } else {
           alert('비정상적인 접근입니다')
         }
+      },
+      onCommentUpdate(one_comment) {
+        console.log("수정 버튼", one_comment)
       }
     }
 }
