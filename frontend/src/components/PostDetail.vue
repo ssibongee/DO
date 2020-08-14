@@ -101,7 +101,7 @@
 
 <script>
 import Navbar from './Navbar.vue'
-import Comment from './Comment.vue'
+// import Comment from './Comment.vue'
 
 import { Viewer } from '@toast-ui/vue-editor'
 import axios from 'axios'
