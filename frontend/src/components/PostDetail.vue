@@ -2,7 +2,7 @@
   <div id="app">
   <!-- navbar(로고에 개인 블로그 이름 추가되야함) -->
   <Navbar/>
-  <v-container>
+  <v-container class="post-box">
     <v-row>
       <!-- 왼쪽 사이드바(좋아요, 공유버튼) -->
       <v-col cols="1" class="pa-0">
@@ -44,39 +44,13 @@
         <h1>댓글창</h1>
         <!-- 댓글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
         <div v-for="comment in Comments" :key="comment.cid" class="col-lg-12">
-          <div class="test">
-            <p>작성자: {{ comment.author }} 내용:{{ comment.content }}</p>
-            <v-btn 
-              v-if="comment.isauthor"
-              @click="onCommentDelete(comment)"
-            >
-            삭제</v-btn>
-            <v-btn 
-              v-if="comment.isauthor"
-              @click="onCommentUpdate(comment)"
-            >
-            수정</v-btn>
-          </div>
-          <div class="test">
-            <v-btn @click="onClickChildBtn" class="mx-2" fab x-small dark color="indigo">
-              <v-icon dark>mdi-plus</v-icon>
-            </v-btn>
-            <p class="my-auto" v-if="!isCommentChild(comment.child)">{{ comment.child.length }}개의 대댓글</p>
-            <!-- <div v-if="ChildFlag">
-              대댓글 테스트
-              <p v-for="child in comment.child" :key="child.cid">{{ child }}</p></div>
-            <div v-else>
-              <p class="my-auto">대댓글이 없습니다. ㅠㅠ</p>
-            </div> -->
-          </div>
-          <div v-if="ChildFlag">
-            <v-text-field
-              :id="comment.cid"
-              v-model="ChildCommentInput"
-              solo="true"
-              dense="true"
-              clearable="true"
-            ></v-text-field>
+          <div>
+            <Comment 
+              :comment="comment"
+              @Click-Delete-Btn="CommentRead"
+              @Click-Update-Btn="CommentRead"
+              @Child-Create="CommentRead"
+            />
           </div>
         </div>
         </v-layout>
@@ -92,9 +66,10 @@
 </template>
 
 <script>
-import { Viewer } from '@toast-ui/vue-editor'
 import Navbar from './Navbar.vue'
+// import Comment from './Comment.vue'
 
+import { Viewer } from '@toast-ui/vue-editor'
 import axios from 'axios'
 
 const storage = window.sessionStorage
@@ -105,7 +80,8 @@ export default {
     name: 'postdetail',
     components: {
       Viewer,
-      Navbar
+      Navbar,
+      Comment
     },
     data() {
         return {
@@ -130,6 +106,7 @@ export default {
           this.post.content = res.data.content
           console.log(this.post)
           this.Comments = res.data.comments
+          // console.log(this.Comments)
           this.isCommentauthor(this.Comments)
           this.isPostauthor(this.isPostauthor)
       })
@@ -193,39 +170,6 @@ export default {
         })
         return Comments
       },
-      // 댓글 Delete 메서드
-      onCommentDelete(one_comment) {
-        if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
-          this.Comments.splice(this.Comments.indexOf(one_comment),1)
-          axios.delete(API_URL + `api/v3/${one_comment.cid}`)
-            .then(() => {})
-        } else {
-          alert('비정상적인 접근입니다')
-        }
-      },
-      // 댓글 수정 버튼
-      onClickCommentUpdateBtn(one_comment) {
-        if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) { 
-          console.log('onClickCommentBtn')
-        }
-      },
-      // 댓글 수정(아직 수정 필요함)
-      onCommentUpdate(one_comment) {
-        if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
-          // this.Comments.splice(this.Comments.indexOf(one_comment),1)
-          axios.put(API_URL + `api/v3/${one_comment.cid}`)
-            .then(() => {})
-        } else {
-          alert('비정상적인 접근입니다')
-        }
-      },
-      isCommentChild(one_comment_child) {
-        if (one_comment_child == '[]') return true
-        return false
-      },
-      onClickChildBtn() {
-        this.ChildFlag = !this.ChildFlag
-      }
     }
 }
 </script>
@@ -238,5 +182,8 @@ export default {
 }
 .test {
   display: flex
+}
+.post-box {
+  margin-top: 130px;
 }
 </style>
