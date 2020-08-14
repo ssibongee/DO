@@ -128,6 +128,33 @@ public class UserController {
         return new ResponseEntity<Map<String, Object>>(resultMap, status);
     }
 
+    /***
+     * 회원정보수정
+     * 회원정보수정 성공 >> return "회원수정 성공"
+     * 실패 >> return ERROR MSG
+     */
+
+    @PutMapping(value="/api/v1/{uid}")
+    public ResponseEntity<?> update(@RequestBody User user) {
+        try{
+
+            switch(user.getUpdateType()){
+                // modifyType:2 nickname, introduce
+                case "1": service.updateIntroduce(user.getEmail(), user.getNickname(), user.getIntroduce());
+                    break;
+                // modifyType:3 SNS Info
+                case "2":service.updateSNS(user.getEmail(), user.getFacebook(), user.getGithub(), user.getInstagram());
+                    break;
+            }
+
+            return new ResponseEntity<>("회원정보수정 성공", HttpStatus.OK);
+        }catch(Exception err){
+            String errorMessage;
+            errorMessage = err + "<== error";
+            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     /**
      *
      * @param loginVo email을 보낸다.
@@ -189,20 +216,6 @@ public class UserController {
         }
     }
 
-    // 회원정보수정
-    // 회원정보수정 성공 >> return "회원수정 성공"
-    // 실패 >> return ERROR MSG
-    @PutMapping(value="/api/v1")
-    public ResponseEntity<?> update(@RequestBody User user) {
-        try{
-            service.update(user);
-            return new ResponseEntity<>("회원정보수정 성공", HttpStatus.OK);
-        }catch(Exception err){
-            String errorMessage;
-            errorMessage = err + "<== error";
-            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
-        }
-    }
 
     // 사용자의 모든 북마크 읽어오기
 
@@ -247,7 +260,12 @@ public class UserController {
         System.out.println(filePath);
         File location = new File(filePath);
         file.transferTo(location);
-        String url = filePath.replace("/home/ubuntu/dist/dist/", "i3a507.p.ssafy.io/");
+        String url = "http://"+filePath.replace("/home/ubuntu/dist/dist/", "i3a507.p.ssafy.io/");
+
+        // profileImage 필드에 저장하기
+        service.updateprofileImage(nickname, url);
+
+
         return url;
     }
 
@@ -280,7 +298,10 @@ public class UserController {
         System.out.println(filePath);
         File location = new File(filePath);
         file.transferTo(location);
-        String url = filePath.replace("/home/ubuntu/dist/dist/", "i3a507.p.ssafy.io/");
+        String url = "http://"+filePath.replace("/home/ubuntu/dist/dist/", "i3a507.p.ssafy.io/");
+
+        service.updateQRImage(nickname, url);
+
         return url;
     }
 }
