@@ -55,6 +55,16 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public void deleteProfile(String uid) {
+        mapper.deleteProfile(uid);
+    }
+
+    @Override
+    public void deleteQR(String uid) {
+        mapper.deleteQR(uid);
+    }
+
+    @Override
     public User signin(String email, String password) {
         return mapper.signin(email, password);
     }

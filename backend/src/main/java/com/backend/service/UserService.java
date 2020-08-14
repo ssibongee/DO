@@ -14,6 +14,9 @@ public interface UserService{
     public void updateProfileImage(String nickname, String url); // 프로필 이미지 업데이트
     public void updateQRImage(String nickname, String url); // QR 이미지 업데이트
 
+    public void deleteProfile(String uid); // Profile 삭제
+    public void deleteQR(String uid); // QR 삭제
+
     User signin(String email, String password);
 
 }

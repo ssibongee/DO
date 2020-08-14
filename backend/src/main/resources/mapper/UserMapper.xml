@@ -12,7 +12,7 @@
     -->
     <insert id="save" parameterType="User">
         insert into user (nickname,email,password,profileImage,qrImage,admin)
-        values ( #{nickname}, #{email}, #{password}, #{profileImage}, #{qrImage}, false)
+        values ( #{nickname}, #{email}, #{password}, default, default, false)
     </insert>
 
     <!-- 회원 탈퇴 Query
@@ -56,6 +56,14 @@
 
     <update id="updateQRImage" parameterType="String">
         update user set qrImage = #{url} where nickname like #{nickname};
+    </update>
+
+    <update id="deleteProfile" parameterType="String">
+        update user set profileImage = "http://i3a507.p.ssafy.io/img/common/emptyProfile.png" where uid = #{uid};
+    </update>
+
+    <update id="deleteQR" parameterType="String">
+        update user set qrImage = "http://i3a507.p.ssafy.io/img/common/emptyQR.jpg" where uid = #{uid};
     </update>
 
 

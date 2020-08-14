@@ -12,5 +12,8 @@ public interface UserDao {
     public void updateSNS(String email, String facebook, String github, String instagram); // SNS 계정 업데이트
     public void updateProfileImage(String nickname, String url); // 프로필 이미지 업데이트
     public void updateQRImage(String nickname, String url); // QR 이미지 업데이트
+    public void deleteProfile(String uid); // Profile 삭제
+    public void deleteQR(String uid); // QR 삭제
+
     public User signin(String email, String password);
 }

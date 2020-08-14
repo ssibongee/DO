@@ -303,4 +303,40 @@ public class UserController {
 
         return url;
     }
+
+    /**
+     *
+     * @param uid
+     * @return void
+     */
+    @DeleteMapping("/api/v1/img/profile/{uid}")
+    public ResponseEntity<?>  deleteProfile(@PathVariable String uid) {
+        try{
+            service.deleteProfile(uid);
+            return new ResponseEntity<>("이미지 삭제 완료", HttpStatus.OK);
+        }catch(Exception err){
+            String errorMessage;
+            errorMessage = err + "<== error";
+            return new ResponseEntity<>("이미지 삭제 실패", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
+     *
+     * @param uid
+     * @return void
+     */
+    @DeleteMapping("/api/v1/img/qr/{uid}")
+    public ResponseEntity<?>  deleteQR(@PathVariable String uid) {
+        try{
+            service.deleteQR(uid);
+            return new ResponseEntity<>("QR 삭제 완료", HttpStatus.OK);
+        }catch(Exception err){
+            String errorMessage;
+            errorMessage = err + "<== error";
+            return new ResponseEntity<>("QR 삭제 실패", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 }

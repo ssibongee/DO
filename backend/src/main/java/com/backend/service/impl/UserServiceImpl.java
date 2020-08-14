@@ -54,6 +54,16 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public void deleteProfile(String uid) {
+        dao.deleteProfile(uid);
+    }
+
+    @Override
+    public void deleteQR(String uid) {
+        dao.deleteQR(uid);
+    }
+
+    @Override
     public User signin(String email, String password) {
         // 이메일과 패스워드 DB와 비교.
         User user = dao.signin(email, password);
