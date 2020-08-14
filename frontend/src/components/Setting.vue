@@ -370,11 +370,11 @@ export default {
 		
 		// 업로드 QR코드
 		uploadQR(e){
-			var imageForm = new FormData();
+			var file = new FormData();
 			const image = e.target.files[0];
-			imageForm.append("file", image);
+			file.append("file", image);
 
-			console.log("QRform : "+image);
+			// console.log("QRform : "+image);
 
 			const reader = new FileReader();
 			reader.readAsDataURL(image); 
@@ -383,7 +383,22 @@ export default {
 			};
 			
 			// **추가** POST문으로 서버에 이미지 파일 전송
-
+			axios.post(API_URL+'api/v1/img?nickname='+this.userinfo.nickname,
+				file,
+				{
+					headers:{
+						'Content-Type': 'multipart/form-data',
+						'Accept': 'application/json'
+					}	
+				}
+			)
+			.then(function (response){
+				// console.log(response);
+				this.userinfo.qrImage = response;
+			})
+			.catch(function(error){
+				console.log(error);
+			})
 
 		},
 		
