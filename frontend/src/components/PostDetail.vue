@@ -98,8 +98,8 @@ import Navbar from './Navbar.vue'
 import axios from 'axios'
 
 const storage = window.sessionStorage
-const API_URL = 'http://i3a507.p.ssafy.io:8081/'
-// const API_URL = 'http://localhost:8081/'
+// const API_URL = 'http://i3a507.p.ssafy.io:8081/'
+const API_URL = 'http://localhost:8081/'
 
 export default {
     name: 'postdetail',
