@@ -313,6 +313,7 @@ public class UserController {
     public ResponseEntity<?>  deleteProfile(@PathVariable String uid, @RequestBody Map<String, String> param) {
         try{
             String url = param.get("url");
+            url= "\'"+url+"\'";
             service.updateDefaultProfile(uid, url);
             return new ResponseEntity<>("이미지 삭제 완료", HttpStatus.OK);
         }catch(Exception err){
@@ -331,6 +332,7 @@ public class UserController {
     public ResponseEntity<?>  deleteQR(@PathVariable String uid, @RequestBody Map<String, String> param) {
         try{
             String url = param.get("url");
+            url= "\'"+url+"\'";
             service.updateDefaultQR(uid, url);
             return new ResponseEntity<>("QR 삭제 완료", HttpStatus.OK);
         }catch(Exception err){
