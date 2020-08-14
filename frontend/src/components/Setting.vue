@@ -253,7 +253,6 @@ export default {
 			commentAlarm : false,
 			updateAlarm : false,
 			boxTwo: '', // 회원 탈퇴
-
 			userinfo : {
 				uid : '',
 				profileImage : '',
@@ -371,11 +370,12 @@ export default {
 		deleteProfileImage(){
 	
 			// **추가** POST문으로 서버에 기본 이미지 파일 전송
-			axios.put(API_URL+'api/v1/img/profile/{uid}',{
+			axios.put(API_URL+'api/v1/img/profile/'+this.userinfo.uid,{
 				url : "http://i3a507.p.ssafy.io/img/common/emptyProfile.png",
 			})
 			.then(function (){
 				this.userinfo.profileImage = "http://i3a507.p.ssafy.io/img/common/emptyProfile.png";
+				console.log("기본이미지 성공");
 			})
 			.catch(function(error){
 				console.log(error);
@@ -417,13 +417,14 @@ export default {
 		},
 		deleteQRImage(){
 			// **추가** POST문으로 서버에 기본 이미지 파일 전송
-			axios.put(API_URL+'api/v1/img/qr/{uid}',{
+			axios.put(API_URL+'api/v1/img/qr/'+this.userinfo.uid,{
 				url : "http://i3a507.p.ssafy.io/img/common/emptyQR.jpg",
 			})
 			.then(function (){
 				this.userinfo.profileImage = "http://i3a507.p.ssafy.io/img/common/emptyQR.jpg";
 			})
 			.catch(function(error){
+				console.log("기본QR 성공");
 				console.log(error);
 			})
 		},
