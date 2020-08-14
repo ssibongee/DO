@@ -44,6 +44,15 @@
         instagram=#{instagram}, github=#{github}, introduce=#{introduce} where email = #{email};
     </update>
 
+    <update id="updateprofileImage" parameterType="String">
+        update user set profileImage=#{profileImage} where nickname = #{nickname};
+    </update>
+
+    <update id="updateQRImage" parameterType="String">
+        update user set qrImage=#{qrImage} where nickname = #{nickname};
+    </update>
+
+
     <select id="signin" resultType="User" parameterType="String">
         select * from user where email like #{email} and password like #{password}
     </select>

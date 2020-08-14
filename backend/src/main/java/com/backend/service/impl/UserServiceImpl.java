@@ -39,6 +39,16 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public void updateprofileImage(String nickname, String url) {
+        dao.updateprofileImage(nickname, url);
+    }
+
+    @Override
+    public void updateQRImage(String nickname, String url) {
+        dao.updateQRImage(nickname, url);
+    }
+
+    @Override
     public User signin(String email, String password) {
         // 이메일과 패스워드 DB와 비교.
         User user = dao.signin(email, password);

@@ -247,7 +247,12 @@ public class UserController {
         System.out.println(filePath);
         File location = new File(filePath);
         file.transferTo(location);
-        String url = filePath.replace("/home/ubuntu/dist/dist/", "i3a507.p.ssafy.io/");
+        String url = "http://"+filePath.replace("/home/ubuntu/dist/dist/", "i3a507.p.ssafy.io/");
+
+        // profileImage 필드에 저장하기
+        service.updateprofileImage(nickname, url);
+
+
         return url;
     }
 
@@ -280,7 +285,10 @@ public class UserController {
         System.out.println(filePath);
         File location = new File(filePath);
         file.transferTo(location);
-        String url = filePath.replace("/home/ubuntu/dist/dist/", "i3a507.p.ssafy.io/");
+        String url = "http://"+filePath.replace("/home/ubuntu/dist/dist/", "i3a507.p.ssafy.io/");
+
+        service.updateQRImage(nickname, url);
+
         return url;
     }
 }

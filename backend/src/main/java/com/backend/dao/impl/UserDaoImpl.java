@@ -39,6 +39,16 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public void updateprofileImage(String nickname, String url) {
+        mapper.updateprofileImage(nickname, url);
+    }
+
+    @Override
+    public void updateQRImage(String nickname, String url) {
+        mapper.updateQRImage(nickname, url);
+    }
+
+    @Override
     public User signin(String email, String password) {
         return mapper.signin(email, password);
     }
