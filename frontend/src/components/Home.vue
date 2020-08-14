@@ -56,7 +56,7 @@
                   />
                     <!-- 제목이 가로범위 초과시 ... -->
                     <v-card-title><h5>{{post.title}}</h5></v-card-title>
-                    <!-- <v-card-subtitle class="pb-0">{{ item }}</v-card-subtitle> -->
+                    <v-card-subtitle class="pb-0">{{ item }}</v-card-subtitle>
                     <v-card-text class="text--primary" style="height:65px">
                     <div>{{post.content}}</div>
                     <div v-if="!post.content">게시글 내용이 비어있습니다.</div>
@@ -132,7 +132,7 @@ export default {
     postdetail(one_post) {
       storage.removeItem("pid")
       storage.setItem("pid", one_post.pid)
-      this.$router.push({name: 'postdetail', params: {data: one_post}})
+      // this.$router.push({name: 'postdetail', params: {data: one_post}})
     },
     postread(item) {
       let lowercase_item = item.toLowerCase()
@@ -140,8 +140,8 @@ export default {
       .then(({data})=>{
         // 콘텐츠 미리보기 슬라이스
         data.forEach(el => {
+          el.tmp = el.content
           if (el.content.length > 40) {
-            el.tmp = el.content
             // 마크다운 사진 제외
             el.content = el.content.replace(/!\[.*\)+/, "")
             // 최대 길이 슬라이스
