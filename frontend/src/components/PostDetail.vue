@@ -2,7 +2,7 @@
   <div id="app">
   <!-- navbar(로고에 개인 블로그 이름 추가되야함) -->
   <Navbar/>
-  <v-container>
+  <v-container class="post-box">
     <v-row>
       <!-- 왼쪽 사이드바(좋아요, 공유버튼) -->
       <v-col cols="1" class="pa-0">
@@ -44,9 +44,17 @@
         <h1>댓글창</h1>
         <!-- 댓글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
         <div v-for="comment in Comments" :key="comment.cid" class="col-lg-12">
+          <div>
+            <h1>테스트</h1>
+            <Comment 
+              :comment="comment"
+              @Click-Delete-Btn="CommentRead"
+              @Click-Update-Btn="CommentRead"
+            />
+          </div>
           <div class="test">
-            <p>작성자: {{ comment.author }} 내용:{{ comment.content }}</p>
-            <v-btn 
+            <!-- <p>작성자: {{ comment.author }} 내용:{{ comment.content }}</p> -->
+            <!-- <v-btn 
               v-if="comment.isauthor"
               @click="onCommentDelete(comment)"
             >
@@ -55,7 +63,7 @@
               v-if="comment.isauthor"
               @click="onCommentUpdate(comment)"
             >
-            수정</v-btn>
+            수정</v-btn> -->
           </div>
           <div class="test">
             <v-btn @click="onClickChildBtn" class="mx-2" fab x-small dark color="indigo">
@@ -92,20 +100,22 @@
 </template>
 
 <script>
-import { Viewer } from '@toast-ui/vue-editor'
 import Navbar from './Navbar.vue'
+import Comment from './Comment.vue'
 
+import { Viewer } from '@toast-ui/vue-editor'
 import axios from 'axios'
 
 const storage = window.sessionStorage
-// const API_URL = 'http://i3a507.p.ssafy.io:8081/'
-const API_URL = 'http://localhost:8081/'
+const API_URL = 'http://i3a507.p.ssafy.io:8081/'
+// const API_URL = 'http://localhost:8081/'
 
 export default {
     name: 'postdetail',
     components: {
       Viewer,
-      Navbar
+      Navbar,
+      Comment
     },
     data() {
         return {
@@ -130,6 +140,7 @@ export default {
           this.post.content = res.data.content
           console.log(this.post)
           this.Comments = res.data.comments
+          // console.log(this.Comments)
           this.isCommentauthor(this.Comments)
           this.isPostauthor(this.isPostauthor)
       })
@@ -238,5 +249,8 @@ export default {
 }
 .test {
   display: flex
+}
+.post-box {
+  margin-top: 130px;
 }
 </style>
