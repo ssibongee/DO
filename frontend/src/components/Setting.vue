@@ -156,6 +156,11 @@
 									<!-- <input type="file" accept="image/jpeg" @change=uploadImage> -->
 								<!-- </div> -->
 							</div>
+							<div>
+								<!-- 기본 이미지로 대체 후, 데이터베이스에서 String = null -->
+								<v-btn depressed width="120px" @click="deleteQRImage">이미지 제거</v-btn>
+							</div>
+
 							<!-- <v-btn>QR 이미지 업로드</v-btn> -->
 								<v-col cols="12" class="msg">
 								후원 받을 QR코드를 이미지 파일로 등록해주세요.
@@ -362,10 +367,19 @@ export default {
 			})
 
 		},
-		// 업로드 이미지 삭제
+		// 기본 이미지로 수정
 		deleteProfileImage(){
-			this.userinfo.profileImage = "";
-			// **추가** POST문으로 서버에 이미지 파일 삭제
+	
+			// **추가** POST문으로 서버에 기본 이미지 파일 전송
+			axios.put(API_URL+'api/v1/img/profile/{uid}',{
+				url : "http://i3a507.p.ssafy.io/img/common/emptyProfile.png",
+			})
+			.then(function (){
+				this.userinfo.profileImage = "http://i3a507.p.ssafy.io/img/common/emptyProfile.png";
+			})
+			.catch(function(error){
+				console.log(error);
+			})
 		},
 		
 		// 업로드 QR코드
@@ -401,7 +415,18 @@ export default {
 			})
 
 		},
-		
+		deleteQRImage(){
+			// **추가** POST문으로 서버에 기본 이미지 파일 전송
+			axios.put(API_URL+'api/v1/img/qr/{uid}',{
+				url : "http://i3a507.p.ssafy.io/img/common/emptyQR.jpg",
+			})
+			.then(function (){
+				this.userinfo.profileImage = "http://i3a507.p.ssafy.io/img/common/emptyQR.jpg";
+			})
+			.catch(function(error){
+				console.log(error);
+			})
+		},
 		// 회원탈퇴 토글 -> 모달창
 		handle_toggle: function(){ 
 			this.is_show = !this.is_show; // #2, #3
@@ -455,6 +480,7 @@ export default {
 			this.userinfo.qr = data.qrImage
 
 			console.log("Userinfo uid 데이터 확인 "+ this.userinfo.uid);
+			// 프로필 이미지 경로가 한글이면 불러오지를 못한다.
 			console.log("Userinfo profile 데이터 확인 "+ this.userinfo.profileImage);
 			console.log("Userinfo qrImage 데이터 확인 "+ this.userinfo.qrImage);
 		})
