@@ -223,8 +223,8 @@
 import axios from 'axios'
 
 
-const API_URL = 'http://i3a507.p.ssafy.io:8081/'
-// const API_URL = 'http://localhost:8081/'
+// const API_URL = 'http://i3a507.p.ssafy.io:8081/'
+const API_URL = 'http://localhost:8081/'
 
 export default {
 	props: {
@@ -369,17 +369,12 @@ export default {
 		// 기본 이미지로 수정
 		deleteProfileImage(){
 	
+			this.userinfo.profileImage = "http://i3a507.p.ssafy.io/img/common/emptyProfile.png";
 			// **추가** POST문으로 서버에 기본 이미지 파일 전송
 			axios.put(API_URL+'api/v1/img/profile/'+this.userinfo.uid,{
 				url : "http://i3a507.p.ssafy.io/img/common/emptyProfile.png",
 			})
-			.then(function (){
-				this.userinfo.profileImage = "http://i3a507.p.ssafy.io/img/common/emptyProfile.png";
-				console.log("기본이미지 성공");
-			})
-			.catch(function(error){
-				console.log(error);
-			})
+
 		},
 		
 		// 업로드 QR코드
@@ -416,17 +411,12 @@ export default {
 
 		},
 		deleteQRImage(){
+			this.userinfo.qrImage = "http://i3a507.p.ssafy.io/img/common/emptyQR.jpg";
 			// **추가** POST문으로 서버에 기본 이미지 파일 전송
 			axios.put(API_URL+'api/v1/img/qr/'+this.userinfo.uid,{
 				url : "http://i3a507.p.ssafy.io/img/common/emptyQR.jpg",
 			})
-			.then(function (){
-				this.userinfo.profileImage = "http://i3a507.p.ssafy.io/img/common/emptyQR.jpg";
-			})
-			.catch(function(error){
-				console.log("기본QR 성공");
-				console.log(error);
-			})
+		
 		},
 		// 회원탈퇴 토글 -> 모달창
 		handle_toggle: function(){ 
