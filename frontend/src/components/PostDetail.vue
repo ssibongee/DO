@@ -45,16 +45,16 @@
         <!-- 댓글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
         <div v-for="comment in Comments" :key="comment.cid" class="col-lg-12">
           <div>
-            <h1>테스트</h1>
+            <h3>테스트</h3>
             <Comment 
               :comment="comment"
               @Click-Delete-Btn="CommentRead"
               @Click-Update-Btn="CommentRead"
             />
           </div>
-          <div class="test">
-            <!-- <p>작성자: {{ comment.author }} 내용:{{ comment.content }}</p> -->
-            <!-- <v-btn 
+          <!-- <div class="test">
+            <p>작성자: {{ comment.author }} 내용:{{ comment.content }}</p>
+            <v-btn 
               v-if="comment.isauthor"
               @click="onCommentDelete(comment)"
             >
@@ -63,13 +63,13 @@
               v-if="comment.isauthor"
               @click="onCommentUpdate(comment)"
             >
-            수정</v-btn> -->
-          </div>
+            수정</v-btn>
+          </div> -->
           <div class="test">
-            <v-btn @click="onClickChildBtn" class="mx-2" fab x-small dark color="indigo">
+            <!-- <v-btn @click="onClickChildBtn" class="mx-2" fab x-small dark color="indigo">
               <v-icon dark>mdi-plus</v-icon>
             </v-btn>
-            <p class="my-auto" v-if="!isCommentChild(comment.child)">{{ comment.child.length }}개의 대댓글</p>
+            <p class="my-auto" v-if="!isCommentChild(comment.child)">{{ comment.child.length }}개의 대댓글</p> -->
             <!-- <div v-if="ChildFlag">
               대댓글 테스트
               <p v-for="child in comment.child" :key="child.cid">{{ child }}</p></div>
@@ -77,7 +77,7 @@
               <p class="my-auto">대댓글이 없습니다. ㅠㅠ</p>
             </div> -->
           </div>
-          <div v-if="ChildFlag">
+          <!-- <div v-if="ChildFlag">
             <v-text-field
               :id="comment.cid"
               v-model="ChildCommentInput"
@@ -85,7 +85,7 @@
               dense="true"
               clearable="true"
             ></v-text-field>
-          </div>
+          </div> -->
         </div>
         </v-layout>
       </v-col>
@@ -204,39 +204,6 @@ export default {
         })
         return Comments
       },
-      // 댓글 Delete 메서드
-      onCommentDelete(one_comment) {
-        if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
-          this.Comments.splice(this.Comments.indexOf(one_comment),1)
-          axios.delete(API_URL + `api/v3/${one_comment.cid}`)
-            .then(() => {})
-        } else {
-          alert('비정상적인 접근입니다')
-        }
-      },
-      // 댓글 수정 버튼
-      onClickCommentUpdateBtn(one_comment) {
-        if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) { 
-          console.log('onClickCommentBtn')
-        }
-      },
-      // 댓글 수정(아직 수정 필요함)
-      onCommentUpdate(one_comment) {
-        if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
-          // this.Comments.splice(this.Comments.indexOf(one_comment),1)
-          axios.put(API_URL + `api/v3/${one_comment.cid}`)
-            .then(() => {})
-        } else {
-          alert('비정상적인 접근입니다')
-        }
-      },
-      isCommentChild(one_comment_child) {
-        if (one_comment_child == '[]') return true
-        return false
-      },
-      onClickChildBtn() {
-        this.ChildFlag = !this.ChildFlag
-      }
     }
 }
 </script>
