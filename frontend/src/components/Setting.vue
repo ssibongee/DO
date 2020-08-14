@@ -354,7 +354,7 @@ export default {
 				}
 			)
 			.then(function (response){
-				console.log(response);
+				console.log("profileImage:"+ response);
 				this.userinfo.profileImage = response;
 			})
 			.catch(function(error){
@@ -393,7 +393,7 @@ export default {
 				}
 			)
 			.then(function (response){
-				// console.log(response);
+				console.log("qrImage :"+response);
 				this.userinfo.qrImage = response;
 			})
 			.catch(function(error){
@@ -456,7 +456,7 @@ export default {
 
 			console.log("Userinfo uid 데이터 확인 "+ this.userinfo.uid);
 			console.log("Userinfo profile 데이터 확인 "+ this.userinfo.profileImage);
-			console.log("Userinfo nickname 데이터 확인 "+ this.userinfo.nickname);
+			console.log("Userinfo qrImage 데이터 확인 "+ this.userinfo.qrImage);
 		})
 	},
 	
