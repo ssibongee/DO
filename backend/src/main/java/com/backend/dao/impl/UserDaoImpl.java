@@ -55,14 +55,17 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void deleteProfile(String uid) {
-        mapper.deleteProfile(uid);
+    public void updateDefaultProfile(String uid, String url) {
+        mapper.updateDefaultProfile(uid, url);
     }
 
+
     @Override
-    public void deleteQR(String uid) {
-        mapper.deleteQR(uid);
+    public void updateDefaultQR(String uid, String url) {
+        mapper.updateDefaultQR(uid, url);
     }
+
+
 
     @Override
     public User signin(String email, String password) {

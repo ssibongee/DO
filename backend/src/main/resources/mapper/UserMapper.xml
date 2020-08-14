@@ -58,12 +58,12 @@
         update user set qrImage = #{url} where nickname like #{nickname};
     </update>
 
-    <update id="deleteProfile" parameterType="String">
-        update user set profileImage = "http://i3a507.p.ssafy.io/img/common/emptyProfile.png" where uid = #{uid};
+    <update id="updateDefaultProfile" parameterType="String">
+        update user set profileImage = #{url} where uid = #{uid};
     </update>
 
-    <update id="deleteQR" parameterType="String">
-        update user set qrImage = "http://i3a507.p.ssafy.io/img/common/emptyQR.jpg" where uid = #{uid};
+    <update id="updateDefaultQR" parameterType="String">
+        update user set qrImage = #{url} where uid = #{uid};
     </update>
 
 
