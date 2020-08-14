@@ -11,6 +11,7 @@ import PostDetail from '../components/PostDetail.vue'
 import FindID from '../components/user/FindID.vue'
 import Introduce from '../components/Introduce.vue'
 import Search from '../components/Search.vue'
+import Feed from '../components/Feed.vue'
 
 Vue.use(VueRouter)
 
@@ -73,6 +74,11 @@ export default new VueRouter({
       path: '/search',
       name: 'search',
       component: Search
+    },
+    {
+      path:'/feed',
+      name:'feed',
+      component: Feed
     }
   ]
 })
