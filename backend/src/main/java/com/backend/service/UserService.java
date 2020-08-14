@@ -11,7 +11,7 @@ public interface UserService{
 
     public void updateIntroduce(String email, String nickname, String introduce); // 자기소개 업데이트
     public void updateSNS(String email, String facebook, String github, String instagram); // SNS 계정 업데이트
-    public void updateprofileImage(String nickname, String url); // 프로필 이미지 업데이트
+    public void updateProfileImage(String nickname, String url); // 프로필 이미지 업데이트
     public void updateQRImage(String nickname, String url); // QR 이미지 업데이트
 
     User signin(String email, String password);

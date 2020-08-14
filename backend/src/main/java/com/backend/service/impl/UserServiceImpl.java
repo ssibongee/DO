@@ -44,8 +44,8 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void updateprofileImage(String nickname, String url) {
-        dao.updateprofileImage(nickname, url);
+    public void updateProfileImage(String nickname, String url) {
+        dao.updateProfileImage(nickname, url);
     }
 
     @Override

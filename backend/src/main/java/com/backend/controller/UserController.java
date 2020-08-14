@@ -257,13 +257,12 @@ public class UserController {
         }
 
         String filePath = basePath + "/" + filename.getSha512() + extension;
-        System.out.println(filePath);
         File location = new File(filePath);
         file.transferTo(location);
-        String url = "http://"+filePath.replace("/home/ubuntu/dist/dist/", "i3a507.p.ssafy.io/");
+        String url = "http://" + filePath.replace("/home/ubuntu/dist/dist/", "i3a507.p.ssafy.io/");
 
         // profileImage 필드에 저장하기
-        service.updateprofileImage(nickname, url);
+        service.updateProfileImage(nickname, url);
 
 
         return url;
@@ -298,7 +297,7 @@ public class UserController {
         System.out.println(filePath);
         File location = new File(filePath);
         file.transferTo(location);
-        String url = "http://"+filePath.replace("/home/ubuntu/dist/dist/", "i3a507.p.ssafy.io/");
+        String url = "http://" + filePath.replace("/home/ubuntu/dist/dist/", "i3a507.p.ssafy.io/");
 
         service.updateQRImage(nickname, url);
 

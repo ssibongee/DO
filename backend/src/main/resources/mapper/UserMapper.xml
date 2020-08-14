@@ -50,12 +50,12 @@
 
 
 
-    <update id="updateprofileImage" parameterType="String">
-        update user set profileImage=#{profileImage} where nickname = #{nickname};
+    <update id="updateProfileImage" parameterType="String">
+        update user set profileImage = #{url} where nickname like #{nickname};
     </update>
 
     <update id="updateQRImage" parameterType="String">
-        update user set qrImage=#{qrImage} where nickname = #{nickname};
+        update user set qrImage = #{url} where nickname like #{nickname};
     </update>
 
 
