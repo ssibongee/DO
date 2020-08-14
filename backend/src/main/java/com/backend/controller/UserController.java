@@ -310,9 +310,10 @@ public class UserController {
      * @return void
      */
     @PutMapping("/api/v1/img/profile/{uid}")
-    public ResponseEntity<?>  deleteProfile(@PathVariable String uid, @RequestBody String url) {
+    public ResponseEntity<?>  deleteProfile(@PathVariable String uid, @RequestBody Map<String, String> param) {
         try{
-            url = "\""+url+"\"";
+            String url = param.get("url");
+            url= "\'"+url+"\'";
             service.updateDefaultProfile(uid, url);
             return new ResponseEntity<>("이미지 삭제 완료", HttpStatus.OK);
         }catch(Exception err){
@@ -328,8 +329,10 @@ public class UserController {
      * @return void
      */
     @PutMapping("/api/v1/img/qr/{uid}")
-    public ResponseEntity<?>  deleteQR(@PathVariable String uid, @RequestBody String url) {
+    public ResponseEntity<?>  deleteQR(@PathVariable String uid, @RequestBody Map<String, String> param) {
         try{
+            String url = param.get("url");
+            url= "\'"+url+"\'";
             service.updateDefaultQR(uid, url);
             return new ResponseEntity<>("QR 삭제 완료", HttpStatus.OK);
         }catch(Exception err){
