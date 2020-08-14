@@ -19,7 +19,7 @@ public class User {
     private String instagram;      // instagram 주소
     private String github;         // github 주소
     private String introduce;      // 프로필 소개
-
+    private String updateType;     // 업데이트 타입
     public User(String email, String password) {
         this.email = email;
         this.password = password;

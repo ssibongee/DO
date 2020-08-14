@@ -33,9 +33,15 @@ public class UserDaoImpl implements UserDao {
         return mapper.findByEmail(email);
     }
 
+
     @Override
-    public void update(User c) {
-        mapper.update(c);
+    public void updateIntroduce(String email, String nickname, String introduce) {
+        mapper.updateIntroduce(email, nickname, introduce);
+    }
+
+    @Override
+    public void updateSNS(String email, String facebook, String github, String instagram) {
+        mapper.updateSNS(email, facebook, github, instagram);
     }
 
     @Override

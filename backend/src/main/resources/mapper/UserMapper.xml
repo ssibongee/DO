@@ -38,11 +38,17 @@
     <!-- 회원 정보 수정
        uid를 기준으로 nickname,email,password,profileImage,qrImage 변경
       -->
-    <update id="update" parameterType="User">
-        update user set nickname=#{nickname},password=#{password},
-        profileImage=#{profileImage},qrImage=#{qrImage},facebook=#{facebook},
-        instagram=#{instagram}, github=#{github}, introduce=#{introduce} where email = #{email};
+    <update id="updateIntroduce" parameterType="User">
+        update user set nickname=#{nickname}, introduce=#{introduce} where email = #{email};
     </update>
+
+    <update id="updateSNS" parameterType="User">
+        update user set email=#{email}, facebook=#{facebook},
+        github=#{github}, instagram=#{instagram}
+        where email = #{email};
+    </update>
+
+
 
     <update id="updateprofileImage" parameterType="String">
         update user set profileImage=#{profileImage} where nickname = #{nickname};
