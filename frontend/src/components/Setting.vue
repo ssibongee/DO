@@ -296,7 +296,7 @@ export default {
 					email : this.userinfo.emailaddr,
 					nickname : this.userinfo.nickname,
 					introduce : this.userinfo.introduce,
-					updateType : "2" 
+					updateType : "1" 
 				})
 				.then(function (response){
 					console.log(response);
@@ -317,7 +317,7 @@ export default {
 					instagram : this.userinfo.instagram,
 					github : this.userinfo.github,
 					facebook : this.userinfo.facebook,
-					updateType : "3" 
+					updateType : "2" 
 				})
 				.then(function (response){
 					console.log(response);
@@ -355,6 +355,7 @@ export default {
 			)
 			.then(function (response){
 				console.log(response);
+				this.userinfo.profileImage = response;
 			})
 			.catch(function(error){
 				console.log(error);
@@ -371,7 +372,7 @@ export default {
 		uploadQR(e){
 			var imageForm = new FormData();
 			const image = e.target.files[0];
-			imageForm.append("photo", image);
+			imageForm.append("file", image);
 
 			console.log("QRform : "+image);
 
@@ -427,8 +428,7 @@ export default {
 		axios
 		.get(API_URL+'api/v1/'+uid)
 		.then(({data})=>{
-			// this.userinfo.nickname = ~~ 
-			console.log(data);
+
 			this.userinfo.uid = data.uid;
 			this.userinfo.profileImage = data.profileImage;
 			this.userinfo.nickname = data.nickname;
@@ -438,7 +438,10 @@ export default {
 			this.userinfo.instagram = data.instagram,
 			this.userinfo.emailaddr = data.email,
 			this.userinfo.qr = data.qrImage
-			console.log(this.userinfo)
+
+			console.log("Userinfo uid 데이터 확인 "+ this.userinfo.uid);
+			console.log("Userinfo profile 데이터 확인 "+ this.userinfo.profileImage);
+			console.log("Userinfo nickname 데이터 확인 "+ this.userinfo.nickname);
 		})
 	},
 	
