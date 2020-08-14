@@ -5,13 +5,11 @@
 			<v-btn 
 				v-if="comment.isauthor"
 				@click="onCommentDelete(comment)"
-			>
-			삭제</v-btn>
+			>삭제</v-btn>
 			<v-btn 
 				v-if="comment.isauthor"
 				@click="onCommentUpdate(comment)"
-			>
-			수정</v-btn>
+			>수정</v-btn>
 		</div>
 		<div class="comment-box">
 			<v-btn @click="onClickChildBtn" class="mx-2" fab x-small dark color="indigo">
@@ -110,7 +108,7 @@ export default {
 					parent: pid
 				}
 				axios.post(API_URL + 'api/v3/r', tmp_comment)
-					.then(res => console.log(res))
+					.then(() => this.$emit('Child-Create'))
 					.catch(err => console.log(err))
 			}
 		}

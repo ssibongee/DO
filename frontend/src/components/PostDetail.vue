@@ -45,47 +45,13 @@
         <!-- 댓글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
         <div v-for="comment in Comments" :key="comment.cid" class="col-lg-12">
           <div>
-            <h3>테스트</h3>
             <Comment 
               :comment="comment"
               @Click-Delete-Btn="CommentRead"
               @Click-Update-Btn="CommentRead"
+              @Child-Create="CommentRead"
             />
           </div>
-          <!-- <div class="test">
-            <p>작성자: {{ comment.author }} 내용:{{ comment.content }}</p>
-            <v-btn 
-              v-if="comment.isauthor"
-              @click="onCommentDelete(comment)"
-            >
-            삭제</v-btn>
-            <v-btn 
-              v-if="comment.isauthor"
-              @click="onCommentUpdate(comment)"
-            >
-            수정</v-btn>
-          </div> -->
-          <div class="test">
-            <!-- <v-btn @click="onClickChildBtn" class="mx-2" fab x-small dark color="indigo">
-              <v-icon dark>mdi-plus</v-icon>
-            </v-btn>
-            <p class="my-auto" v-if="!isCommentChild(comment.child)">{{ comment.child.length }}개의 대댓글</p> -->
-            <!-- <div v-if="ChildFlag">
-              대댓글 테스트
-              <p v-for="child in comment.child" :key="child.cid">{{ child }}</p></div>
-            <div v-else>
-              <p class="my-auto">대댓글이 없습니다. ㅠㅠ</p>
-            </div> -->
-          </div>
-          <!-- <div v-if="ChildFlag">
-            <v-text-field
-              :id="comment.cid"
-              v-model="ChildCommentInput"
-              solo="true"
-              dense="true"
-              clearable="true"
-            ></v-text-field>
-          </div> -->
         </div>
         </v-layout>
       </v-col>
