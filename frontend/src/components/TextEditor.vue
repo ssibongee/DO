@@ -19,8 +19,8 @@ import { Editor } from '@toast-ui/vue-editor'
 import axios from 'axios'
 import TagInputBox from './TagInputBox.vue'
 
-const API_URL = 'http://localhost:8081/'
-// const API_URL = 'http://i3a507.p.ssafy.io:8081/'
+// const API_URL = 'http://localhost:8081/'
+const API_URL = 'http://i3a507.p.ssafy.io:8081/'
 // const FLICKR_URL = 'https://up.flickr.com/services/upload/'
 
 export default {

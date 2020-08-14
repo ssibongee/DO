@@ -55,7 +55,7 @@
               로그아웃
             </v-list-item>
             <v-list-item v-if="google_login" @click="onClickLogout">
-              <GoogleLogin :params="params" :logoutButton=true>로그아웃</GoogleLogin>
+              <GoogleLogout :params="params" :logoutButton=true>로그아웃</GoogleLogout>
             </v-list-item>
           </v-list>
         </v-card>
@@ -68,12 +68,12 @@
 
 <script>
 const storage = window.sessionStorage
-import GoogleLogin from 'vue-google-login';
+import GoogleLogin from 'vue-google-login' 
 
 export default {
   name: 'Navbar',
   component: {
-    GoogleLogin
+    GoogleLogout: GoogleLogin,
   },
   data() {
     return {
