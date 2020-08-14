@@ -54,14 +54,15 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void deleteProfile(String uid) {
-        dao.deleteProfile(uid);
+    public void updateDefaultProfile(String uid, String url) {
+        dao.updateDefaultProfile(uid, url);
     }
 
     @Override
-    public void deleteQR(String uid) {
-        dao.deleteQR(uid);
+    public void updateDefaultQR(String uid, String url) {
+        dao.updateDefaultQR(uid, url);
     }
+
 
     @Override
     public User signin(String email, String password) {
