@@ -309,7 +309,7 @@ public class UserController {
      * @param uid
      * @return void
      */
-    @PutMapping("/api/v1/img/profile/{uid}")
+    @PutMapping("/api/v1/img/{uid}")
     public ResponseEntity<?>  deleteProfile(@PathVariable String uid, @RequestBody Map<String, String> param) {
         try{
             String url = param.get("url");
@@ -327,7 +327,7 @@ public class UserController {
      * @param uid
      * @return void
      */
-    @PutMapping("/api/v1/img/qr/{uid}")
+    @PutMapping("/api/v1/qr/{uid}")
     public ResponseEntity<?>  deleteQR(@PathVariable String uid, @RequestBody Map<String, String> param) {
         try{
             String url = param.get("url");
