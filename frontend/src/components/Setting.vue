@@ -371,7 +371,7 @@ export default {
 	
 			this.userinfo.profileImage = "http://i3a507.p.ssafy.io/img/common/emptyProfile.png";
 			// **추가** POST문으로 서버에 기본 이미지 파일 전송
-			axios.put(API_URL+'api/v1/img/profile/'+this.userinfo.uid,{
+			axios.put(API_URL+'api/v1/img/'+this.userinfo.uid,{
 				url : "http://i3a507.p.ssafy.io/img/common/emptyProfile.png",
 			})
 
@@ -392,7 +392,7 @@ export default {
 			};
 			
 			// **추가** POST문으로 서버에 이미지 파일 전송
-			axios.post(API_URL+'api/v1/img?nickname='+this.userinfo.nickname,
+			axios.post(API_URL+'api/v1/qr/?nickname='+this.userinfo.nickname,
 				file,
 				{
 					headers:{
@@ -413,7 +413,7 @@ export default {
 		deleteQRImage(){
 			this.userinfo.qrImage = "http://i3a507.p.ssafy.io/img/common/emptyQR.jpg";
 			// **추가** POST문으로 서버에 기본 이미지 파일 전송
-			axios.put(API_URL+'api/v1/img/qr/'+this.userinfo.uid,{
+			axios.put(API_URL+'api/v1/qr/'+this.userinfo.uid,{
 				url : "http://i3a507.p.ssafy.io/img/common/emptyQR.jpg",
 			})
 		
