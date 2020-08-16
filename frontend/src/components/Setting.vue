@@ -338,8 +338,6 @@ export default {
 			const image = e.target.files[0];
 			file.append("file", image);
 
-			console.log("file : "+file);
-
 			// 미리보기용
 			const reader = new FileReader();
 			reader.readAsDataURL(image); 
@@ -358,7 +356,6 @@ export default {
 				}
 			)
 			.then(response => {
-				console.log("p : "+response.data);
 				this.userinfo.profileImage = response.data;
 			})
 			.catch((err) => {
@@ -376,7 +373,6 @@ export default {
 				url : "http://i3a507.p.ssafy.io/img/common/emptyProfile.png",
 			})
 			.then(response => {
-				console.log("p D : "+response.data);
 				this.userinfo.profileImage = response.data;
 			})
 			.catch( (err) => {
@@ -391,8 +387,6 @@ export default {
 			var file = new FormData();
 			const image = e.target.files[0];
 			file.append("file", image);
-
-			// console.log("QRform : "+image);
 
 			const reader = new FileReader();
 			reader.readAsDataURL(image); 
