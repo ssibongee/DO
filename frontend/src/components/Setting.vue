@@ -369,10 +369,17 @@ export default {
 		// 기본 이미지로 수정
 		deleteProfileImage(){
 	
-			this.userinfo.profileImage = "http://i3a507.p.ssafy.io/img/common/emptyProfile.png";
+			
 			// **추가** POST문으로 서버에 기본 이미지 파일 전송
 			axios.put(API_URL+'api/v1/img/'+this.userinfo.uid,{
 				url : "http://i3a507.p.ssafy.io/img/common/emptyProfile.png",
+			})
+			.then(function(response){
+				console.log(response);
+				this.userinfo.profileImage = "http://i3a507.p.ssafy.io/img/common/emptyProfile.png";
+			})
+			.catch(function(error){
+				console.log(error);
 			})
 
 		},
@@ -411,10 +418,17 @@ export default {
 
 		},
 		deleteQRImage(){
-			this.userinfo.qrImage = "http://i3a507.p.ssafy.io/img/common/emptyQR.jpg";
+			
 			// **추가** POST문으로 서버에 기본 이미지 파일 전송
 			axios.put(API_URL+'api/v1/qr/'+this.userinfo.uid,{
 				url : "http://i3a507.p.ssafy.io/img/common/emptyQR.jpg",
+			})
+			.then(function(response){
+				console.log(response);
+				this.userinfo.qrImage = "http://i3a507.p.ssafy.io/img/common/emptyQR.jpg";
+			})
+			.catch(function(error){
+				console.log(error);
 			})
 		
 		},
@@ -459,7 +473,19 @@ export default {
 		axios
 		.get(API_URL+'api/v1/'+uid)
 		.then(({data})=>{
-
+			console.log("들어오는 Data 확인 : "+data.uid);
+			console.log("들어오는 Data 확인 : "+data.nickname);
+			console.log("들어오는 Data 확인 : "+data.email);
+			console.log("들어오는 Data 확인 : "+data.password);
+			console.log("들어오는 Data 확인 : "+data.profileImage);
+			console.log("들어오는 Data 확인 : "+data.qrImage);
+			console.log("들어오는 Data 확인 : "+data.admin);
+			console.log("들어오는 Data 확인 : "+data.facebook);
+			console.log("들어오는 Data 확인 : "+data.instagram);
+			console.log("들어오는 Data 확인 : "+data.github);
+			console.log("들어오는 Data 확인 : "+data.introduce);
+			console.log("들어오는 Data 확인 : "+data.updateType);
+			console.log("=======================================");
 			this.userinfo.uid = data.uid;
 			this.userinfo.profileImage = data.profileImage;
 			this.userinfo.nickname = data.nickname;
@@ -468,7 +494,7 @@ export default {
 			this.userinfo.facebook = data.facebook,
 			this.userinfo.instagram = data.instagram,
 			this.userinfo.emailaddr = data.email,
-			this.userinfo.qr = data.qrImage
+			this.userinfo.qrImage = data.qrImage
 
 			console.log("Userinfo uid 데이터 확인 "+ this.userinfo.uid);
 			// 프로필 이미지 경로가 한글이면 불러오지를 못한다.
