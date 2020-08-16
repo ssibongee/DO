@@ -374,13 +374,14 @@ export default {
 			axios.put(API_URL+'api/v1/img/'+this.userinfo.uid,{
 				url : "http://i3a507.p.ssafy.io/img/common/emptyProfile.png",
 			})
-			.then(function(response){
+			.then(response => {
+				console.log("성공");
 				console.log(response);
-				// 문자열 타입이라서 안되는 것인가?
 				this.userinfo.profileImage = response;
 			})
-			.catch(function(error){
-				console.log(error);
+			.catch( (err) => {
+				console.log("실패");
+				console.log(err)
 			})
 
 		},
@@ -497,10 +498,6 @@ export default {
 			this.userinfo.emailaddr = data.email,
 			this.userinfo.qrImage = data.qrImage
 
-			console.log("Userinfo uid 데이터 확인 "+ this.userinfo.uid);
-			// 프로필 이미지 경로가 한글이면 불러오지를 못한다.
-			console.log("Userinfo profile 데이터 확인 "+ this.userinfo.profileImage);
-			console.log("Userinfo qrImage 데이터 확인 "+ this.userinfo.qrImage);
 		})
 	},
 	
