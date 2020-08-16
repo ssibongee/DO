@@ -358,8 +358,8 @@ export default {
 				}
 			)
 			.then(function (response){
-				console.log("profileImage:"+ response);
-				this.userinfo.profileImage = response;
+				console.log("profileImage:"+ response.data);
+				this.userinfo.profileImage = response.data;
 			})
 			.catch(function(error){
 				console.log(error);
@@ -376,8 +376,8 @@ export default {
 			})
 			.then(response => {
 				console.log("성공");
-				console.log(response);
-				this.userinfo.profileImage = response;
+				console.log("response DATA:"+response.data);
+				this.userinfo.profileImage = response.data;
 			})
 			.catch( (err) => {
 				console.log("실패");
