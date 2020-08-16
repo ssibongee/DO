@@ -365,6 +365,7 @@ export default {
 				console.log("프로필 이미지 업로드 실패")
 				console.log(err);
 			})
+			.bind(this);
 
 		},
 		// 기본 이미지로 수정
@@ -382,7 +383,7 @@ export default {
 				console.log("프로필 이미지 삭제 실패");
 				console.log(err)
 			})
-
+			.bind(this);
 		},
 		
 		// 업로드 QR코드
