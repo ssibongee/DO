@@ -327,6 +327,7 @@ public class UserController {
      * @param uid
      * @return void
      */
+
     @PutMapping("/api/v1/qr/{uid}")
     public String  deleteQR(@PathVariable String uid, @RequestBody Map<String, String> param) {
         try{
