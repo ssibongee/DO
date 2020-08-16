@@ -376,7 +376,8 @@ export default {
 			})
 			.then(function(response){
 				console.log(response);
-				this.userinfo.profileImage = "http://i3a507.p.ssafy.io/img/common/emptyProfile.png";
+				// 문자열 타입이라서 안되는 것인가?
+				this.userinfo.profileImage = response;
 			})
 			.catch(function(error){
 				console.log(error);
@@ -425,7 +426,7 @@ export default {
 			})
 			.then(function(response){
 				console.log(response);
-				this.userinfo.qrImage = "http://i3a507.p.ssafy.io/img/common/emptyQR.jpg";
+				this.userinfo.qrImage = response;
 			})
 			.catch(function(error){
 				console.log(error);
