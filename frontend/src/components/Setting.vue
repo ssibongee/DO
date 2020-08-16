@@ -358,10 +358,10 @@ export default {
 				}
 			)
 			.then(function (response){
-				console.log("profileImage:"+ response.data);
 				this.userinfo.profileImage = response.data;
 			})
 			.catch(function(error){
+				console.log("프로필 이미지 업로드 실패")
 				console.log(error);
 			})
 
@@ -375,12 +375,10 @@ export default {
 				url : "http://i3a507.p.ssafy.io/img/common/emptyProfile.png",
 			})
 			.then(response => {
-				console.log("성공");
-				console.log("response DATA:"+response.data);
 				this.userinfo.profileImage = response.data;
 			})
 			.catch( (err) => {
-				console.log("실패");
+				console.log("프로필 이미지 삭제 실패");
 				console.log(err)
 			})
 
@@ -411,10 +409,10 @@ export default {
 				}
 			)
 			.then(function (response){
-				console.log("qrImage :"+response);
-				this.userinfo.qrImage = response;
+				this.userinfo.qrImage = response.data;
 			})
 			.catch(function(error){
+				console.log("QR 이미지 업로드 실패");
 				console.log(error);
 			})
 
@@ -426,10 +424,10 @@ export default {
 				url : "http://i3a507.p.ssafy.io/img/common/emptyQR.jpg",
 			})
 			.then(function(response){
-				console.log(response);
-				this.userinfo.qrImage = response;
+				this.userinfo.qrImage = response.data;
 			})
 			.catch(function(error){
+				console.log("QR 이미지 삭제 실패")
 				console.log(error);
 			})
 		
