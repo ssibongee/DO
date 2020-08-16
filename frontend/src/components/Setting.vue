@@ -358,14 +358,13 @@ export default {
 				}
 			)
 			.then(response => {
-				console.log("p : "+response);
+				console.log("p : "+response.data);
 				this.userinfo.profileImage = response.data;
 			})
 			.catch((err) => {
 				console.log("프로필 이미지 업로드 실패")
 				console.log(err);
 			})
-			.bind(this);
 
 		},
 		// 기본 이미지로 수정
@@ -377,13 +376,14 @@ export default {
 				url : "http://i3a507.p.ssafy.io/img/common/emptyProfile.png",
 			})
 			.then(response => {
+				console.log("p D : "+response.data);
 				this.userinfo.profileImage = response.data;
 			})
 			.catch( (err) => {
 				console.log("프로필 이미지 삭제 실패");
 				console.log(err)
 			})
-			.bind(this);
+
 		},
 		
 		// 업로드 QR코드
