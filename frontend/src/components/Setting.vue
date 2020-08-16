@@ -357,12 +357,13 @@ export default {
 					}	
 				}
 			)
-			.then(function (response){
+			.then(response => {
+				console.log("p : "+response);
 				this.userinfo.profileImage = response.data;
 			})
-			.catch(function(error){
+			.catch((err) => {
 				console.log("프로필 이미지 업로드 실패")
-				console.log(error);
+				console.log(err);
 			})
 
 		},
@@ -408,12 +409,12 @@ export default {
 					}	
 				}
 			)
-			.then(function (response){
+			.then(response => {
 				this.userinfo.qrImage = response.data;
 			})
-			.catch(function(error){
+			.catch( (err) => {
 				console.log("QR 이미지 업로드 실패");
-				console.log(error);
+				console.log(err);
 			})
 
 		},
@@ -423,12 +424,12 @@ export default {
 			axios.put(API_URL+'api/v1/qr/'+this.userinfo.uid,{
 				url : "http://i3a507.p.ssafy.io/img/common/emptyQR.jpg",
 			})
-			.then(function(response){
+			.then( response => {
 				this.userinfo.qrImage = response.data;
 			})
-			.catch(function(error){
+			.catch( (err) => {
 				console.log("QR 이미지 삭제 실패")
-				console.log(error);
+				console.log(err);
 			})
 		
 		},
