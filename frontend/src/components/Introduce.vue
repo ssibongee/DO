@@ -184,7 +184,7 @@ a{
 .section_contents .section_title::before{
 	content: '';
 	position:absolute;
-	left:265px;
+	left:248px;
 	top:130px;
 	width:30px;
 	height:3px;
@@ -264,7 +264,7 @@ a{
 .section_madeby .section_title:before {
 	content: '';
 	position: absolute;
-	left: 270px;
+	left: 248px;
 	top: 75px;
 	width: 26px;
 	height: 3px;
