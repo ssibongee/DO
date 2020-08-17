@@ -6,7 +6,9 @@
     <v-row>
       <!-- 왼쪽 사이드바(좋아요, 공유버튼) -->
       <v-col cols="1" class="pa-0">
-
+      <v-btn icon depressed small @click="addToFeed" color="pink">
+        <v-icon :class="like"></v-icon>
+      </v-btn>
       </v-col>
       <!-- 게시글, 댓글  -->
       <v-col class="pa-0">  
@@ -81,7 +83,7 @@ export default {
     components: {
       Viewer,
       Navbar,
-      Comment
+      Comment,
     },
     data() {
         return {
@@ -95,6 +97,9 @@ export default {
           CommentInput: '',
           ChildFlag: false,
           ChildCommentInput: '',
+          FeedFlag: false,
+          like: "far fa-heart",
+          // dislike: "far fa-heart",
         }
     },
     created(){
@@ -170,6 +175,44 @@ export default {
         })
         return Comments
       },
+      //좋아요에 포스트를 담거나 빼는 메서드
+      addToFeed(){
+        //로그인 체크
+        if(storage.getItem("login_user")){
+          //이미 피드에 있는지 체크
+          if(this.FeedFlag===false){
+            this.like="fas fa-heart"
+            this.FeedFlag=true;
+            axios
+            .put(API_URL+'api/v2/likes',{
+              uid : storage.getItem("uid"),
+              pid : storage.getItem("pid"),
+              status : this.FeedFlag,
+            })
+            .then(function(response){
+              console.log(response);
+              })
+            .catch(function(error){
+              console.log(error);
+            })
+          }
+          //삭제하면 db에서 제거
+          else {
+            this.like="far fa-heart"
+            this.FeedFlag=false;
+            axios.delete(API_URL+'api/v2/likes')
+            .then(function (response){
+						console.log(response);
+            })
+            .catch(function(error){
+              console.log(error);
+            });
+          }
+        }
+        else {
+          alert('로그인 후 이용해주세요.')
+        }
+      }
     }
 }
 </script>
