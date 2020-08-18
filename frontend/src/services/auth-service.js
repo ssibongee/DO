@@ -1,4 +1,5 @@
 import axios from 'axios'
+import store from '../router/index.js'
 
 const API_URL = 'http://i3a507.p.ssafy.io:8081/'
 // const API_URL = 'http://localhost:8081/'
@@ -7,45 +8,47 @@ const storage = window.sessionStorage
 class AuthService {
     // 로그인, 로그아웃, 접속 체크
     // Login
-    login(user){
-        return axios
-            .post(API_URL+'signin',{
-                email: user.email,
-                password: user.password
+    login(user) {
+        // this.loading = true
+        // this.$validator.validateAll()
+  
+        // if (this.errors.any()) {
+        //   this.loading = false
+        //   return
+        // }
+        if (user.email && user.password) {
+          storage.setItem("jwt-auth-token", "")
+          storage.setItem("login_user", "")
+          storage.setItem("uid", "")
+          storage.setItem("google_login", "")
+          axios.post(API_URL+'api/signin', {
+            email: user.email,
+            password: user.password
+          }).then(res => {
+              if (res.data.status) {
+                this.message = res.data.request_body.email + "로 로그인 되었습니다."
+                storage.setItem("jwt-auth-token", res.data["jwt-auth-token"])
+                storage.setItem("login_user", res.data.request_body.email)
+                storage.setItem("uid", res.data.request_body.uid)
+                storage.setItem("google_login", false)
+                store.app.$store.commit('logincheck')
+                // this.$router.push('/')
+              } else {
+                alert("입력 정보를 확인해주세요.")
+              }
             })
-            .then(res => {
-                if (res.data.status) {
-                    this.message = res.data.data.email + "로 로그인 되었습니다."
-                    console.dir(res.headers["jwt-auth-token"])
-                    this.setInfo(
-                        "성공",
-                        res.headers["jwt-auth-token"],
-                        JSON.stringify(res.data.data)
-                    )
-                    storage.setItem("jwt-auth-token", res.headers["jwt-auth-token"])
-                    storage.setItem("login_user", res.data.data.email)
-                } else {
-                    this.setInfo("", "", "")
-                    this.message = "로그인해주세요."
-                    alert("입력 정보를 확인해주세요.")
-                }
-            })
-            .catch(err => {
-                this.setInfo("실패", "", JSON.stringify(err.response || err.message))
-            })
-            // .then(this.handelResponse)
-            // .then(response => {
-            //     if(response.data.accessToken) {
-            //         localStorage.setItem('user', JSON.stringify(response.data))
-            //     }
-            //     return response.data
-            // })
-    }
+            .catch(err => console.log(err))
+        } else {
+          alert('이메일 또는 패스워드를 입력하지 않았습니다.')
+        }
+      }
 
     // Logout
     logout() {
         storage.setItem("jwt-auth-token", "")
         storage.setItem("login_user", "")
+        storage.setItem("uid", "")
+        storage.setItem("google_login", "")
         // this.message = "로그인 해주세요"
         // this.setInfo("로그아웃 성공", "", "")
     }

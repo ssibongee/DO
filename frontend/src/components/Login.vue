@@ -229,4 +229,11 @@ header {
 .v-input >>> label {
   font-size: 13px;
 }
+.google {
+  padding: 0;
+}
+.big-button {
+  margin: 0 0;
+  padding: 15px 101px;
+}
 </style>
