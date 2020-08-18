@@ -106,7 +106,7 @@ public class PostDaoImpl implements PostDao {
     }
 
     @Override
-    public Post findLatestNotice() {
+    public List<Post> findLatestNotice() {
         return postMapper.findLatestNotice();
     }
 
