@@ -91,15 +91,15 @@ export default {
             title: '',
             author: '',
             content: '',
+            islike: this.$route.params.data.isLike,
           },
           content: this.$route.params.data.tmp,
           Comments: null,
           CommentInput: '',
           ChildFlag: false,
           ChildCommentInput: '',
-          FeedFlag: false,
-          like: "far fa-heart",
-          // dislike: "far fa-heart",
+          FeedFlag: '',
+          like: '',
         }
     },
     created(){
@@ -109,6 +109,15 @@ export default {
           this.post.title = res.data.title
           this.post.author = res.data.author
           this.post.content = res.data.content
+          this.post.islike = res.data.isLike
+          console.log(this.post.islike)
+          if(this.post.islike===true){
+            this.like = "fas fa-heart"
+            this.FeedFlag= true
+          } else {
+            this.like = "far fa-heart"
+            this.FeedFlag = false
+          }
           console.log(this.post)
           this.Comments = res.data.comments
           // console.log(this.Comments)
@@ -181,8 +190,9 @@ export default {
         if(storage.getItem("login_user")){
           //이미 피드에 있는지 체크
           if(this.FeedFlag===false){
-            this.like="fas fa-heart"
             this.FeedFlag=true;
+            this.post.islike=true;
+            this.like="fas fa-heart"
             axios
             .put(API_URL+'api/v2/likes',{
               uid : storage.getItem("uid"),
@@ -198,9 +208,15 @@ export default {
           }
           //삭제하면 db에서 제거
           else {
+            console.log("2")
             this.like="far fa-heart"
+            this.post.islike=false;
             this.FeedFlag=false;
-            axios.delete(API_URL+'api/v2/likes')
+            axios.put(API_URL+'api/v2/likes',{
+              uid : storage.getItem("uid"),
+              pid : storage.getItem("pid"),
+              status : this.FeedFlag,
+            })
             .then(function (response){
 						console.log(response);
             })
