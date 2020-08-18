@@ -123,6 +123,7 @@ export default {
               storage.setItem("login_user", res.data.request_body.email)
               storage.setItem("uid", res.data.request_body.uid)
               storage.setItem("google_login", false)
+              storage.setItem("profileImage", res.data.request_body.profileImage)
               this.$router.push('/')
             } else {
               this.message = "로그인해주세요."
@@ -166,6 +167,8 @@ export default {
         storage.setItem("login_user", res.data.request_body.email)
         storage.setItem("uid", res.data.request_body.uid)
         storage.setItem("google_login", true)
+        storage.setItem("profileImage", res.data.request_body.profileImage)
+        // storage.setItem("profileImage", res.data.request_body.profileImage)
         this.$router.push('/')
       })
       // .catch((err) => console.log(err))
