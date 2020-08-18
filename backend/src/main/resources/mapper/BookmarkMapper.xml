@@ -4,7 +4,7 @@
 <mapper namespace="com.backend.mapper.BookmarkMapper">
     <!-- 북 마크로 등록 -->
     <insert id="saveBookmark">
-        insert into bookmark values(#{uid}, #{pid})
+        insert into bookmark values(#{uid}, #{pid}, default)
     </insert>
 
     <!-- 북 마크 삭제 -->
@@ -19,7 +19,7 @@
 
     <!-- 해당 유저의 모든 북마크를 불러 읽어옴 -->
     <select id="findAllBookmarks" resultType="com.backend.dto.post.Post">
-        select * from post where pid in (select pid from bookmark where uid = #{uid})
+        select * from post where pid in (select pid from bookmark where uid = #{uid}) order by registarationTime;
     </select>
 
 </mapper>
