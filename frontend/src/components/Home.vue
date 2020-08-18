@@ -147,9 +147,6 @@ export default {
         // 콘텐츠 미리보기 슬라이스
         data.forEach(el => {
           el.tmp = el.content
-          if(el.title.length > 18){
-            el.title = el.title.slice(0,18)+"..."
-          }
           if (el.content.length > 120) {
             // 마크다운 사진 제외
             el.content = el.content.replace(/!\[.*\)+/, "")
@@ -219,6 +216,13 @@ em {
 }
 .inner_card {
   padding: 1.5rem;
+}
+.card_title{
+  line-height:1.2rem;
+  height: 1.2rem;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  margin: 0 0 5px;
 }
 .card_title h5{
   font-size: 1rem;

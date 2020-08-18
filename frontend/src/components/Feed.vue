@@ -174,6 +174,13 @@ export default {
 .inner_card {
   padding: 1.5rem;
 }
+.card_title{
+  line-height:1.2rem;
+  height: 1.2rem;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  margin: 0 0 5px;
+}
 .card_title h5{
   font-size: 1rem;
   font-family: 'NanumSquare','나눔스퀘어','Noto Sans','Apple SD Gothic','맑은고딕','Nanum Gothic',sans-serif;
