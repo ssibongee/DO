@@ -11,7 +11,7 @@
       <router-link to="/introduce">소개</router-link>
     </v-toolbar-items>
     <v-toolbar-items style="align-items: center">
-      피드
+      <router-link to="/feed">피드</router-link>
     </v-toolbar-items>
     <v-toolbar-items style="align-items: center">
       포럼
