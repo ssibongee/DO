@@ -10,11 +10,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
@@ -64,7 +66,8 @@ public class PostController {
      */
     @ApiOperation(value = "글 읽기", notes = "pid 를 통해 글 하나를 찾아서 반환")
     @GetMapping("/api/v2/p/{pid}")
-    public Post findById(@PathVariable Long pid, HttpSession session) {
+    public Post findById(@PathVariable Long pid, HttpServletRequest request) {
+        HttpSession session = request.getSession();
         Long uid = (Long) session.getAttribute("uid");
         Post post = postService.findById(pid);
         post.setTag(postService.findAllPostTags(pid)); // 게시글의 모든 태그를 불러옴
