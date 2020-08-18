@@ -70,7 +70,7 @@ public class PostController {
         post.setTag(postService.findAllPostTags(pid)); // 게시글의 모든 태그를 불러옴
         post.setComments(commentService.findAllCommentsInPost(pid)); // 게시글의 모든 댓글을 불러옴
         // 게시글 좋아요 표시
-        post.setIsLike(bookmarkService.isBookmark(post.getUid(), post.getPid()) != null ? true : false);
+        post.setIsLike(bookmarkService.isBookmark(uid, post.getPid()) != null ? true : false);
         return post;
     }
 
