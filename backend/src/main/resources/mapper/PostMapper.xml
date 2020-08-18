@@ -13,7 +13,7 @@
 
     <!-- 태그가 존재하는지 검색 -->
     <select id="findTagByName" resultType="Long">
-                select tid from tag where name like #{tag};
+                select tid from tag where name like #{tag}
     </select>
 
     <!-- 새로운 태그를 등록 -->
@@ -55,17 +55,17 @@
 
     <!-- 조회수 순으로 정렬 -->
     <select id="findAllOrderedByHits" resultType="com.backend.dto.post.Post">
-                select * from post order by hits desc;
+                select * from post order by hits desc
     </select>
 
     <!-- 좋아요 순으로 정렬 -->
     <select id="findAllOrderedByLikes" resultType="com.backend.dto.post.Post">
-                select * from post order by likes desc;
+                select * from post order by likes desc
     </select>
 
     <!-- 최신글 순으로 정렬 -->
     <select id="findAllOrderedByPublishedTime" resultType="com.backend.dto.post.Post">
-                select * from post order by publishedtime;
+                select * from post order by publishedtime desc
     </select>
 
     <!-- #################### 글 조회 #################### -->
@@ -93,7 +93,7 @@
     <!-- 포스트에 적용된 모든 태그를 조회 -->
     <select id="findAllPostTags" resultType="String">
                 select name from tag join taglist on tag.tid = taglist.tid
-                where taglist.pid = #{pid};
+                where taglist.pid = #{pid}
     </select>
 
     <!-- #################### 글 수정 및 삭제 #################### -->
