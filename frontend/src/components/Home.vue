@@ -123,7 +123,7 @@ export default {
     }
   },
   created() {
-    this.postread('latest')
+    this.postread('최신')
   },
   components: {
     Navbar,
@@ -135,8 +135,15 @@ export default {
       this.$router.push({name: 'postdetail', params: {data: one_post}})
     },
     postread(item) {
-      let lowercase_item = item.toLowerCase()
-      axios.get(API_URL+`api/v2/${lowercase_item}`)
+      let option = ""
+      if (item === "최신") {
+        option = "latest"
+      } else if (item === '조회수') {
+        option = "hits"
+      } else if (item === '좋아요') {
+        option = "likes"
+      }
+      axios.get(API_URL+`api/v2/${option}`)
       .then(({data})=>{
         // 콘텐츠 미리보기 슬라이스
         data.forEach(el => {
