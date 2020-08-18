@@ -34,7 +34,7 @@ public class PostController {
     @Autowired
     BookmarkService bookmarkService;
 
-    private String DEFAULT_THUMBNAIL_IMAGE_URL = "http://i3a507.p.ssafy.io/img/defualt/thumbnail.jpg";
+    private String DEFAULT_THUMBNAIL_IMAGE_URL = "http://i3a507.p.ssafy.io/img/default/thumbnail.jpg";
 
     /**
      * @param newPost : 사용자가 작성한 Post
