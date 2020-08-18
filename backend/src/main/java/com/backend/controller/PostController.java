@@ -29,7 +29,6 @@ import java.util.Map;
 @Api(tags = {"Post"})
 @RestController
 @CrossOrigin(origins = {"*"})
-@SessionAttributes("http://i3a507.p.ssafy.io")
 public class PostController {
 
     @Autowired
