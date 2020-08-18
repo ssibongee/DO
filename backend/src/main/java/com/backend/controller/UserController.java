@@ -341,6 +341,17 @@ public class UserController {
 
     @PutMapping("/api/v1/qr/{uid}")
     public String  deleteQR(@PathVariable String uid, @RequestBody Map<String, String> param) {
+        User user = service.findByUid(uid);
+        String path = "/home/ubuntu/dist/dist/img/" + user.getNickname() + "/qr";
+        File dir  = new File(path);
+
+        // 디렉토리 내의 모든 파일 삭제
+        File[] list = dir.listFiles();
+        for(int i = 0; i<list.length; i++) {
+            list[i].delete();
+        }
+
+
         try{
             String url = param.get("url");
             service.updateDefaultQR(uid, url);
