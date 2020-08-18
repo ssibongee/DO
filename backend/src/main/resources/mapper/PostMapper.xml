@@ -8,7 +8,7 @@
     <!-- 글 작성 후 저장 -->
     <insert id="save" useGeneratedKeys="true" keyProperty="pid" parameterType="com.backend.dto.post.Post">
                 insert into post values(default, #{uid}, default, #{author}, #{title}, #{content},
-                0, 0, null, default, null)
+                0, 0, #{thumbnail}, default, null)
     </insert>
 
     <!-- 태그가 존재하는지 검색 -->

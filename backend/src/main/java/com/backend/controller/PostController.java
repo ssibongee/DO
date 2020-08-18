@@ -34,6 +34,8 @@ public class PostController {
     @Autowired
     BookmarkService bookmarkService;
 
+    private String DEFAULT_THUMBNAIL_IMAGE_URL = "http://i3a507.p.ssafy.io/img/defualt/thumbnail.jpg";
+
     /**
      * @param newPost : 사용자가 작성한 Post
      * @return 글이 정상적으로 등록된 경우 HttpStatus 201 반환
@@ -41,6 +43,10 @@ public class PostController {
     @ApiOperation(value = "글 작성", notes = "새로운 포스트를 작성한다.")
     @PostMapping("/api/v2/")
     public HttpStatus save(@RequestBody Post newPost) throws Exception {
+        if(newPost.getThumbnail() == null) {
+            newPost.setThumbnail(DEFAULT_THUMBNAIL_IMAGE_URL);
+        }
+
         try {
             postService.save(newPost);
         } catch (Exception e) {
