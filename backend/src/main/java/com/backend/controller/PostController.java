@@ -43,7 +43,7 @@ public class PostController {
     @ApiOperation(value = "글 작성", notes = "새로운 포스트를 작성한다.")
     @PostMapping("/api/v2/")
     public HttpStatus save(@RequestBody Post newPost) throws Exception {
-        if(newPost.getThumbnail() == null) {
+        if(newPost.getThumbnail().equals("")) {
             newPost.setThumbnail(DEFAULT_THUMBNAIL_IMAGE_URL);
         }
 
