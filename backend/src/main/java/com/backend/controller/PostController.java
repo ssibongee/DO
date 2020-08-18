@@ -134,9 +134,9 @@ public class PostController {
     /**
      * 공지사항 불러오는 함수, 추후 여러개 공지사항을 불러오는 코드로 바뀔 수 있음
      */
-    @ApiOperation(value = "가장 최신 공지사항 조회", notes = "가장 최신의 공지사항을 불러옴, admin = 1")
+    @ApiOperation(value = "가장 최신 공지사항 5개 조회", notes = "가장 최신의 공지사항을 불러옴, admin = 1")
     @GetMapping("/api/v2/notice")
-    public Post loadNotice() {
+    public List<Post> loadNotice() {
         return postService.findLatestNotice();
     }
 

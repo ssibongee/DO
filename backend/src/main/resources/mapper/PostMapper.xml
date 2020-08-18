@@ -111,11 +111,9 @@
 
     <!-- 글을 수정하거나 삭제할 때 사용한 태그 횟수도 감소하는게 필요함 -->
 
-    <!-- 댓글 수정삭제, 글 수정 삭제 관련 쿼리문 추가해야 함 -->
-
-    <!-- 가장 최신의 공지사항을 불러옴 -->
+    <!-- 가장 최신의 공지사항 5개 불러옴 -->
     <select id="findLatestNotice" resultType="com.backend.dto.post.Post">
-                select * from post join user on post.uid = user.uid where user.admin = 1 order by publishedTime desc limit 1
+                select * f를rom post join user on post.uid = user.uid where user.admin = 1 order by publishedTime desc limit 5
     </select>
 
     <!-- 임시저장 -->

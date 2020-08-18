@@ -109,7 +109,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post findLatestNotice() {
+    public List<Post> findLatestNotice() {
         return postDao.findLatestNotice();
     }
 
