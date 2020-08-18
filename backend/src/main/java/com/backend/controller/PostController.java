@@ -9,10 +9,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.util.ArrayList;
@@ -34,7 +37,7 @@ public class PostController {
     @Autowired
     BookmarkService bookmarkService;
 
-    private String DEFAULT_THUMBNAIL_IMAGE_URL = "http://i3a507.p.ssafy.io/img/default/thumbnail.jpg";
+    private final String DEFAULT_THUMBNAIL_IMAGE_URL = "http://i3a507.p.ssafy.io/img/default/thumbnail.jpg";
 
     /**
      * @param newPost : 사용자가 작성한 Post
@@ -43,8 +46,10 @@ public class PostController {
     @ApiOperation(value = "글 작성", notes = "새로운 포스트를 작성한다.")
     @PostMapping("/api/v2/")
     public HttpStatus save(@RequestBody Post newPost) throws Exception {
-        newPost.setThumbnail(DEFAULT_THUMBNAIL_IMAGE_URL);
-
+        // 섬네일을 등록하지 않으면 기본 섬네일을 등록한다.
+        if(newPost.getThumbnail() == null) {
+            newPost.setThumbnail(DEFAULT_THUMBNAIL_IMAGE_URL);
+        }
         try {
             postService.save(newPost);
         } catch (Exception e) {
@@ -59,10 +64,12 @@ public class PostController {
      */
     @ApiOperation(value = "글 읽기", notes = "pid 를 통해 글 하나를 찾아서 반환")
     @GetMapping("/api/v2/p/{pid}")
-    public Post findById(@PathVariable Long pid) {
+    public Post findById(@PathVariable Long pid, HttpSession session) {
+        Long uid = (Long) session.getAttribute("uid");
         Post post = postService.findById(pid);
         post.setTag(postService.findAllPostTags(pid)); // 게시글의 모든 태그를 불러옴
         post.setComments(commentService.findAllCommentsInPost(pid)); // 게시글의 모든 댓글을 불러옴
+        // 게시글 좋아요 표시
         post.setIsLike(bookmarkService.isBookmark(post.getUid(), post.getPid()) != null ? true : false);
         return post;
     }
