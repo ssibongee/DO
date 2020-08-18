@@ -113,7 +113,7 @@
 
     <!-- 가장 최신의 공지사항 5개 불러옴 -->
     <select id="findLatestNotice" resultType="com.backend.dto.post.Post">
-                select * f를rom post join user on post.uid = user.uid where user.admin = 1 order by publishedTime desc limit 5
+                select * from post join user on post.uid = user.uid where user.admin = 1 order by publishedTime desc limit 5
     </select>
 
     <!-- 임시저장 -->
