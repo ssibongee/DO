@@ -17,40 +17,39 @@
           <v-col cols="4" v-for="(post, index) in posts" :key="index+'_posts'">
             <v-hover>
               <template v-slot="{hover}">
-                <v-card
+                <v-card 
                   @click="postdetail(post)"
-                  height="380px"
+                  height="406px"
                   max-width="350px"
                   :elevation="hover ? 8 : 2"
                 >
                   <v-img
-                    class="align-end"
-                    height="200px"
+                    class="white--text align-end"
+                    height="180px"
                     :src="post.thumbnail"
                   />
+                  <div class="inner_card">
                     <!-- 제목이 가로범위 초과시 ... -->
-                    <v-card-title><h5>{{post.title}}</h5></v-card-title>
-                    <v-card-text class="text--primary" style="height:65px">
-                    <div>{{post.content}}</div>
-                    <div v-if="!post.content">게시글 내용이 비어있습니다.</div>
-                    <div>{{post.publishedTime}}</div>
-                  </v-card-text>
-
-                  <v-card-actions>
-                    <v-btn
-                      color="orange"
-                      text
-                    >
-                      Share
-                    </v-btn>
-
-                    <v-btn
-                      color="orange"
-                      text
-                    >
-                      Explore
-                    </v-btn>
-                  </v-card-actions>
+                    <div class="card_title"><h5>{{post.title}}</h5></div>
+                    <!-- <v-card-subtitle class="pb-0">{{ item }}</v-card-subtitle> -->
+                    <!-- 내용 -->
+                    <div class="card_content">
+                      <p>{{post.content}}</p>
+                      <div v-if="!post.content">게시글 내용이 비어있습니다.</div>
+                    </div>
+                    <!-- 날짜 -->
+                    <div class="card_date">{{post.publishedTime}}</div>
+                    <!-- 작성자, 좋아요 -->
+                    <div class="card_info">
+                      <div class="author">
+                        {{post.author}}
+                      </div>
+                      <div class="liked">
+                        <v-icon x-small style="margin-top:-2px" color="black">fas fa-heart</v-icon>
+                        {{post.likes}}
+                      </div>
+                    </div>
+                  </div>
                 </v-card>
               </template>
             </v-hover>
@@ -160,7 +159,7 @@ export default {
 }
 .feature_feed{
   height: 133px;
-  padding: 151px 0 90px;
+  padding: 151px 0 110px;
   border-bottom: solid 2px black;;
 }
 .feature_main {
@@ -171,5 +170,41 @@ export default {
 .content {
   min-width: 1100px; 
   padding: 30px 0 0;
+}
+.inner_card {
+  padding: 1.5rem;
+}
+.card_title h5{
+  font-size: 1rem;
+  font-family: 'NanumSquare','나눔스퀘어','Noto Sans','Apple SD Gothic','맑은고딕','Nanum Gothic',sans-serif;
+  font-weight: 800;
+}
+.card_content{
+  width:100%;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  white-space: normal;
+  line-height: 1.5;
+  height:4.5em;
+  color: rgb(73, 80, 87);
+  font-family: 'NanumSquare','나눔스퀘어','Noto Sans','Apple SD Gothic','맑은고딕','Nanum Gothic',sans-serif;
+  font-weight:400;
+
+  margin: 0 0 1.5rem;
+}
+.card_content p{
+  height: 100%
+}
+.card_date {
+  font-size:0.75rem;
+  padding: 5px 0 5px;
+  color: rgb(134, 142, 150);
+}
+.liked{
+  float:right; 
+  margin-top: -24px
 }
 </style>

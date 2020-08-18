@@ -158,7 +158,7 @@ div > .newpost > a >button{
 }
 div > .newpost > a >button:hover {
   background-color:#6e8af8;
-  /* color:white !important;  */
+  color:white !important; 
 }
 .logo_title{
 	display : inline-block;
