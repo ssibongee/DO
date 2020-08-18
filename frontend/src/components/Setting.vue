@@ -221,7 +221,7 @@
 
 <script>
 import axios from 'axios'
-
+const storage = window.sessionStorage
 
 const API_URL = 'http://i3a507.p.ssafy.io:8081/'
 // const API_URL = 'http://localhost:8081/'
@@ -357,6 +357,7 @@ export default {
 			)
 			.then(response => {
 				this.userinfo.profileImage = response.data;
+				storage.setItem("profileImage", response.data)
 			})
 			.catch((err) => {
 				console.log("프로필 이미지 업로드 실패")
@@ -374,6 +375,7 @@ export default {
 			})
 			.then(response => {
 				this.userinfo.profileImage = response.data;
+				storage.setItem("profileImage", response.data)
 			})
 			.catch( (err) => {
 				console.log("프로필 이미지 삭제 실패");
