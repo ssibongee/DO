@@ -19,7 +19,7 @@
 
     <!-- 해당 유저의 모든 북마크를 불러 읽어옴 -->
     <select id="findAllBookmarks" resultType="com.backend.dto.post.Post">
-        select * from post where pid in (select pid from bookmark where uid = #{uid}) order by registarationTime;
+        select * from post where pid in (select pid from bookmark where uid = #{uid} order by registrationTime) group by post.pid
     </select>
 
 </mapper>
