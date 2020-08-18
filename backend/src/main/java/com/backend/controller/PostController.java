@@ -29,6 +29,7 @@ import java.util.Map;
 @Api(tags = {"Post"})
 @RestController
 @CrossOrigin(origins = {"*"})
+@SessionAttributes("http://i3a507.p.ssafy.io")
 public class PostController {
 
     @Autowired
@@ -67,11 +68,8 @@ public class PostController {
      */
     @ApiOperation(value = "글 읽기", notes = "pid 를 통해 글 하나를 찾아서 반환")
     @GetMapping("/api/v2/p/{pid}")
-    public Post findById(@PathVariable Long pid, HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        String str = (String) session.getAttribute("uid");
-        System.out.println(str);
-        Long uid = Long.parseLong(str);
+    public Post findById(@PathVariable Long pid, Model model) {
+        Long uid = (Long) model.getAttribute("uid");
         Post post = postService.findById(pid);
         post.setTag(postService.findAllPostTags(pid)); // 게시글의 모든 태그를 불러옴
         post.setComments(commentService.findAllCommentsInPost(pid)); // 게시글의 모든 댓글을 불러옴
