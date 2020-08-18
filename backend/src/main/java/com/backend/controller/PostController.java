@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.util.ArrayList;
@@ -68,7 +69,9 @@ public class PostController {
     @GetMapping("/api/v2/p/{pid}")
     public Post findById(@PathVariable Long pid, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        Long uid = (Long) session.getAttribute("uid");
+        String str = (String) session.getAttribute("uid");
+        System.out.println(str);
+        Long uid = Long.parseLong(str);
         Post post = postService.findById(pid);
         post.setTag(postService.findAllPostTags(pid)); // 게시글의 모든 태그를 불러옴
         post.setComments(commentService.findAllCommentsInPost(pid)); // 게시글의 모든 댓글을 불러옴
