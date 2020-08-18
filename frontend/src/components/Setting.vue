@@ -156,6 +156,11 @@
 									<!-- <input type="file" accept="image/jpeg" @change=uploadImage> -->
 								<!-- </div> -->
 							</div>
+							<div>
+								<!-- 기본 이미지로 대체 후, 데이터베이스에서 String = null -->
+								<v-btn depressed width="120px" @click="deleteQRImage">이미지 제거</v-btn>
+							</div>
+
 							<!-- <v-btn>QR 이미지 업로드</v-btn> -->
 								<v-col cols="12" class="msg">
 								후원 받을 QR코드를 이미지 파일로 등록해주세요.
@@ -248,7 +253,6 @@ export default {
 			commentAlarm : false,
 			updateAlarm : false,
 			boxTwo: '', // 회원 탈퇴
-
 			userinfo : {
 				uid : '',
 				profileImage : '',
@@ -334,8 +338,6 @@ export default {
 			const image = e.target.files[0];
 			file.append("file", image);
 
-			console.log("file : "+file);
-
 			// 미리보기용
 			const reader = new FileReader();
 			reader.readAsDataURL(image); 
@@ -353,19 +355,31 @@ export default {
 					}	
 				}
 			)
-			.then(function (response){
-				console.log(response);
-				this.userinfo.profileImage = response;
+			.then(response => {
+				this.userinfo.profileImage = response.data;
 			})
-			.catch(function(error){
-				console.log(error);
+			.catch((err) => {
+				console.log("프로필 이미지 업로드 실패")
+				console.log(err);
 			})
 
 		},
-		// 업로드 이미지 삭제
+		// 기본 이미지로 수정
 		deleteProfileImage(){
-			this.userinfo.profileImage = "";
-			// **추가** POST문으로 서버에 이미지 파일 삭제
+	
+			
+			// **추가** POST문으로 서버에 기본 이미지 파일 전송
+			axios.put(API_URL+'api/v1/img/'+this.userinfo.uid,{
+				url : "http://i3a507.p.ssafy.io/img/common/emptyProfile.png",
+			})
+			.then(response => {
+				this.userinfo.profileImage = response.data;
+			})
+			.catch( (err) => {
+				console.log("프로필 이미지 삭제 실패");
+				console.log(err)
+			})
+
 		},
 		
 		// 업로드 QR코드
@@ -374,8 +388,6 @@ export default {
 			const image = e.target.files[0];
 			file.append("file", image);
 
-			// console.log("QRform : "+image);
-
 			const reader = new FileReader();
 			reader.readAsDataURL(image); 
 			reader.onload = e =>{
@@ -383,7 +395,7 @@ export default {
 			};
 			
 			// **추가** POST문으로 서버에 이미지 파일 전송
-			axios.post(API_URL+'api/v1/img?nickname='+this.userinfo.nickname,
+			axios.post(API_URL+'api/v1/qr/?nickname='+this.userinfo.nickname,
 				file,
 				{
 					headers:{
@@ -392,16 +404,30 @@ export default {
 					}	
 				}
 			)
-			.then(function (response){
-				// console.log(response);
-				this.userinfo.qrImage = response;
+			.then(response => {
+				this.userinfo.qrImage = response.data;
 			})
-			.catch(function(error){
-				console.log(error);
+			.catch( (err) => {
+				console.log("QR 이미지 업로드 실패");
+				console.log(err);
 			})
 
 		},
+		deleteQRImage(){
+			
+			// **추가** POST문으로 서버에 기본 이미지 파일 전송
+			axios.put(API_URL+'api/v1/qr/'+this.userinfo.uid,{
+				url : "http://i3a507.p.ssafy.io/img/common/emptyQR.jpg",
+			})
+			.then( response => {
+				this.userinfo.qrImage = response.data;
+			})
+			.catch( (err) => {
+				console.log("QR 이미지 삭제 실패")
+				console.log(err);
+			})
 		
+		},
 		// 회원탈퇴 토글 -> 모달창
 		handle_toggle: function(){ 
 			this.is_show = !this.is_show; // #2, #3
@@ -443,7 +469,19 @@ export default {
 		axios
 		.get(API_URL+'api/v1/'+uid)
 		.then(({data})=>{
-
+			console.log("들어오는 Data 확인 : "+data.uid);
+			console.log("들어오는 Data 확인 : "+data.nickname);
+			console.log("들어오는 Data 확인 : "+data.email);
+			console.log("들어오는 Data 확인 : "+data.password);
+			console.log("들어오는 Data 확인 : "+data.profileImage);
+			console.log("들어오는 Data 확인 : "+data.qrImage);
+			console.log("들어오는 Data 확인 : "+data.admin);
+			console.log("들어오는 Data 확인 : "+data.facebook);
+			console.log("들어오는 Data 확인 : "+data.instagram);
+			console.log("들어오는 Data 확인 : "+data.github);
+			console.log("들어오는 Data 확인 : "+data.introduce);
+			console.log("들어오는 Data 확인 : "+data.updateType);
+			console.log("=======================================");
 			this.userinfo.uid = data.uid;
 			this.userinfo.profileImage = data.profileImage;
 			this.userinfo.nickname = data.nickname;
@@ -452,11 +490,8 @@ export default {
 			this.userinfo.facebook = data.facebook,
 			this.userinfo.instagram = data.instagram,
 			this.userinfo.emailaddr = data.email,
-			this.userinfo.qr = data.qrImage
+			this.userinfo.qrImage = data.qrImage
 
-			console.log("Userinfo uid 데이터 확인 "+ this.userinfo.uid);
-			console.log("Userinfo profile 데이터 확인 "+ this.userinfo.profileImage);
-			console.log("Userinfo nickname 데이터 확인 "+ this.userinfo.nickname);
 		})
 	},
 	
