@@ -7,15 +7,23 @@
 			justify
   >
     <h1 class="logo_title"><router-link to="/">DO!</router-link></h1>
-      <v-toolbar-items v-for="item in nav" :key="item.text">
-         <v-btn text> {{item.text}} </v-btn>
-      </v-toolbar-items>
+    <v-toolbar-items style="align-items: center">
+      <router-link to="/introduce">소개</router-link>
+    </v-toolbar-items>
+    <v-toolbar-items style="align-items: center">
+      피드
+    </v-toolbar-items>
+    <v-toolbar-items style="align-items: center">
+      포럼
+    </v-toolbar-items>
       <div class="notice">
         <v-icon small>fas fa-volume-down</v-icon>
         <span>{{noticemsg}}</span>
 			</div>
 			<v-spacer></v-spacer>
+      <router-link to="/search">
       <v-icon small color="black" class="icon" style="margin-top:5px;">fas fa-search</v-icon>
+      </router-link>
       <!-- 로그인 안했을 때 -->
       <div v-if="!isLogin" class="login">
 				<span><router-link to="/login">로그인</router-link></span>
@@ -47,7 +55,7 @@
               로그아웃
             </v-list-item>
             <v-list-item v-if="google_login" @click="onClickLogout">
-              <GoogleLogin :params="params" :logoutButton=true>로그아웃</GoogleLogin>
+              <GoogleLogout :params="params" :logoutButton=true>로그아웃</GoogleLogout>
             </v-list-item>
           </v-list>
         </v-card>
@@ -60,32 +68,17 @@
 
 <script>
 const storage = window.sessionStorage
-import GoogleLogin from 'vue-google-login';
+import GoogleLogin from 'vue-google-login' 
 
 export default {
   name: 'Navbar',
   component: {
-    GoogleLogin
+    GoogleLogout: GoogleLogin,
   },
   data() {
     return {
       profile: false,
       isLogin: this.$store.state.isLoggedIn,
-      nav: [
-        {
-				text: '소개',
-				title: 'Our Contact info',
-				},
-				{
-				text: '피드',
-				title: '내가 구독하는 블로그',
-				},
-				{
-        
-				text: '포럼',
-				title: '에디터/관리자 추천 포스트',
-				},
-      ],
       noticemsg: '공지입니다.',
       google_login: storage.getItem("google_login"),
     }
@@ -131,7 +124,7 @@ export default {
   //     if (val !== prev) {
   //       val = this.$store.getters.isAuthenticated
   //     }
-  //   }
+  //   
   // }
 }
 </script>
@@ -141,14 +134,17 @@ export default {
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
 
 header{
-	padding : 0 10%;
+	padding : 0 4rem;
+  min-width:1100px;
 }
 h1{
 	font-size : 2em;
 	font-family: 'Inter', sans-serif;
+  font-weight: 800;
 }
 a{
-  text-decoration: none;
+  color : black !important;
+  text-decoration: none !important;
 }
 button > span {
   font-family: 'Noto Sans DemiLight', 'sans-serif';
@@ -164,8 +160,7 @@ div > .newpost > a >button:hover {
 }
 .logo_title{
 	display : inline-block;
-	width: 60px;
-	margin: 0 70px 0 0;
+	margin: 0 43px 0 0;
 	vertical-align: top;
 }
 .v-toolbar__items{
@@ -181,9 +176,12 @@ div > .newpost > a >button:hover {
 	text-decoration: none;
 }
 .notice {
-	border-left: 1px solid lightgray;
-	margin : 0px 0px 0px 20px ;
-	padding: 0px 0px 0px 20px;
+  margin : 0px 0px 0px 54px ;
+	padding: 0px 0px 0px 0px;
+}
+.notice::before {
+  content:'|';
+  padding-right: 24px;
 }
 .notice i {
 	color : black;
@@ -212,5 +210,8 @@ div > .newpost > a >button:hover {
 }
 .newpost {
   margin-right:20px;
+}
+.v-toolbar__items{
+  padding: 0 7px 0 17px;
 }
 </style>

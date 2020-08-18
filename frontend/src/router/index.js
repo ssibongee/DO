@@ -9,6 +9,9 @@ import TextEditor from '../components/TextEditor.vue'
 import Setting from '../components/Setting.vue'
 import PostDetail from '../components/PostDetail.vue'
 import FindID from '../components/user/FindID.vue'
+import Introduce from '../components/Introduce.vue'
+import Search from '../components/Search.vue'
+import Feed from '../components/Feed.vue'
 
 Vue.use(VueRouter)
 import store from '../router/index.js'
@@ -21,6 +24,7 @@ const requireAuth = () => (from, to, next) => {
   return next('/') // isAuth === false면 다시 로그인 화면으로 이동
 }
 
+
 export default new VueRouter({
   mode: 'history'
   , routes: [
@@ -28,6 +32,11 @@ export default new VueRouter({
       path: '/',
       name: 'home',
       component: Home,
+    },
+    {
+      path:'/introduce',
+      name:'introduce',
+      component: Introduce
     },
     {
       path: '/login',
@@ -70,5 +79,15 @@ export default new VueRouter({
       name: 'findid',
       component: FindID,
     },
+    {
+      path: '/search',
+      name: 'search',
+      component: Search
+    },
+    {
+      path:'/feed',
+      name:'feed',
+      component: Feed
+    }
   ]
 })
