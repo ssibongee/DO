@@ -40,44 +40,43 @@
         <!-- 게시글 미리보기 -->
           <v-tab-item v-for="(item) in items" :key="item">
             <v-row v-if="posts.length">
-            <v-col cols="4" v-for="(post, index) in posts" :key="index+'_posts'">
+            <v-col cols="4" v-for="(post, index) in posts" :key="index+'_posts'"
+              style="padding:1rem">
                 <v-hover>
                 <template v-slot="{hover}">
                 <v-card 
                   @click="postdetail(post)"
-                  height="380px"
+                  height="406px"
                   max-width="350px"
                   :elevation="hover ? 8 : 2"
                 >
                   <v-img
                     class="white--text align-end"
-                    height="200px"
+                    height="180px"
                     :src="post.thumbnail"
                   />
+                  <div class="inner_card">
                     <!-- 제목이 가로범위 초과시 ... -->
-                    <v-card-title><h5>{{post.title}}</h5></v-card-title>
-                    <v-card-subtitle class="pb-0">{{ item }}</v-card-subtitle>
-                    <v-card-text class="text--primary" style="height:65px">
-                    <div>{{post.content}}</div>
-                    <div v-if="!post.content">게시글 내용이 비어있습니다.</div>
-                    <div>{{post.publishedTime}}</div>
-                  </v-card-text>
-
-                  <v-card-actions>
-                    <v-btn
-                      color="orange"
-                      text
-                    >
-                      Share
-                    </v-btn>
-
-                    <v-btn
-                      color="orange"
-                      text
-                    >
-                      Explore
-                    </v-btn>
-                  </v-card-actions>
+                    <div class="card_title"><h5>{{post.title}}</h5></div>
+                    <!-- <v-card-subtitle class="pb-0">{{ item }}</v-card-subtitle> -->
+                    <!-- 내용 -->
+                    <div class="card_content">
+                      <p>{{post.content}}</p>
+                      <div v-if="!post.content">게시글 내용이 비어있습니다.</div>
+                    </div>
+                    <!-- 날짜 -->
+                    <div class="card_date">{{post.publishedTime}}</div>
+                    <!-- 작성자, 좋아요 -->
+                    <div class="card_info">
+                      <div class="author">
+                        {{post.author}}
+                      </div>
+                      <div class="liked">
+                        <v-icon x-small style="margin-top:-2px" color="black">fas fa-heart</v-icon>
+                        {{post.likes}}
+                      </div>
+                    </div>
+                  </div>
                 </v-card>
                 </template>
                 </v-hover>
@@ -148,18 +147,19 @@ export default {
         // 콘텐츠 미리보기 슬라이스
         data.forEach(el => {
           el.tmp = el.content
-          if (el.content.length > 40) {
+          if(el.title.length > 18){
+            el.title = el.title.slice(0,18)+"..."
+          }
+          if (el.content.length > 120) {
             // 마크다운 사진 제외
             el.content = el.content.replace(/!\[.*\)+/, "")
-            // 최대 길이 슬라이스
-            el.content = el.content.slice(0, 40)
-            // 작성 날짜만 보이게 수정
-            let year = el.publishedTime.slice(0,4);
-            let month = el.publishedTime.slice(5,7);
-            let day = el.publishedTime.slice(8,10);
-            // console.log(year+"년 "+month+"월 "+day+"일")
-            el.publishedTime = year+"년 "+month+"월 "+day+"일"
           }
+          // 작성 날짜만 보이게 수정
+          let year = el.publishedTime.slice(0,4);
+          let month = el.publishedTime.slice(5,7);
+          let day = el.publishedTime.slice(8,10);
+          // console.log(year+"년 "+month+"월 "+day+"일")
+          el.publishedTime = year+"년 "+month+"월 "+day+"일"
           this.posts = data
         });
       })
@@ -212,9 +212,45 @@ em {
 .v-tab {
   letter-spacing: -1px;
   font-size: 16px;
-  font-family: 'Noto Sans DemiLight','Apple SD Gothic','맑은고딕','Nanum Gothic',sans-serif;;
+  font-family: 'NanumSquareR','나눔스퀘어','Noto Sans DemiLight','Apple SD Gothic','맑은고딕','Nanum Gothic',sans-serif;
 }
 .content_area{
   min-width: 1100px; 
+}
+.inner_card {
+  padding: 1.5rem;
+}
+.card_title h5{
+  font-size: 1rem;
+  font-family: 'NanumSquare','나눔스퀘어','Noto Sans','Apple SD Gothic','맑은고딕','Nanum Gothic',sans-serif;
+  font-weight: 800;
+}
+.card_content{
+  width:100%;
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  white-space: normal;
+  line-height: 1.5;
+  height:4.5em;
+  color: rgb(73, 80, 87);
+  font-family: 'NanumSquare','나눔스퀘어','Noto Sans','Apple SD Gothic','맑은고딕','Nanum Gothic',sans-serif;
+  font-weight:400;
+
+  margin: 0 0 1.5rem;
+}
+.card_content p{
+  height: 100%
+}
+.card_date {
+  font-size:0.75rem;
+  padding: 5px 0 5px;
+  color: rgb(134, 142, 150);
+}
+.liked{
+  float:right; 
+  margin-top: -24px
 }
 </style>
