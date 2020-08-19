@@ -105,11 +105,12 @@ export default {
     created(){
       axios.get(API_URL + 'api/v2/p/' + storage.getItem("pid"))
         .then(res => {
+          console.log(res)
           // this.post = res.data
           this.post.title = res.data.title
           this.post.author = res.data.author
           this.post.content = res.data.content
-          console.log(this.post)
+          // console.log(this.post)
           this.Comments = res.data.comments
           // console.log(this.Comments)
           this.isCommentauthor(this.Comments)
@@ -125,7 +126,7 @@ export default {
         axios.get(API_URL + 'api/v2/p/' + storage.getItem("pid"))
           .then(res => {
             this.post = res.data
-            console.log(this.post)
+            // console.log(this.post)
             this.Comments = res.data.comments
             this.isCommentauthor(this.Comments)
             this.isPostauthor(this.isPostauthor)
