@@ -24,7 +24,10 @@
             <Viewer :initialValue="this.content"/>
           </div>
           <!-- 게시글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
-          <div></div>
+          <div>
+            <v-btn @click="onPostUpdateBtn" color="success">게시글 수정</v-btn>
+            <v-btn @click="onPostDeleteBtn" color="primary">게시글 삭제</v-btn>
+          </div>
           <!-- 블로그 작성자 Thumnail -->
 
           <!-- 짧은 자기 소개 -->
@@ -103,7 +106,6 @@ export default {
         }
     },
     created(){
-      console.log(storage.getItem("uid"))
       axios.post(API_URL + 'api/v2/p/',{
         // headers :{
         //   'Content-Type': 'application/json',
@@ -160,6 +162,22 @@ export default {
           return false
         }
       },
+      // 게시글 수정 페이지로 보내는 버튼
+      onPostUpdateBtn() {
+        if (this.isPostauthor()) {
+          console.log('수정버튼 눌림')
+          // this.$router.push()
+        }
+      },
+
+      // 게시글 삭제 버튼
+      onPostDeleteBtn() {
+        if (this.isPostauthor()) {
+          axios.delete(API_URL + 'api/v3' + this.post.pid)
+            .then(() => alert('게시글이 삭제되었습니다.'))
+        }
+      },
+      
       // 댓글 Create 메서드
       onCommentCreate() {
         if (storage.getItem("login_user")) {
