@@ -29,15 +29,16 @@
 				<p class="" v-else>{{ comment.child.length }}개의 대댓글</p>
 				<div v-if="ChildFlag">
 					<div v-for="child in comment.child" :key=child.cid>
-						<p>작성자: {{ child.author }} | 내용: {{ child.content }}</p>
+						<ChildComment 
+							:child="child"
+						/>
 					</div>
 					<div>
 					<v-text-field
-						:id="comment.cid"
 						v-model="ChildCommentInput"
-						solo="true"
-						dense="true"
-						clearable="true"
+						solo
+						dense
+						clearable
 					></v-text-field>
 					<v-btn @click="onChildCommentCreate(comment.cid)">답글 작성하기</v-btn>
 					</div>
@@ -49,6 +50,7 @@
 
 <script>
 import axios from 'axios'
+import ChildComment from './ChildComment.vue'
 
 const API_URL = 'http://i3a507.p.ssafy.io:8081/'
 // const API_URL = 'http://localhost:8081/'
@@ -57,6 +59,7 @@ const storage = window.sessionStorage
 export default {
 	name: 'Comment',
 	components: {
+		ChildComment,
 	},
 	data() {
 		return {
