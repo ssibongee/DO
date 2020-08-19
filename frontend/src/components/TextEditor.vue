@@ -7,8 +7,26 @@
             required
         ></v-text-field>
         <editor ref="toastuiEditor" height="500px"/>
+        <h3>썸네일 이미지</h3>
+        <div class="profile_area">
+            <div class="imgbox">
+                <!-- 회원 프로필 이미지 디비에서 조회 -->
+                <!-- [추가]이미지 변화에 대한 처리 -->
+                <img v-bind:src="thumbImage" onerror="this.src='https://www.mangboard.com/wp-content/uploads/mangboard/2017/04/07/F816_imageupload.png'">
+            </div>
+            <div class="btn_group">
+                <!-- 이미지 업로드 (모달) -->
+                <div class="img_btn">
+                    <v-btn depressed width="150px" color="#6e8af8" class="white--text"><label for="file-input" style="padding-top:9px">이미지 업로드</label></v-btn>
+                    <input type="file" accept="image/*" @change="uploadthumbImage($event)" id="file-input" class="uploadimg">
+                </div>
+              </div>
+        </div>
         <h3>태그 입력칸</h3>        
-        <TagInputBox @event-data="createAction"/>
+        <TagInputBox 
+            @submit-post="createAction"
+            @save-post="saveAction"
+        />
     </v-container>
 </template>
 <script>
@@ -34,7 +52,12 @@ export default {
         return {
             editorText: '',
             title: '',
+            thumbImage: '',
+            uid: '',
         }
+    },
+    mounted() {
+        storage.removeItem("thumbImage")
     },
     methods: {
         createAction(tagData) {
@@ -51,9 +74,51 @@ export default {
                 title: this.title,
                 content: this.editorText,
                 tag: tagList,
+                thumbnail: storage.getItem("thumbImage")
             })
-            .then(() => this.$router.push('/'))
+            .then(() => {
+                storage.removeItem("thumbImage")
+                this.$router.push('/')
+            })
             .catch(err => console.log(err))
+        },
+        saveAction() {
+        
+        },
+
+        // 업로드 이미지
+        uploadthumbImage(e){
+
+            var file = new FormData();
+            const image = e.target.files[0];
+            file.append("file", image);
+
+            // 미리보기용
+            const reader = new FileReader();
+            reader.readAsDataURL(image); 
+            reader.onload = e =>{
+                this.thumbImage = e.target.result; // profileImage 설정
+            };
+
+            // **추가** POST문으로 서버에 이미지 파일 전송
+            axios.post(API_URL+'api/v2/img'+`?title=${this.title}&author=${storage.getItem("login_user")}`,
+                file,
+                {
+                    headers:{
+                        'Content-Type': 'multipart/form-data',
+                        'Accept': 'application/json'
+                    }	
+                }
+                )
+                .then(response => {
+                    console.log(response.data);
+                    this.thumbImage = response.data;
+                    storage.setItem("thumbImage", response.data)
+                })
+                .catch((err) => {
+                    console.log("프로필 이미지 업로드 실패")
+                    console.log(err);
+                })
         },
     },
 }
@@ -61,6 +126,34 @@ export default {
 
 <style scoped>
 h3 {
-    margin: 0.5rem auto;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+.uploadimg {
+		display:none;
+	}
+.profile_area{
+		padding: 30px 20px 18px;
+		border-bottom: 1px solid  #e0e5ee;
+	}
+.img_btn{
+    font-family: 'NanumSquare', Noto Sans Light, sans-serif;
+    width:150px;
+    margin: 5px 0;
+}
+.imgbox {
+		width: 400px;
+		height: 250px;
+		border-radius: 10%;
+		overflow: hidden;
+		margin: 0 auto;
+	}
+.imgbox> img {
+    width: 100%;
+    height: 100%;
+}
+.btn_group{
+    margin: 15px 0 0;
 }
 </style>
