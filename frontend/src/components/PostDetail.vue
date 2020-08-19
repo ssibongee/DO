@@ -113,13 +113,13 @@ export default {
         pid : storage.getItem("pid")
       })
         .then(res => {
-          console.log(res)
+          // console.log(res)
           // this.post = res.data
           this.post.title = res.data.title
           this.post.author = res.data.author
           this.post.content = res.data.content
           this.post.islike = res.data.isLike
-          console.log(this.post)
+          // console.log(this.post)
           if(this.post.islike===true){
             this.like = "fas fa-heart"
             this.FeedFlag= true
@@ -127,7 +127,7 @@ export default {
             this.like = "far fa-heart"
             this.FeedFlag = false
           }
-          console.log(this.post)
+          // console.log(this.post)
           this.Comments = res.data.comments
           // console.log(this.Comments)
           this.isCommentauthor(this.Comments)
@@ -220,7 +220,6 @@ export default {
           }
           //삭제하면 db에서 제거
           else {
-            console.log("2")
             this.like="far fa-heart"
             this.post.islike=false;
             this.FeedFlag=false;
