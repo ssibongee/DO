@@ -42,6 +42,23 @@
 							/>
 							<p class="caution">※ 이메일은 수정할 수 없습니다.</p>
 						</div>
+						<div class="user_pwd">
+							<h4 class="cate_desc">비밀번호</h4>
+							<div v-if="pwdCheck">
+								<v-text-field 
+									v-model="userinfo.password"
+									type="password"
+									outlined 
+									dense
+									hide-details
+									style="border-radius:0px"
+									class="mb-3"
+								/>
+							</div>
+							<v-btn color="#6e8af8" depressed tile outlined class="mb-3" @click="modpwd">
+								비밀번호 변경
+							</v-btn>
+						</div>
 					</div>
 					<div class="user_detail">
 						<div class="nickname">
@@ -178,9 +195,9 @@
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="signout">
-					<a @click="showMsgBoxTwo">DO!에서 <span class="signout_btn">탈퇴하기</span></a>
+					<div class="signout">
+						<a @click="showMsgBoxTwo">DO!에서 <span class="signout_btn">탈퇴하기</span></a>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -219,6 +236,7 @@ export default {
 	},
 	data() {
 		return {
+			pwdCheck: false,
 			clickprofile : false,
 			clicksns : false,
 			mandatory : false,
@@ -227,6 +245,7 @@ export default {
 			boxTwo: '', // 회원 탈퇴
 			userinfo : {
 				uid : '',
+				password: '',
 				profileImage : '',
 				nickname : '',
 				introduce : '',
@@ -251,7 +270,7 @@ export default {
 		}
 	},
 	methods: {
-
+		
 		modprofile() {
 			if(this.clickprofile===false){
 				this.clickprofile = true;
@@ -262,7 +281,22 @@ export default {
 				this.clicksns = true;
 			}
 		},
-
+		modpwd(){
+			if(this.pwdCheck===false){
+				this.pwdCheck=true;
+			}
+			else if(this.pwdCheck===true){
+				this.pwdCheck=false;
+				axios.put(API_URL+'api/v1/'+this.userinfo.uid,{
+					password : this.userinfo.password,
+					updateType : "1"
+				}).then(function(response){
+					console.log(response);
+				}).catch(function(error){
+					console.log(error);
+				})
+			}
+		},
 
 		// nickname, introduce 수정
 		updateNickname() {
@@ -466,7 +500,7 @@ export default {
 			this.userinfo.instagram = data.instagram,
 			this.userinfo.emailaddr = data.email,
 			this.userinfo.qrImage = data.qrImage
-
+			this.userinfo.password = data.password
 		})
 	},
 	
@@ -478,7 +512,7 @@ export default {
 		background-color: #f2f4f7;	
 	}
 	.inner {
-		min-height:1600px;
+		min-height:1850px;
 		max-width:960px;
 		margin: 0 auto;
 		padding: 151px 15px 0 15px;
@@ -503,6 +537,9 @@ export default {
 		width:100%;
 		padding: 30px;
 		border-bottom: 1px solid #e0e5ee;
+	}
+	.user_email{
+		padding-bottom: 40px;
 	}
 	.user_detail{
 		width:100%;
@@ -571,6 +608,9 @@ export default {
 	}
 	.introduce {
 		margin-bottom: 20px;
+	}
+	button {
+		border-radius: 0px;
 	}
 	button:hover{
 		background-color:#6e8af8;
