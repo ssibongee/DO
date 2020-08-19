@@ -77,7 +77,12 @@
 		<v-btn 
 			@click="onSubmitButton"
 			color="success"
-		>저장하기</v-btn>
+		>출간하기</v-btn>
+		<v-btn
+			class="ml-2"
+			@click="onSaveButton"
+			color="info"
+		>임시저장</v-btn>
 	</div>
 </template>
 
@@ -150,7 +155,10 @@ export default {
 			.indexOf(query.toString().toLowerCase()) > -1
 		},
 		onSubmitButton() {
-			this.$emit('event-data', this.model)
+			this.$emit('submit-post', this.model)
+		},
+		onSaveButton() {
+			this.$emit('save-post')
 		}
 	},
 }
