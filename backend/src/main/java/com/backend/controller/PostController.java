@@ -50,7 +50,7 @@ public class PostController {
     @PostMapping("/api/v2/")
     public HttpStatus save(@RequestBody Post newPost) throws Exception {
         // 섬네일을 등록하지 않으면 기본 섬네일을 등록한다.
-        if(newPost.getThumbnail() == null) {
+        if (newPost.getThumbnail() == null) {
             newPost.setThumbnail(DEFAULT_THUMBNAIL_IMAGE_URL);
         }
         try {
@@ -62,7 +62,6 @@ public class PostController {
     }
 
     /**
-     *
      * @param map (uid, pid) : 현재 로그인한 유저 정보와, 조회하려는 글 번호
      * @return
      */
@@ -158,18 +157,30 @@ public class PostController {
 
     /**
      * 임시저장 기능 : 넘겨받은 글의 내용을 수정하고 isTemp 속성을 1로 만든다.
-     * @param post
-     * 나중에 임시저장이 아닌 저장이 된 글들에 대한 처리가 필요함
+     *
+     * @param post 나중에 임시저장이 아닌 저장이 된 글들에 대한 처리가 필요함
      */
     @ApiOperation(value = "임시저장", notes = "임시저장을 눌렀을 포스트 처리")
     @PutMapping("/api/v2/temp")
     public void temporarily(@RequestBody Post post) {
+        System.out.println(post.getPid());
+        Long pid;
+        if (post.getPid() == null) {
+            System.out.println("처음 작성하는 게시글 ");
+            try {
+                pid = postService.save(post);
+                post.setPid(pid);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         postService.temporarily(post);
     }
 
 
     /**
      * 게시글 삭제 기능 : pid 에 해당하는 게시글을 삭제한다. 이 때 관련 댓글도 같이 삭제됨
+     *
      * @param pid : 게시글 번호
      */
     @ApiOperation(value = "게시글 삭제", notes = "pid와 일치하는 게시글 삭제")
@@ -180,6 +191,7 @@ public class PostController {
 
     /**
      * 게시글 수정 : 해당 게시물을 수정완료 버튼을 눌렀을 때 임시저장 상태의 글은 저장완료 상태로 바뀜
+     *
      * @param post
      */
     @ApiOperation(value = "게시글 수정", notes = "게시글 수정, 임시저장 글을 수정완료할 경우 상태 변경")
@@ -191,7 +203,6 @@ public class PostController {
     // 글 읽어올 때 좋아요 표시한 게시물인지 판단해서 좋아요 활성 비활성 하는 것 해야함
 
     /**
-     *
      * @param file
      * @param title
      * @param author
@@ -212,7 +223,7 @@ public class PostController {
         String basePath = "/home/ubuntu/dist/dist/img/" + author + "/" + sha512Title.getSha512(); // 루트경로 + 사용자 닉네임 + 글 제목
 
         File dir = new File(basePath); // 경로에 디렉토리가 존재하지 않을 경우 폴더 생성
-        if(!dir.exists()) {
+        if (!dir.exists()) {
             dir.mkdirs();
         }
 

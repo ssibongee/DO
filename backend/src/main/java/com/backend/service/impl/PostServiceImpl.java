@@ -29,18 +29,20 @@ public class PostServiceImpl implements PostService {
 
         postDao.save(post);
         Long pid = post.getPid();
-        for(String tag : post.getTag()) {
-            Long tid = postDao.findTagByName(tag);
-            if(tid != null) { // 태그가 이미 존재하는 경우
-                postDao.increaseTagHits(tag); // 해당 태그의 사용 횟수를 1증가
-            } else {
-                Tag newTag = new Tag(tag);
-                postDao.saveNewTag(newTag); // 새로운 태그를 등록한 뒤에
-                tid = newTag.getTid();
-            } // 태그가 존재하지 않는 경우
-            postDao.savePostTagList(pid, tid); // 태그 리스트에 저장
+        if(post.getTag() != null) {
+            for (String tag : post.getTag()) {
+                Long tid = postDao.findTagByName(tag);
+                if (tid != null) { // 태그가 이미 존재하는 경우
+                    postDao.increaseTagHits(tag); // 해당 태그의 사용 횟수를 1증가
+                } else {
+                    Tag newTag = new Tag(tag);
+                    postDao.saveNewTag(newTag); // 새로운 태그를 등록한 뒤에
+                    tid = newTag.getTid();
+                } // 태그가 존재하지 않는 경우
+                postDao.savePostTagList(pid, tid); // 태그 리스트에 저장
+            }
         }
-        return 1L;
+        return pid;
     }
 
     @Override
