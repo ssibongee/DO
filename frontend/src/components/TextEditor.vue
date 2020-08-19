@@ -88,7 +88,7 @@ export default {
 
         // 업로드 이미지
         uploadthumbImage(e){
-            console.log('tttttttttttttttttttt')
+
             var file = new FormData();
             const image = e.target.files[0];
             file.append("file", image);
@@ -111,6 +111,7 @@ export default {
                 }
                 )
                 .then(response => {
+                    console.log(response.data);
                     this.thumbImage = response.data;
                     storage.setItem("thumbImage", response.data)
                 })
@@ -142,8 +143,8 @@ h3 {
     margin: 5px 0;
 }
 .imgbox {
-		width: 300px;
-		height: 300px;
+		width: 400px;
+		height: 250px;
 		border-radius: 10%;
 		overflow: hidden;
 		margin: 0 auto;
