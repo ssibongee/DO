@@ -59,6 +59,9 @@ export default {
             profileImage: '',
         }
     },
+    mounted() {
+        storage.removeItem("profileImage")
+    },
     methods: {
         createAction(tagData) {
             // 태그 데이터 정리해서 보내기
@@ -76,7 +79,10 @@ export default {
                 tag: tagList,
                 thumbnail: storage.getItem("profileImage")
             })
-            .then(() => this.$router.push('/'))
+            .then(() => {
+                storage.removeItem("profileImage")
+                this.$router.push('/')
+            })
             .catch(err => console.log(err))
         },
         saveAction() {
