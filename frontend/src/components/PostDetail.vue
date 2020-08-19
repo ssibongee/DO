@@ -115,12 +115,13 @@ export default {
         pid : storage.getItem("pid")
       })
         .then(res => {
-          // console.log(res)
+          console.log(res)
           // this.post = res.data
           this.post.title = res.data.title
           this.post.author = res.data.author
           this.post.content = res.data.content
           this.post.islike = res.data.isLike
+          this.post.uid = res.data.uid
           // console.log(this.post)
           if(this.post.islike===true){
             this.like = "fas fa-heart"
@@ -148,7 +149,7 @@ export default {
         })
           .then(res => {
             this.post = res.data
-            console.log(this.post)
+            // console.log(this.post)
             this.Comments = res.data.comments
             this.isCommentauthor(this.Comments)
             this.isPostauthor(this.isPostauthor)
@@ -164,8 +165,11 @@ export default {
       },
       // 게시글 수정 페이지로 보내는 버튼
       onPostUpdateBtn() {
+        console.log('수정버튼 눌림')
+        console.log(this.post.author)
+        console.log(this.post.uid)
         if (this.isPostauthor()) {
-          console.log('수정버튼 눌림')
+          console.log('검증 통과')
           // this.$router.push()
         }
       },

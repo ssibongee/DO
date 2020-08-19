@@ -77,7 +77,8 @@ export default {
                 title: this.title,
                 content: this.editorText,
                 tag: tagList,
-                thumbnail: storage.getItem("profileImage")
+                thumbnail: storage.getItem("profileImage"),
+                uid: storage.getItem("uid")
             })
             .then(() => {
                 storage.removeItem("profileImage")
