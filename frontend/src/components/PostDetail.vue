@@ -113,12 +113,13 @@ export default {
         pid : storage.getItem("pid")
       })
         .then(res => {
+          // console.log(res)
           // this.post = res.data
           this.post.title = res.data.title
           this.post.author = res.data.author
           this.post.content = res.data.content
           this.post.islike = res.data.isLike
-          console.log(this.post)
+          // console.log(this.post)
           if(this.post.islike===true){
             this.like = "fas fa-heart"
             this.FeedFlag= true
@@ -126,7 +127,7 @@ export default {
             this.like = "far fa-heart"
             this.FeedFlag = false
           }
-          console.log(this.post)
+          // console.log(this.post)
           this.Comments = res.data.comments
           // console.log(this.Comments)
           this.isCommentauthor(this.Comments)
@@ -138,19 +139,19 @@ export default {
     // computed() {
     // },
     methods: {
-      // fetchData() {
-      //   axios.post(API_URL + 'api/v2/p',{
-      //     uid : storage.getItem("uid"),
-      //     pid : storage.getItem("pid")
-      //   })
-      //     .then(res => {
-      //       this.post = res.data
-      //       console.log(this.post)
-      //       this.Comments = res.data.comments
-      //       this.isCommentauthor(this.Comments)
-      //       this.isPostauthor(this.isPostauthor)
-      //     })
-      // },
+      fetchData() {
+        axios.post(API_URL + 'api/v2/p',{
+          uid : storage.getItem("uid"),
+          pid : storage.getItem("pid")
+        })
+          .then(res => {
+            this.post = res.data
+            console.log(this.post)
+            this.Comments = res.data.comments
+            this.isCommentauthor(this.Comments)
+            this.isPostauthor(this.isPostauthor)
+          })
+      },
       // 글 작성자인지 확인
       isPostauthor() {
         if (this.post.author && storage.getItem("login_user") && this.post.uid && storage.getItem("uid")) {
@@ -181,7 +182,9 @@ export default {
       // 해당 Post의 모든 Comment 읽어오기 & 인풋 초기화
       CommentRead() {
         axios.get(API_URL+'api/v3/'+storage.getItem("pid"))
-          .then(res => this.Comments = this.isCommentauthor(res.data))
+          .then(res => {
+            this.Comments = this.isCommentauthor(res.data)
+          })
         this.CommentInput = ""
       },
       // 작성자 비교 후 삭제 버튼 flag 설정하는 메서드
@@ -219,7 +222,6 @@ export default {
           }
           //삭제하면 db에서 제거
           else {
-            console.log("2")
             this.like="far fa-heart"
             this.post.islike=false;
             this.FeedFlag=false;
