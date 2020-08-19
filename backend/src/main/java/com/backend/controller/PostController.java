@@ -62,18 +62,20 @@ public class PostController {
     }
 
     /**
-     * @param pid : Post 가 가지고 있는 고유 식별번호
+     *
+     * @param map (uid, pid) : 현재 로그인한 유저 정보와, 조회하려는 글 번호
      * @return
      */
     @ApiOperation(value = "글 읽기", notes = "pid 를 통해 글 하나를 찾아서 반환")
-    @GetMapping("/api/v2/p/{pid}")
-    public Post findById(@PathVariable Long pid, Model model) {
-        Long uid = (Long) model.getAttribute("uid");
+    @PostMapping("/api/v2/p/")
+    public Post findById(@RequestBody Map<String, String> map) {
+        Long uid = Long.parseLong(map.get("uid"));
+        Long pid = Long.parseLong(map.get("pid"));
         Post post = postService.findById(pid);
         post.setTag(postService.findAllPostTags(pid)); // 게시글의 모든 태그를 불러옴
         post.setComments(commentService.findAllCommentsInPost(pid)); // 게시글의 모든 댓글을 불러옴
         // 게시글 좋아요 표시
-        post.setIsLike(bookmarkService.isBookmark(uid, post.getPid()) != null ? true : false);
+        post.setIsLike(bookmarkService.isBookmark(uid, pid) != null ? true : false);
         return post;
     }
 
