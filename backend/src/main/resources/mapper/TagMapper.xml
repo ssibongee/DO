@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.backend.mapper.TagMapper">
+    
+    <!-- Word Cloud를 구성하기 위한 태그 목록을 가져옴 최대 50개 -->
+    <select id="loadTopTags" resultType="com.backend.dto.post.Tag">
+        select * from tag order by hits desc
+    </select>
+
+</mapper>
