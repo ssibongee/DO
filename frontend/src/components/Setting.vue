@@ -6,13 +6,15 @@
 				<div class="inner_feature">
 					<h2 id="do_top do_feed">회원정보</h2>
           <p class="top_desc">
-						{{userinfo.nickname}}님의 회원 정보입니다.<br>
+						<span style="color:#6e8af8;">{{userinfo.nickname}}</span>님의 회원 정보입니다.<br>
 						회원 정보는 개인정보처리방침에 따라 안전하게 보호되며, 회원님의 명백한 동의 없이 공개 또는 제 3자에게 제공되지 않습니다.	
 					</p>
 				</div>
 				<div class="inner_info">
 					<div class="profile_area">
 						<div class="imgbox">
+							<!-- 회원 프로필 이미지 디비에서 조회 -->
+							<!-- [추가]이미지 변화에 대한 처리 -->
 							<img v-bind:src="userinfo.profileImage" alt="profile">
 						</div>
 						<div class="btn_group">
@@ -23,123 +25,100 @@
 							</div>
 							<!-- 이미지 삭제 -->
 							<div class="img_btn">
-								<v-btn depressed width="150px" @click="deleteProfileImage" text color="#6e8af8">이미지 제거</v-btn>
+								<v-btn depressed width="150px" @click="deleteProfileImage" outlined color="#6e8af8">이미지 제거</v-btn>
 							</div>
 						</div>
 					</div>
-					<div class="inner_detail">
-						<div class="blog_detail">
-							블로그이름
-						</div>
-						<div class="user_detail">
-							<div class="nickname">
-								닉네임
-								{{userinfo.nickname}}
-							</div>
-							<div class="introduce">
-								소개
-								{{userinfo.introduce}}
-							</div>
-							<div class="my-2">
-								<v-btn depressed small class="btn-success" @click="modprofile">수정</v-btn>
-							</div>
-						</div>
-
-					</div>
-				</div>
-			</div>
-		</div>
-		<v-container style="width:70%">
-			<v-row class="mb-10">
-
-				<v-col cols="12" md="3">
-					<div class="wrapper">
-						<div class="inner">
-
-							<div class="circle">
-								<!-- 회원 프로필 이미지 디비에서 조회 -->
-								<!-- [추가]이미지 변화에 대한 처리 -->
-								<img v-bind:src="userinfo.profileImage" alt="profile">
-							</div>
-
-							<div class="my-2">
-								<!-- 모달 창으로 이미지 업로드 -->
-								<!-- <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input"> -->
-								<!-- <v-file-input width="120px" type="file" accept="image/*" @change="onChange">이미지 변경</v-file-input> -->
-								<input type="file" accept="image/*" @change="uploadImage($event)" id="file-input">
-								<!-- <div> -->
-									<!-- <img v-bind:src="userinfo.profileImage" class="uploading-image"/> -->
-									<!-- <input type="file" accept="image/jpeg" @change=uploadImage> -->
-								<!-- </div> -->
-							</div>
-
-							<div>
-								<!-- 기본 이미지로 대체 후, 데이터베이스에서 String = null -->
-								<v-btn depressed width="120px" @click="deleteProfileImage">이미지 제거</v-btn>
-							</div>
+					<div class="inner_email">
+						<div class="user_email">
+							<h4 class="cate_desc">이메일</h4>
+							<v-text-field
+								:placeholder="userinfo.emailaddr"
+								outlined 
+								dense
+								hide-details
+								disabled
+								style="border-radius:0px"
+							/>
+							<p class="caution">※ 이메일은 수정할 수 없습니다.</p>
 						</div>
 					</div>
-				</v-col>
-
-
-				<v-col v-if="!clickprofile">
-					<!-- 사용자 nickname과 introduce 가져오기 -->
-					<h2>{{userinfo.nickname}}</h2>
-					<p>{{userinfo.introduce}}</p>	
-					<div class="my-2">
-							<v-btn depressed small class="btn-success" @click="modprofile">수정</v-btn>
-					</div>
-				</v-col>
-
-
-				<!-- 클릭 시 name, description 부분 수정 -->
-				<v-col v-if="clickprofile">
-					<v-text-field outlined v-model="userinfo.nickname" hide-details style="font-size: 2em; margin-bottom:5px;"></v-text-field>
-					<v-text-field outlined v-model="userinfo.introduce" hide-details dense></v-text-field>
-					<div class="my-2">
-						<v-btn depressed small class="btn-success" @click="updateNickname">수정완료</v-btn>
-					</div>
-				</v-col>
-
-
-			</v-row>
-						<!-- 설정 영역 -->
-			<v-flex>
-			<v-row dense>
-				<v-col cols="3">
-						<h3>Blog Title</h3>
-				</v-col>
-				<v-col cols="9" align-self>
-						<div>
-								{{accountinfo.blogtitle}}
-						</div>
-				</v-col>
-				<v-col cols="12" class="msg">
-						개인 페이지의 좌측 상단에 나타나는 페이지 제목입니다.
-				</v-col>
-			</v-row>
-			<hr>		
-			<v-row dense>
-					<v-col cols="3">
-							<h3>SNS info</h3>
-					</v-col>
-					
-					<v-col cols="9">
-							<!-- 접었다 펴는 형식으로 SNS 입력창 뜰 수 있게 설정 -->
-							<!-- <a href="/setting">수정</a> -->
-						<v-col v-if="!clicksns">
-							<div class="my-2">
-								<v-btn depressed small class="btn-success" @click="modSNS">수정</v-btn>
+					<div class="user_detail">
+						<div class="nickname">
+							<h4 class="cate_desc">닉네임</h4>
+							<div v-if="!clickprofile">
+								<v-text-field 
+									outlined
+									dense
+									hide-details 
+									disabled
+									v-model="userinfo.nickname" 
+									style="border-radius:0px"/>
 							</div>
-						</v-col>
-
-
-						<!-- 클릭 시 name, description 부분 수정 -->
-						<v-col v-if="clicksns">
-							
-							<!-- 이메일(수정불가), GitHub, Instagram, FaceBook  -->
+							<div v-else>
+								<v-text-field 
+									outlined
+									dense
+									v-model="userinfo.nickname" 
+									hide-details 
+									style="border-radius:0px"/>
+							</div>
+						</div>
+						<div class="introduce">
+							<h4 class="cate_desc">소개</h4>
+							<div v-if="!clickprofile">
+								<v-textarea
+									rows="3"
+									outlined
+									dense
+									hide-details 
+									disabled
+									v-model="userinfo.introduce" 
+									style="border-radius:0px"
+								/>
+							</div>
+							<div v-else>
+								<v-textarea 
+									rows="3"
+									outlined
+									dense 
+									hide-details 
+									v-model="userinfo.introduce" 
+									style="border-radius:0px"
+								/>
+							</div>
+						</div>
+						<div class="mod_btn">
+							<div v-if="!clickprofile" class="btn_mod">
+								<v-btn color="#6e8af8" depressed tile outlined @click="modprofile">수정</v-btn>
+							</div>
+							<div v-else class="btn_mod">
+								<v-btn color="#6e8af8" depressed tile outlined @click="updateNickname">수정완료</v-btn>
+							</div>
+						</div>
+					</div>
+					<div class="user_sns">
+						<h4 class="cate_desc">소셜 정보</h4>
+						<div class="user_sns_detail" v-if="!clicksns">
+							<div v-if="userinfo.github" class="sns_addr">
+								<v-icon style="padding-right:5px" small>fab fa-github</v-icon>
+								https://github.com/{{userinfo.github}}
+							</div>
+							<div v-if="userinfo.instagram" class="sns_addr">
+								<v-icon style="padding-right:5px" small>fab fa-instagram</v-icon>
+								https://instagram.com/{{userinfo.instagram}}
+							</div>
+							<div v-if="userinfo.facebook" class="sns_addr">
+								<v-icon style="padding-right:5px" small>fab fa-facebook</v-icon>
+								https://facebook.com/{{userinfo.facebook}}
+							</div>
+						</div>
+						<div class="user_sns_detail" v-else>
 							<div>
 								<v-text-field 
+								outlined
+								dense
+								style="border-radius:0px"
 								prepend-icon="fab fa-github" 
 								v-model="userinfo.github"
 								hint="Github address"
@@ -148,6 +127,9 @@
 							</div>
 							<div>
 								<v-text-field 
+								outlined
+								dense
+								style="border-radius:0px"
 								prepend-icon="fab fa-instagram" 
 								v-model="userinfo.instagram"
 								hint="Instagram address"
@@ -156,115 +138,52 @@
 							</div>
 							<div>
 								<v-text-field 
+								outlined
+								dense
+								style="border-radius:0px"
 								prepend-icon="fab fa-facebook"
 								v-model="userinfo.facebook"
 								hint="Facebook address"
 								prefix="https://facebook.com/"
 								></v-text-field>
 							</div>
-							<!-- 자신 email로 고정 -->
-							<!-- <div>
-								<v-text-field 
-								disabled
-								prepend-icon="far fa-envelope"
-								v-model="userinfo.emailaddr"
-								></v-text-field>
-							</div> -->
-							<div class="my-2">
-								<v-btn depressed small class="btn-success" @click="updateSNS">수정완료</v-btn>
+						</div>
+						<div class="mod_btn">
+							<div v-if="!clicksns">
+								<v-btn color="#6e8af8" depressed tile outlined @click="modSNS">수정</v-btn>
 							</div>
-						</v-col>
-
+							<div v-else>
+								<v-btn color="#6e8af8" depressed tile outlined @click="updateSNS">수정완료</v-btn>
+							</div>
+						</div>
+					</div>
+					<div class="inner_detail">
 						
-
-
-					</v-col>
-					<v-col cols="12" class="msg">
-							포스트 및 블로그에서 보여지는 프로필에 공개되는 소셜 정보입니다.
-					</v-col>
-			</v-row>
-			<hr>
-			
-						<v-row dense>
-								<v-col cols="3">
-										<h3>Donation QR 코드 업로드</h3>
-								</v-col>
-								<v-col cols="9">
-									<!-- 데이터베이스에서 QR 이미지 가져오기 -->
-									<img v-bind:src="userinfo.qrImage" alt="QR코드 생성방법" width="200px" height="200px">
-								</v-col>
-									
-								<div class="my-2">
-									<!-- 모달 창으로 이미지 업로드 -->
-									<!-- <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input"> -->
-									<!-- <v-file-input width="120px" type="file" accept="image/*" @change="onChange">이미지 변경</v-file-input> -->
-									<input type="file" accept="image/*" @change="uploadQR($event)" id="file-input">
-									<!-- <div> -->
-										<!-- <img v-bind:src="userinfo.profileImage" class="uploading-image"/> -->
-										<!-- <input type="file" accept="image/jpeg" @change=uploadImage> -->
-									<!-- </div> -->
+						
+						<div class="dona_info">
+							<h4 class="cate_desc">후원 QR</h4>
+							<div class="qrbox">
+								<div class="qrbox_img">
+									<img v-bind:src="userinfo.qrImage" alt="QR코드 생성방법">
 								</div>
-								<div>
-									<!-- 기본 이미지로 대체 후, 데이터베이스에서 String = null -->
-									<v-btn depressed width="120px" @click="deleteQRImage">이미지 제거</v-btn>
+							</div>
+							<div class="btn_grp">
+								<div class="img_btn">
+									<v-btn depressed width="150px" color="#6e8af8" class="white--text"><label for="qr-input" style="padding-top:9px">이미지 업로드</label></v-btn>
+									<input type="file" accept="image/*" @change="uploadQR($event)" id="qr-input" class="uploadimg">
 								</div>
-
-								<!-- <v-btn>QR 이미지 업로드</v-btn> -->
-									<v-col cols="12" class="msg">
-									후원 받을 QR코드를 이미지 파일로 등록해주세요.
-							</v-col>
-						</v-row>
-						<hr>
-						<v-row dense>
-								<v-col cols="3">
-										<h3>Email Address</h3>
-								</v-col>
-									<v-col cols="9">
-									<!-- 데이터베이스에서 email 값 가져오기 -->
-										{{userinfo.emailaddr}}
-								</v-col>
-								<v-col cols="12" class="msg">
-										회원 인증 또는 시스템에서 발송하는 이메일을 수신하는 주소입니다.
-								</v-col>
-								
-
-					
-						</v-row>
-						<hr>
-						<v-row dense>
-								<v-col cols="3">
-										<h3>Subscribe</h3>
-								</v-col>
-								<v-col cols="9">
-									<!-- 이 기능 추가할 지 상의. -->
-										<v-col cols="12">
-												<v-switch value inset color="#FF5733" v-model="commentAlarm" style="margin:0px" label="댓글 알림"></v-switch>
-												<v-switch value inset color="#FF5733" v-model="updateAlarm" style="margin:0px" label="업데이트 소식"></v-switch>
-										</v-col> 
-								</v-col>
-						</v-row>
-						<hr>
-						<v-row dense>
-								<v-col cols="3">
-										<h3>Sign Out</h3>
-								</v-col>
-								<v-col cols="9">
-									<!-- 회원탈퇴 누를 경우 delete 요청 -->
-									<!-- 회원탈퇴 모달 창 -->
-									<div>
-										<div class="mb-1">
-											<b-button @click="showMsgBoxTwo">회원 탈퇴</b-button>
-										
-										</div>
-									</div>
-										
-
-								</v-col>
-								
-						</v-row>
-						<hr>
-			</v-flex>
-		</v-container>
+								<div class="img_btn">
+									<v-btn depressed outlined width="150px" @click="deleteQRImage" color="#6e8af8">이미지 제거</v-btn>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="signout">
+					<a @click="showMsgBoxTwo">DO!에서 <span class="signout_btn">탈퇴하기</span></a>
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -558,6 +477,7 @@ export default {
 		background-color: #f2f4f7;	
 	}
 	.inner {
+		min-height:1600px;
 		max-width:960px;
 		margin: 0 auto;
 		padding: 151px 15px 0 15px;
@@ -576,7 +496,24 @@ export default {
 		width:100%;
 		border: 1px solid #e0e5ee;
 		background-color: white;
-		margin-bottom: 15px;
+		margin-bottom: 10px;
+	}
+	.inner_email{
+		width:100%;
+		padding: 30px;
+		border-bottom: 1px solid #e0e5ee;
+	}
+	.user_detail{
+		width:100%;
+		height:340px;
+		padding:30px;
+		border-bottom: 1px solid #e0e5ee;
+	}
+	.user_sns{
+		width:100%;
+		height:100%;
+		padding:30px 30px 65px 30px;
+		border-bottom: 1px solid #e0e5ee;
 	}
 	.profile_area{
 		padding: 30px 20px 18px;
@@ -589,14 +526,26 @@ export default {
 		overflow: hidden;
 		margin: 0 auto;
 	}
-	.btn_group{
-		margin: 15px 0 0;
-	}
 	.imgbox img {
 		width : 100%;
 		height: 100%;
 		object-fit: cover;
 	}
+	.qrbox{
+		width:200px;
+		height:200px;
+		overflow: hidden;
+		margin: 0 auto;
+	}
+
+	.qrbox_img img {
+		width: 100%;
+		height: 100%;
+	}
+	.btn_group{
+		margin: 15px 0 0;
+	}
+	
 	.img_btn{
 		font-family: 'NanumSquare', Noto Sans Light, sans-serif;
 		width:150px;
@@ -606,6 +555,33 @@ export default {
 		width: 100%;
 		padding: 30px;
 	}
+	.cate_desc{
+		font-family: 'NanumSquare', Noto Sans Light, sans-serif;
+		font-weight: 600;
+		font-size: 1rem;
+	}
+	.caution{
+		font-weight:400;
+		font-size:0.8rem;
+		margin: 5px 0 0 0;
+	}
+	.nickname {
+		margin-bottom: 40px;
+	}
+	.introduce {
+		margin-bottom: 20px;
+	}
+	button:hover{
+		background-color:#6e8af8;
+		color:white !important; 
+	}
+	.sns_addr{
+		padding-bottom: 10px;
+	}
+	.user_sns_detail{
+		margin-top:15px;
+	}
+
 	.uploadimg {
 		display:none;
 	}
@@ -619,5 +595,21 @@ export default {
 		display: block;
 		margin: 0 auto;
 		max-height: 100%
+	}
+	.mod_btn{
+		float:right;
+	}
+	.btn_grp{
+		margin-top:15px;
+	}
+	.signout {
+		float: right;
+		font-family: Noto Sans Light, sans-serif;
+		font-size: 13px;
+		color: gray;
+	}
+	.signout_btn{
+		text-decoration: underline;
+		padding-right: 5px;
 	}
 </style>
