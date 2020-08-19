@@ -50,7 +50,6 @@
         <!--프로필 클릭시 팝업되는 드롭다운 메뉴-->
         <v-card class="shortcuts">
           <v-list v-if="profile">
-            무림고수
             <v-list-item>
               내블로그 
             </v-list-item>
