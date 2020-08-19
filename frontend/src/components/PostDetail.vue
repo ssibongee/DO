@@ -103,7 +103,12 @@ export default {
         }
     },
     created(){
-      axios.post(API_URL + 'api/v2/p',{
+      console.log(storage.getItem("uid"))
+      axios.post(API_URL + 'api/v2/p/',{
+        // headers :{
+        //   'Content-Type': 'application/json',
+        //   'Accept':'application/json'
+        // },
         uid : storage.getItem("uid"),
         pid : storage.getItem("pid")
       })
@@ -133,16 +138,19 @@ export default {
     // computed() {
     // },
     methods: {
-      fetchData() {
-        axios.get(API_URL + 'api/v2/p/' + storage.getItem("pid"))
-          .then(res => {
-            this.post = res.data
-            console.log(this.post)
-            this.Comments = res.data.comments
-            this.isCommentauthor(this.Comments)
-            this.isPostauthor(this.isPostauthor)
-          })
-      },
+      // fetchData() {
+      //   axios.post(API_URL + 'api/v2/p',{
+      //     uid : storage.getItem("uid"),
+      //     pid : storage.getItem("pid")
+      //   })
+      //     .then(res => {
+      //       this.post = res.data
+      //       console.log(this.post)
+      //       this.Comments = res.data.comments
+      //       this.isCommentauthor(this.Comments)
+      //       this.isPostauthor(this.isPostauthor)
+      //     })
+      // },
       // 글 작성자인지 확인
       isPostauthor() {
         if (this.post.author && storage.getItem("login_user") && this.post.uid && storage.getItem("uid")) {
