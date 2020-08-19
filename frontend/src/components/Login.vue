@@ -200,7 +200,8 @@ header {
 }
 .login_do > span{
   display : inline-block;
-  margin-bottom : 30px;
+  margin-bottom : 25px;
+  font-family: 'NanumSquareR','나눔스퀘어', "나눔고딕", NanumGothic, -apple-system, BlinkMacSystemFont,"Apple SD Gothic Neo","Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .v-text-field{
   border-radius: 0;
