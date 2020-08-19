@@ -9,18 +9,17 @@
 			<v-btn 
 				v-if="comment.isauthor"
 				@click="onClickUpdateBtn(comment)"
-				@
 			>수정</v-btn>
 		</div>
-		<div v-if="UpdateFlag">
-				<v-text-field
-					v-model="CommentUpdateInput"
-					solo=True
-					dense="true"
-					clearable="true"
-				></v-text-field>
-				<v-btn @click="onCommentUpdate(comment)">수정하기</v-btn>
-			</div>
+		<div v-if="UpdateFlag" class="update-box">
+			<v-text-field
+				v-model="CommentUpdateInput"
+				solo
+				dense
+				clearable
+			></v-text-field>
+			<v-btn @click="onCommentUpdate(comment)" class="update-btn">수정하기</v-btn>
+		</div>
 		<div class="comment-box">
 			<v-btn @click="onClickChildBtn" class="mx-2" fab x-small dark color="indigo">
 				<v-icon dark>mdi-plus</v-icon>
@@ -92,14 +91,18 @@ export default {
 		// 댓글 수정(아직 수정 필요함)
 		onCommentUpdate(one_comment) {
 			if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
+				// console.log(one_comment)
 				const tmp_comment = {
-					author: storage.getItem("login_user"),
 					content: this.CommentUpdateInput,
-					uid: storage.getItem("uid"),
-					pid: storage.getItem("pid")
+					cid: one_comment.cid
 				}
-				axios.put(API_URL + `api/v3/${one_comment.cid}`, tmp_comment)
-					.then(() => this.$emit('Click-Update-Btn'))
+				axios.put(API_URL + `api/v3/`, tmp_comment)
+					.then(() => {
+						alert('수정되었습니다.')
+						this.$emit('Click-Update-Btn')
+						this.CommentUpdateInput = ''
+						this.UpdateFlag = !this.UpdateFlag
+					})
 			} else {
 				alert('비정상적인 접근입니다')
 			}
@@ -119,14 +122,14 @@ export default {
 		
 
 		// *** Child Comment ***
-		onChildCommentCreate(pid) {
+		onChildCommentCreate(pcid) {
 			if (storage.getItem("login_user")) {
 				const tmp_comment = {
 					author: storage.getItem("login_user"),
 					content: this.ChildCommentInput,
 					uid: storage.getItem("uid"),
 					pid: storage.getItem("pid"),
-					parent: pid
+					parent: pcid
 				}
 				axios.post(API_URL + 'api/v3/r', tmp_comment)
 					.then(() => this.$emit('Child-Create'))
@@ -143,6 +146,12 @@ export default {
 
 <style>
 .comment-box {
-  display: flex
+	display: flex;
+}
+.update-box {
+	display: flex;
+}
+.update-btn {
+	margin-left: 5px;
 }
 </style>

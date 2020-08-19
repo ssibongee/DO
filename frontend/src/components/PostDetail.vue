@@ -139,19 +139,19 @@ export default {
     // computed() {
     // },
     methods: {
-      // fetchData() {
-      //   axios.post(API_URL + 'api/v2/p',{
-      //     uid : storage.getItem("uid"),
-      //     pid : storage.getItem("pid")
-      //   })
-      //     .then(res => {
-      //       this.post = res.data
-      //       console.log(this.post)
-      //       this.Comments = res.data.comments
-      //       this.isCommentauthor(this.Comments)
-      //       this.isPostauthor(this.isPostauthor)
-      //     })
-      // },
+      fetchData() {
+        axios.post(API_URL + 'api/v2/p',{
+          uid : storage.getItem("uid"),
+          pid : storage.getItem("pid")
+        })
+          .then(res => {
+            this.post = res.data
+            console.log(this.post)
+            this.Comments = res.data.comments
+            this.isCommentauthor(this.Comments)
+            this.isPostauthor(this.isPostauthor)
+          })
+      },
       // 글 작성자인지 확인
       isPostauthor() {
         if (this.post.author && storage.getItem("login_user") && this.post.uid && storage.getItem("uid")) {
@@ -182,7 +182,9 @@ export default {
       // 해당 Post의 모든 Comment 읽어오기 & 인풋 초기화
       CommentRead() {
         axios.get(API_URL+'api/v3/'+storage.getItem("pid"))
-          .then(res => this.Comments = this.isCommentauthor(res.data))
+          .then(res => {
+            this.Comments = this.isCommentauthor(res.data)
+          })
         this.CommentInput = ""
       },
       // 작성자 비교 후 삭제 버튼 flag 설정하는 메서드
