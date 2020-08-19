@@ -430,6 +430,7 @@ export default {
 						console.log(error);
 					});
 				}
+				this.$router.push('/')
 			})
 			.catch(err => {
 			// An error occurred
