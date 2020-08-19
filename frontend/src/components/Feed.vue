@@ -154,6 +154,7 @@ export default {
 }
 .doContent {
   max-width: 1150px;
+  min-width: 1100px; 
   margin: 0 auto 0;
   padding: 0 20px;
 }

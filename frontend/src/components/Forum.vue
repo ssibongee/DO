@@ -19,9 +19,9 @@
 		<div class="inner">
 			<v-tabs-items v-model="tab">
 				<v-tab-item v-for="(item) in items" :key="item">
-					<v-row v-if="tags.length">
+					<!-- <v-row v-if="tags.length">
 						
-					</v-row>
+					</v-row> -->
 				</v-tab-item>
 			</v-tabs-items>
 		</div>
