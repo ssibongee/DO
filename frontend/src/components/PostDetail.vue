@@ -103,14 +103,17 @@ export default {
         }
     },
     created(){
-      axios.get(API_URL + 'api/v2/p/' + storage.getItem("pid"))
+      axios.post(API_URL + 'api/v2/p',{
+        uid : storage.getItem("uid"),
+        pid : storage.getItem("pid")
+      })
         .then(res => {
           // this.post = res.data
           this.post.title = res.data.title
           this.post.author = res.data.author
           this.post.content = res.data.content
           this.post.islike = res.data.isLike
-          console.log(this.post.islike)
+          console.log(this.post)
           if(this.post.islike===true){
             this.like = "fas fa-heart"
             this.FeedFlag= true
