@@ -93,13 +93,17 @@ public class PostServiceImpl implements PostService {
     @Override
     public void onClickLikes(Long pid, Long uid, boolean status) {
         if(status) {// 좋아요 활성화
-            postDao.increaseLikes(pid);
-            bookmarkService.saveBookmark(uid, pid);
+            if(bookmarkService.isBookmark(uid, pid) == null) {
+                postDao.increaseLikes(pid);
+                bookmarkService.saveBookmark(uid, pid);
+            }
             // 사용자의 즐겨찾기 목록에 등록
         } else { // 좋아요 비활성화
+            if(bookmarkService.isBookmark(uid, pid) != null) {
             postDao.decreaseLikes(pid);
             // 사용자의 즐겨찾기 목록에서 삭제
             bookmarkService.deleteBookmark(uid, pid);
+            }
         }
     }
 
