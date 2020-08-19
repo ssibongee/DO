@@ -30,7 +30,7 @@
 
     <!-- 댓글 수정 -->
     <update id="update">
-        update from comment
+        update comment
         set content = #{content}
         where cid = #{cid}
     </update>
