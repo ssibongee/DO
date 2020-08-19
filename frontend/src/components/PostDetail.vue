@@ -280,4 +280,5 @@ export default {
 .post-box {
   margin-top: 130px;
 }
+
 </style>
