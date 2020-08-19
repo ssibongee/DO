@@ -140,12 +140,9 @@ export default {
         if( text === this.list[i].title){
           storage.removeItem("pid")
           storage.setItem("pid", this.list[i].pid)
-          console.log("list[i] : "+this.list[i].pid )
-          console.log("list[i] : "+this.list[i].title)
           // article, user -> 페이지 변경 this.$router.push
           // this.$router.push({name: 'postdetail', params: {data: this.list[i]}});
           this.$router.push({name: 'postdetail', params: {data: this.list[i]}}).catch(()=>{});
-          
         }
       }
       
