@@ -16,9 +16,15 @@
     <v-toolbar-items style="align-items: center">
       포럼
     </v-toolbar-items>
+
       <div class="notice">
         <v-icon small>fas fa-volume-down</v-icon>
-        <span>{{noticemsg}}</span>
+        <div id="app" class="output">
+          <p>
+            <a @click="postdetail(text)" class="text">{{ text }}</a>
+           
+          </p>
+        </div>
 			</div>
 			<v-spacer></v-spacer>
       <router-link to="/search">
@@ -40,12 +46,10 @@
       <div v-if="isLogin" class="info_blog"> 
         <div @click="profileshow">
             <img v-bind:src=profileImage class="thumb_profile" alt>
-          <!-- <img src="https://item.kakaocdn.net/do/437998cb670b87a9a8faca156155beeb8f324a0b9c48f77dbce3a43bd11ce785" class="thumb_profile" alt> -->
         </div>
         <!--프로필 클릭시 팝업되는 드롭다운 메뉴-->
         <v-card class="shortcuts">
           <v-list v-if="profile">
-            무림고수
             <v-list-item>
               내블로그 
             </v-list-item>
@@ -70,19 +74,31 @@
 <script>
 const storage = window.sessionStorage
 import GoogleLogin from 'vue-google-login';
+import axios from 'axios'
+
+const API_URL = 'http://i3a507.p.ssafy.io:8081/'
+// const API_URL = 'http://localhost:8081/'
 
 export default {
   name: 'Navbar',
   component: {
-    GoogleLogin
+    GoogleLogin,
+
   },
   data() {
+    
     return {
       profile: false,
       isLogin: this.$store.state.isLoggedIn,
-      noticemsg: '공지입니다.',
       google_login: storage.getItem("google_login"),
-      profileImage: storage.getItem("profileImage")
+      profileImage: storage.getItem("profileImage"),
+
+      list: [],
+      index: 0,
+      text: '',
+      speed: 2000
+
+
     }
   },
   computed: {
@@ -110,17 +126,54 @@ export default {
     },
     profileshow() {
       this.profile = !this.profile
-    }
+    },
+    getTextFromList() {
+      var vm = this;
+      
+      vm.text = vm.list[vm.index].title;
+      // vm.textURL = vm.list[vm.index].url;
+      vm.index += 1;
+      
+      if (vm.index >= vm.list.length) {
+        vm.index = 0;
+      }
+    },
+    postdetail(text) {
+      for(var i =0; i<this.list.length; i++){
+        if( text === this.list[i].title){
+          storage.removeItem("pid")
+          storage.setItem("pid", this.list[i].pid)
+          // article, user -> 페이지 변경 this.$router.push
+          // this.$router.push({name: 'postdetail', params: {data: this.list[i]}});
+          this.$router.push({name: 'postdetail', params: {data: this.list[i]}}).catch(()=>{});
+        }
+      }
+      
+    },
+
   },
   created() {
     this.loginChecker()
+
+    axios.get(API_URL + 'api/v2/notice')
+        .then(res => {
+          // this.post = res.data
+          // pid를 활용하여 게시글로 이동
+          for(var i=0; i<res.data.length; i++){
+            this.list[i] = res.data[i];
+          }
+
+    })
   },
-  mounted() {
-    this.loginChecker()
+
+  mounted(){
+    // this.text = this.list[this.index];
+    this.loginChecker();
+    this.text = "공지사항";
+    setInterval(this.getTextFromList, this.speed);
+    
   },
-  // computed() {
-  //   this.loginChecker()
-  // }
+
   // watch: {
   //   isLogin (val, prev) {
   //     if (val !== prev) {
