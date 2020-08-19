@@ -12,19 +12,15 @@
             <div class="imgbox">
                 <!-- 회원 프로필 이미지 디비에서 조회 -->
                 <!-- [추가]이미지 변화에 대한 처리 -->
-                <img v-bind:src="profileImage" alt="profile">
+                <img v-bind:src="thumbImage" onerror="this.src='https://www.mangboard.com/wp-content/uploads/mangboard/2017/04/07/F816_imageupload.png'">
             </div>
             <div class="btn_group">
                 <!-- 이미지 업로드 (모달) -->
                 <div class="img_btn">
                     <v-btn depressed width="150px" color="#6e8af8" class="white--text"><label for="file-input" style="padding-top:9px">이미지 업로드</label></v-btn>
-                    <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input" class="uploadimg">
+                    <input type="file" accept="image/*" @change="uploadthumbImage($event)" id="file-input" class="uploadimg">
                 </div>
-                <!-- 이미지 삭제 -->
-                <div class="img_btn">
-                    <v-btn depressed width="150px" @click="deleteProfileImage" outlined color="#6e8af8">이미지 제거</v-btn>
-                </div>
-            </div>
+              </div>
         </div>
         <h3>태그 입력칸</h3>        
         <TagInputBox 
@@ -56,11 +52,12 @@ export default {
         return {
             editorText: '',
             title: '',
-            profileImage: '',
+            thumbImage: '',
+            uid: '',
         }
     },
     mounted() {
-        storage.removeItem("profileImage")
+        storage.removeItem("thumbImage")
     },
     methods: {
         createAction(tagData) {
@@ -77,10 +74,10 @@ export default {
                 title: this.title,
                 content: this.editorText,
                 tag: tagList,
-                thumbnail: storage.getItem("profileImage")
+                thumbnail: storage.getItem("thumbImage")
             })
             .then(() => {
-                storage.removeItem("profileImage")
+                storage.removeItem("thumbImage")
                 this.$router.push('/')
             })
             .catch(err => console.log(err))
@@ -90,7 +87,7 @@ export default {
         },
 
         // 업로드 이미지
-        uploadImage(e){
+        uploadthumbImage(e){
             console.log('tttttttttttttttttttt')
             var file = new FormData();
             const image = e.target.files[0];
@@ -100,7 +97,7 @@ export default {
             const reader = new FileReader();
             reader.readAsDataURL(image); 
             reader.onload = e =>{
-                this.profileImage = e.target.result; // profileImage 설정
+                this.thumbImage = e.target.result; // profileImage 설정
             };
 
             // **추가** POST문으로 서버에 이미지 파일 전송
@@ -114,32 +111,14 @@ export default {
                 }
                 )
                 .then(response => {
-                    this.profileImage = response.data;
-                    storage.setItem("profileImage", response.data)
+                    this.thumbImage = response.data;
+                    storage.setItem("thumbImage", response.data)
                 })
                 .catch((err) => {
                     console.log("프로필 이미지 업로드 실패")
                     console.log(err);
                 })
         },
-        // 기본 이미지로 수정
-		deleteProfileImage(){
-	
-			
-			// **추가** POST문으로 서버에 기본 이미지 파일 전송
-			axios.put(API_URL+'api/v1/img/'+this.userinfo.uid,{
-				url : "http://i3a507.p.ssafy.io/img/common/emptyProfile.png",
-			})
-			.then(response => {
-				this.userinfo.profileImage = response.data;
-				storage.setItem("profileImage", response.data)
-			})
-			.catch( (err) => {
-				console.log("프로필 이미지 삭제 실패");
-				console.log(err)
-			})
-
-		},
     },
 }
 </script>
@@ -148,5 +127,32 @@ export default {
 h3 {
     margin-top: 20px;
     margin-bottom: 5px;
+}
+
+.uploadimg {
+		display:none;
+	}
+.profile_area{
+		padding: 30px 20px 18px;
+		border-bottom: 1px solid  #e0e5ee;
+	}
+.img_btn{
+    font-family: 'NanumSquare', Noto Sans Light, sans-serif;
+    width:150px;
+    margin: 5px 0;
+}
+.imgbox {
+		width: 300px;
+		height: 300px;
+		border-radius: 10%;
+		overflow: hidden;
+		margin: 0 auto;
+	}
+.imgbox> img {
+    width: 100%;
+    height: 100%;
+}
+.btn_group{
+    margin: 15px 0 0;
 }
 </style>
