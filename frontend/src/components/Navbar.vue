@@ -11,7 +11,7 @@
       <router-link to="/introduce">소개</router-link>
     </v-toolbar-items>
     <v-toolbar-items style="align-items: center">
-      피드
+      <router-link to="/feed">피드</router-link>
     </v-toolbar-items>
     <v-toolbar-items style="align-items: center">
       포럼
@@ -103,6 +103,10 @@ export default {
   },
   computed: {
     // 현재 로그인 한 상태인지 아닌지 체크
+    init() {
+      this.loginChecker()
+      return this.$store.state.isLoggedIn
+    }
   },
   methods: {
     onClickLogout() {
@@ -161,15 +165,15 @@ export default {
 
     })
   },
+
   mounted(){
     // this.text = this.list[this.index];
-    
+    this.loginChecker();
     this.text = "공지사항";
     setInterval(this.getTextFromList, this.speed);
-  }
-  // computed() {
-  //   this.loginChecker()
-  // }
+    
+  },
+
   // watch: {
   //   isLogin (val, prev) {
   //     if (val !== prev) {
@@ -207,7 +211,7 @@ div > .newpost > a >button{
 }
 div > .newpost > a >button:hover {
   background-color:#6e8af8;
-  /* color:white !important;  */
+  color:white !important; 
 }
 .logo_title{
 	display : inline-block;

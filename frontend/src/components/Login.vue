@@ -7,7 +7,7 @@
 
     <v-container fluid fill-height>
       <div class="login_do">
-        <span><h2>DO!에 로그인하세요</h2></span>
+        <span><h2><span class="logo">DO!</span>에 로그인하세요</h2></span>
         <v-form name="form" @submit.prevent style="width:318px">
           <v-text-field
             outlined
@@ -31,8 +31,9 @@
           
           <div class="login_append">
             <v-checkbox
+              hide-details
               dense
-              label="로그인 상태 유지"
+              label="아이디/비밀번호 저장"
               color="#6e8af8"
             ></v-checkbox>
             <span>아이디/비밀번호 찾기</span> 
@@ -199,13 +200,14 @@ header {
 }
 .login_do > span{
   display : inline-block;
-  margin-bottom : 30px;
+  margin-bottom : 25px;
+  font-family: 'NanumSquareR','나눔스퀘어', "나눔고딕", NanumGothic, -apple-system, BlinkMacSystemFont,"Apple SD Gothic Neo","Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .v-text-field{
   border-radius: 0;
 }
 .login_btn{
-  margin : 20px 0 0 0;
+  margin : 60px 0 0 0;
 }
 
 .v-input{
@@ -213,20 +215,31 @@ header {
 }
 
 .login_append {
-  margin : 12px 0 0 0;
+  /* margin : 12px 0 0 0; */
   font-size : 13px;
 }
 
 .login_append > .v-input {
-  display: inline-block;
-  /* float: left; */
+  float: left;
 }
 
 .login_append > span {
   float:right;
-  padding-top:7px;
+  padding-top:12px;
 }
 .v-input >>> label {
   font-size: 13px;
+  margin-top:7px;
+}
+.google {
+  padding: 0;
+}
+.big-button {
+  margin: 0 0;
+  padding: 15px 101px;
+}
+.logo {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
 }
 </style>

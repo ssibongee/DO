@@ -8,8 +8,17 @@
 			>삭제</v-btn>
 			<v-btn 
 				v-if="comment.isauthor"
-				@click="onCommentUpdate(comment)"
+				@click="onClickUpdateBtn(comment)"
 			>수정</v-btn>
+		</div>
+		<div v-if="UpdateFlag" class="update-box">
+			<v-text-field
+				v-model="CommentUpdateInput"
+				solo
+				dense
+				clearable
+			></v-text-field>
+			<v-btn @click="onCommentUpdate(comment)" class="update-btn">수정하기</v-btn>
 		</div>
 		<div class="comment-box">
 			<v-btn @click="onClickChildBtn" class="mx-2" fab x-small dark color="indigo">
@@ -54,6 +63,8 @@ export default {
 			comment: this.$attrs.comment,
 			ChildFlag: false,
 			ChildCommentInput: '',
+			CommentUpdateInput: '',
+			UpdateFlag: false,
 		}
 	},
 	methods: {
@@ -80,44 +91,67 @@ export default {
 		// 댓글 수정(아직 수정 필요함)
 		onCommentUpdate(one_comment) {
 			if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
-				axios.put(API_URL + `api/v3/${one_comment.cid}`)
-					.then(() => this.$emit('Click-Update-Btn'))
+				// console.log(one_comment)
+				const tmp_comment = {
+					content: this.CommentUpdateInput,
+					cid: one_comment.cid
+				}
+				axios.put(API_URL + `api/v3/`, tmp_comment)
+					.then(() => {
+						alert('수정되었습니다.')
+						this.$emit('Click-Update-Btn')
+						this.CommentUpdateInput = ''
+						this.UpdateFlag = !this.UpdateFlag
+					})
 			} else {
 				alert('비정상적인 접근입니다')
 			}
 		},
 		// Comment에 Child가 있는지 없는지 체크
 		isCommentChild(one_comment_child) {
-			console.log(one_comment_child)
+			// console.log(one_comment_child)
 			if (one_comment_child.length) return true
 			return false
 		},
-		// 대댓글 보기, 숨기기 Boolean 반전 메서드
-		onClickChildBtn() {
-			this.ChildFlag = !this.ChildFlag
+		onClickUpdateBtn(one_comment) {
+			if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
+				this.CommentUpdateInput = one_comment.content
+				this.UpdateFlag = !this.UpdateFlag
+			}
 		},
+		
 
 		// *** Child Comment ***
-		onChildCommentCreate(pid) {
+		onChildCommentCreate(pcid) {
 			if (storage.getItem("login_user")) {
 				const tmp_comment = {
 					author: storage.getItem("login_user"),
 					content: this.ChildCommentInput,
 					uid: storage.getItem("uid"),
 					pid: storage.getItem("pid"),
-					parent: pid
+					parent: pcid
 				}
 				axios.post(API_URL + 'api/v3/r', tmp_comment)
 					.then(() => this.$emit('Child-Create'))
 					.catch(err => console.log(err))
 			}
-		}
+		},
+		// 대댓글 보기, 숨기기 Boolean 반전 메서드
+		onClickChildBtn() {
+			this.ChildFlag = !this.ChildFlag
+		},
 	}
 }
 </script>
 
 <style>
 .comment-box {
-  display: flex
+	display: flex;
+}
+.update-box {
+	display: flex;
+}
+.update-btn {
+	margin-left: 5px;
 }
 </style>

@@ -91,25 +91,43 @@ export default {
             title: '',
             author: '',
             content: '',
+            islike: this.$route.params.data.isLike,
           },
           content: this.$route.params.data.tmp,
           Comments: null,
           CommentInput: '',
           ChildFlag: false,
           ChildCommentInput: '',
-          FeedFlag: false,
-          like: "far fa-heart",
-          // dislike: "far fa-heart",
+          FeedFlag: '',
+          like: '',
         }
     },
     created(){
-      axios.get(API_URL + 'api/v2/p/' + storage.getItem("pid"))
+      console.log(storage.getItem("uid"))
+      axios.post(API_URL + 'api/v2/p/',{
+        // headers :{
+        //   'Content-Type': 'application/json',
+        //   'Accept':'application/json'
+        // },
+        uid : storage.getItem("uid"),
+        pid : storage.getItem("pid")
+      })
         .then(res => {
+          // console.log(res)
           // this.post = res.data
           this.post.title = res.data.title
           this.post.author = res.data.author
           this.post.content = res.data.content
-          console.log(this.post)
+          this.post.islike = res.data.isLike
+          // console.log(this.post)
+          if(this.post.islike===true){
+            this.like = "fas fa-heart"
+            this.FeedFlag= true
+          } else {
+            this.like = "far fa-heart"
+            this.FeedFlag = false
+          }
+          // console.log(this.post)
           this.Comments = res.data.comments
           // console.log(this.Comments)
           this.isCommentauthor(this.Comments)
@@ -122,7 +140,10 @@ export default {
     // },
     methods: {
       fetchData() {
-        axios.get(API_URL + 'api/v2/p/' + storage.getItem("pid"))
+        axios.post(API_URL + 'api/v2/p',{
+          uid : storage.getItem("uid"),
+          pid : storage.getItem("pid")
+        })
           .then(res => {
             this.post = res.data
             console.log(this.post)
@@ -161,7 +182,9 @@ export default {
       // 해당 Post의 모든 Comment 읽어오기 & 인풋 초기화
       CommentRead() {
         axios.get(API_URL+'api/v3/'+storage.getItem("pid"))
-          .then(res => this.Comments = this.isCommentauthor(res.data))
+          .then(res => {
+            this.Comments = this.isCommentauthor(res.data)
+          })
         this.CommentInput = ""
       },
       // 작성자 비교 후 삭제 버튼 flag 설정하는 메서드
@@ -181,8 +204,9 @@ export default {
         if(storage.getItem("login_user")){
           //이미 피드에 있는지 체크
           if(this.FeedFlag===false){
-            this.like="fas fa-heart"
             this.FeedFlag=true;
+            this.post.islike=true;
+            this.like="fas fa-heart"
             axios
             .put(API_URL+'api/v2/likes',{
               uid : storage.getItem("uid"),
@@ -199,8 +223,13 @@ export default {
           //삭제하면 db에서 제거
           else {
             this.like="far fa-heart"
+            this.post.islike=false;
             this.FeedFlag=false;
-            axios.delete(API_URL+'api/v2/likes')
+            axios.put(API_URL+'api/v2/likes',{
+              uid : storage.getItem("uid"),
+              pid : storage.getItem("pid"),
+              status : this.FeedFlag,
+            })
             .then(function (response){
 						console.log(response);
             })
