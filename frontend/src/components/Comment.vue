@@ -14,9 +14,8 @@
 		</div>
 		<div v-if="UpdateFlag">
 				<v-text-field
-					:id="comment.cid"
 					v-model="CommentUpdateInput"
-					solo="true"
+					solo=True
 					dense="true"
 					clearable="true"
 				></v-text-field>

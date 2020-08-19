@@ -11,7 +11,7 @@
       <router-link to="/introduce">소개</router-link>
     </v-toolbar-items>
     <v-toolbar-items style="align-items: center">
-      피드
+      <router-link to="/feed">피드</router-link>
     </v-toolbar-items>
     <v-toolbar-items style="align-items: center">
       포럼
@@ -39,7 +39,8 @@
       </div>
       <div v-if="isLogin" class="info_blog"> 
         <div @click="profileshow">
-          <img src="https://item.kakaocdn.net/do/437998cb670b87a9a8faca156155beeb8f324a0b9c48f77dbce3a43bd11ce785" class="thumb_profile" alt>
+            <img v-bind:src=profileImage class="thumb_profile" alt>
+          <!-- <img src="https://item.kakaocdn.net/do/437998cb670b87a9a8faca156155beeb8f324a0b9c48f77dbce3a43bd11ce785" class="thumb_profile" alt> -->
         </div>
         <!--프로필 클릭시 팝업되는 드롭다운 메뉴-->
         <v-card class="shortcuts">
@@ -55,7 +56,7 @@
               로그아웃
             </v-list-item>
             <v-list-item v-if="google_login" @click="onClickLogout">
-              <GoogleLogout :params="params" :logoutButton=true>로그아웃</GoogleLogout>
+              <GoogleLogin :params="params" :logoutButton=true>로그아웃</GoogleLogin>
             </v-list-item>
           </v-list>
         </v-card>
@@ -68,12 +69,12 @@
 
 <script>
 const storage = window.sessionStorage
-import GoogleLogin from 'vue-google-login' 
+import GoogleLogin from 'vue-google-login';
 
 export default {
   name: 'Navbar',
   component: {
-    GoogleLogout: GoogleLogin,
+    GoogleLogin
   },
   data() {
     return {
@@ -81,6 +82,7 @@ export default {
       isLogin: this.$store.state.isLoggedIn,
       noticemsg: '공지입니다.',
       google_login: storage.getItem("google_login"),
+      profileImage: storage.getItem("profileImage")
     }
   },
   computed: {
@@ -156,7 +158,7 @@ div > .newpost > a >button{
 }
 div > .newpost > a >button:hover {
   background-color:#6e8af8;
-  /* color:white !important;  */
+  color:white !important; 
 }
 .logo_title{
 	display : inline-block;

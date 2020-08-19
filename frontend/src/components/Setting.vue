@@ -1,232 +1,285 @@
 <template>
-  <v-container style="width:70%">
-		<v-row class="mb-10">
-
-			<v-col cols="12" md="3">
-				<div class="wrapper">
-					<div class="inner">
-						<!-- <img src="http://i3a507.p.ssafy.io/img/ssafy/30d512f96f6c55318745d4e81cd2c78428407f26491e88af88d52787f6d8f10d3d9109e433ddcda8ac4adf2c4eec9303df0d831e9e6138e6db2c7294173dab08/1e67b068654a279608f42750ac4b6596a800724fa6422f0c3a77249469294a376ef61645eb0453ed46fa1afde336bc3df53e5e788b5e978a0f77bfdd28cc6477.png" height="200" width="200"> -->
-						<!-- <img src="/home/ubuntu/vlog/ssafy/30d512f96f6c55318745d4e81cd2c78428407f26491e88af88d52787f6d8f10d3d9109e433ddcda8ac4adf2c4eec9303df0d831e9e6138e6db2c7294173dab08/777c534fd04b2cc000819eaf0a63bfa135a62b42777ea4650c2743ca297b3ac6d33c001c664485c7cb3cd3a08475cd80c434be670c01f16d61218f7f9fe0bde5.png"/> -->
-
-						<div class="circle">
-							<!-- 회원 프로필 이미지 디비에서 조회 -->
-							<!-- [추가]이미지 변화에 대한 처리 -->
+	<div>
+		<Navbar></Navbar>
+		<div class="wrap">
+			<div class="inner">
+				<div class="inner_feature">
+					<h2 id="do_top do_feed">회원정보</h2>
+          <p class="top_desc">
+						{{userinfo.nickname}}님의 회원 정보입니다.<br>
+						회원 정보는 개인정보처리방침에 따라 안전하게 보호되며, 회원님의 명백한 동의 없이 공개 또는 제 3자에게 제공되지 않습니다.	
+					</p>
+				</div>
+				<div class="inner_info">
+					<div class="profile_area">
+						<div class="imgbox">
 							<img v-bind:src="userinfo.profileImage" alt="profile">
 						</div>
-
-						<div class="my-2">
-							<!-- 모달 창으로 이미지 업로드 -->
-							<!-- <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input"> -->
-							<!-- <v-file-input width="120px" type="file" accept="image/*" @change="onChange">이미지 변경</v-file-input> -->
-							<input type="file" accept="image/*" @change="uploadImage($event)" id="file-input">
-							<!-- <div> -->
-								<!-- <img v-bind:src="userinfo.profileImage" class="uploading-image"/> -->
-								<!-- <input type="file" accept="image/jpeg" @change=uploadImage> -->
-							<!-- </div> -->
-						</div>
-
-						<div>
-							<!-- 기본 이미지로 대체 후, 데이터베이스에서 String = null -->
-							<v-btn depressed width="120px" @click="deleteProfileImage">이미지 제거</v-btn>
+						<div class="btn_group">
+							<!-- 이미지 업로드 (모달) -->
+							<div class="img_btn">
+								<v-btn depressed width="150px" color="#6e8af8" class="white--text"><label for="file-input" style="padding-top:9px">이미지 업로드</label></v-btn>
+								<input type="file" accept="image/*" @change="uploadImage($event)" id="file-input" class="uploadimg">
+							</div>
+							<!-- 이미지 삭제 -->
+							<div class="img_btn">
+								<v-btn depressed width="150px" @click="deleteProfileImage" text color="#6e8af8">이미지 제거</v-btn>
+							</div>
 						</div>
 					</div>
-				</div>
-			</v-col>
+					<div class="inner_detail">
+						<div class="blog_detail">
+							블로그이름
+						</div>
+						<div class="user_detail">
+							<div class="nickname">
+								닉네임
+								{{userinfo.nickname}}
+							</div>
+							<div class="introduce">
+								소개
+								{{userinfo.introduce}}
+							</div>
+							<div class="my-2">
+								<v-btn depressed small class="btn-success" @click="modprofile">수정</v-btn>
+							</div>
+						</div>
 
-
-			<v-col v-if="!clickprofile">
-				<!-- 사용자 nickname과 introduce 가져오기 -->
-				<h2>{{userinfo.nickname}}</h2>
-				<p>{{userinfo.introduce}}</p>	
-				<div class="my-2">
-						<v-btn depressed small class="btn-success" @click="modprofile">수정</v-btn>
-				</div>
-			</v-col>
-
-
-			<!-- 클릭 시 name, description 부분 수정 -->
-			<v-col v-if="clickprofile">
-				<v-text-field outlined v-model="userinfo.nickname" hide-details style="font-size: 2em; margin-bottom:5px;"></v-text-field>
-				<v-text-field outlined v-model="userinfo.introduce" hide-details dense></v-text-field>
-				<div class="my-2">
-					<v-btn depressed small class="btn-success" @click="updateNickname">수정완료</v-btn>
-				</div>
-			</v-col>
-
-
-		</v-row>
-					<!-- 설정 영역 -->
-		<v-flex>
-		<v-row dense>
-			<v-col cols="3">
-					<h3>Blog Title</h3>
-			</v-col>
-			<v-col cols="9" align-self>
-					<div>
-							{{accountinfo.blogtitle}}
 					</div>
-			</v-col>
-			<v-col cols="12" class="msg">
-					개인 페이지의 좌측 상단에 나타나는 페이지 제목입니다.
-			</v-col>
-		</v-row>
-		<hr>		
-		<v-row dense>
-				<v-col cols="3">
-						<h3>SNS info</h3>
-				</v-col>
-				
-				<v-col cols="9">
-						<!-- 접었다 펴는 형식으로 SNS 입력창 뜰 수 있게 설정 -->
-						<!-- <a href="/setting">수정</a> -->
-					<v-col v-if="!clicksns">
-						<div class="my-2">
-							<v-btn depressed small class="btn-success" @click="modSNS">수정</v-btn>
-						</div>
-					</v-col>
+				</div>
+			</div>
+		</div>
+		<v-container style="width:70%">
+			<v-row class="mb-10">
 
+				<v-col cols="12" md="3">
+					<div class="wrapper">
+						<div class="inner">
 
-					<!-- 클릭 시 name, description 부분 수정 -->
-					<v-col v-if="clicksns">
-						
-						<!-- 이메일(수정불가), GitHub, Instagram, FaceBook  -->
-						<div>
-							<v-text-field 
-							prepend-icon="fab fa-github" 
-							v-model="userinfo.github"
-							hint="Github address"
-							prefix="https://github.com/"
-							></v-text-field>
-						</div>
-						<div>
-							<v-text-field 
-							prepend-icon="fab fa-instagram" 
-							v-model="userinfo.instagram"
-							hint="Instagram address"
-							prefix="https://instagram.com/"
-							></v-text-field>
-						</div>
-						<div>
-							<v-text-field 
-							prepend-icon="fab fa-facebook"
-							v-model="userinfo.facebook"
-							hint="Facebook address"
-							prefix="https://facebook.com/"
-							></v-text-field>
-						</div>
-						<!-- 자신 email로 고정 -->
-						<!-- <div>
-							<v-text-field 
-							disabled
-							prepend-icon="far fa-envelope"
-							v-model="userinfo.emailaddr"
-							></v-text-field>
-						</div> -->
-						<div class="my-2">
-							<v-btn depressed small class="btn-success" @click="updateSNS">수정완료</v-btn>
-						</div>
-					</v-col>
+							<div class="circle">
+								<!-- 회원 프로필 이미지 디비에서 조회 -->
+								<!-- [추가]이미지 변화에 대한 처리 -->
+								<img v-bind:src="userinfo.profileImage" alt="profile">
+							</div>
 
-					
-
-
-				</v-col>
-				<v-col cols="12" class="msg">
-						포스트 및 블로그에서 보여지는 프로필에 공개되는 소셜 정보입니다.
-				</v-col>
-		</v-row>
-		<hr>
-		
-					<v-row dense>
-							<v-col cols="3">
-									<h3>Donation QR 코드 업로드</h3>
-							</v-col>
-							<v-col cols="9">
-								<!-- 데이터베이스에서 QR 이미지 가져오기 -->
-								<img v-bind:src="userinfo.qrImage" alt="QR코드 생성방법" width="200px" height="200px">
-							</v-col>
-								
 							<div class="my-2">
 								<!-- 모달 창으로 이미지 업로드 -->
 								<!-- <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input"> -->
 								<!-- <v-file-input width="120px" type="file" accept="image/*" @change="onChange">이미지 변경</v-file-input> -->
-								<input type="file" accept="image/*" @change="uploadQR($event)" id="file-input">
+								<input type="file" accept="image/*" @change="uploadImage($event)" id="file-input">
 								<!-- <div> -->
 									<!-- <img v-bind:src="userinfo.profileImage" class="uploading-image"/> -->
 									<!-- <input type="file" accept="image/jpeg" @change=uploadImage> -->
 								<!-- </div> -->
 							</div>
+
 							<div>
 								<!-- 기본 이미지로 대체 후, 데이터베이스에서 String = null -->
-								<v-btn depressed width="120px" @click="deleteQRImage">이미지 제거</v-btn>
+								<v-btn depressed width="120px" @click="deleteProfileImage">이미지 제거</v-btn>
 							</div>
+						</div>
+					</div>
+				</v-col>
 
-							<!-- <v-btn>QR 이미지 업로드</v-btn> -->
-								<v-col cols="12" class="msg">
-								후원 받을 QR코드를 이미지 파일로 등록해주세요.
+
+				<v-col v-if="!clickprofile">
+					<!-- 사용자 nickname과 introduce 가져오기 -->
+					<h2>{{userinfo.nickname}}</h2>
+					<p>{{userinfo.introduce}}</p>	
+					<div class="my-2">
+							<v-btn depressed small class="btn-success" @click="modprofile">수정</v-btn>
+					</div>
+				</v-col>
+
+
+				<!-- 클릭 시 name, description 부분 수정 -->
+				<v-col v-if="clickprofile">
+					<v-text-field outlined v-model="userinfo.nickname" hide-details style="font-size: 2em; margin-bottom:5px;"></v-text-field>
+					<v-text-field outlined v-model="userinfo.introduce" hide-details dense></v-text-field>
+					<div class="my-2">
+						<v-btn depressed small class="btn-success" @click="updateNickname">수정완료</v-btn>
+					</div>
+				</v-col>
+
+
+			</v-row>
+						<!-- 설정 영역 -->
+			<v-flex>
+			<v-row dense>
+				<v-col cols="3">
+						<h3>Blog Title</h3>
+				</v-col>
+				<v-col cols="9" align-self>
+						<div>
+								{{accountinfo.blogtitle}}
+						</div>
+				</v-col>
+				<v-col cols="12" class="msg">
+						개인 페이지의 좌측 상단에 나타나는 페이지 제목입니다.
+				</v-col>
+			</v-row>
+			<hr>		
+			<v-row dense>
+					<v-col cols="3">
+							<h3>SNS info</h3>
+					</v-col>
+					
+					<v-col cols="9">
+							<!-- 접었다 펴는 형식으로 SNS 입력창 뜰 수 있게 설정 -->
+							<!-- <a href="/setting">수정</a> -->
+						<v-col v-if="!clicksns">
+							<div class="my-2">
+								<v-btn depressed small class="btn-success" @click="modSNS">수정</v-btn>
+							</div>
 						</v-col>
-					</v-row>
-					<hr>
-					<v-row dense>
-							<v-col cols="3">
-									<h3>Email Address</h3>
-							</v-col>
+
+
+						<!-- 클릭 시 name, description 부분 수정 -->
+						<v-col v-if="clicksns">
+							
+							<!-- 이메일(수정불가), GitHub, Instagram, FaceBook  -->
+							<div>
+								<v-text-field 
+								prepend-icon="fab fa-github" 
+								v-model="userinfo.github"
+								hint="Github address"
+								prefix="https://github.com/"
+								></v-text-field>
+							</div>
+							<div>
+								<v-text-field 
+								prepend-icon="fab fa-instagram" 
+								v-model="userinfo.instagram"
+								hint="Instagram address"
+								prefix="https://instagram.com/"
+								></v-text-field>
+							</div>
+							<div>
+								<v-text-field 
+								prepend-icon="fab fa-facebook"
+								v-model="userinfo.facebook"
+								hint="Facebook address"
+								prefix="https://facebook.com/"
+								></v-text-field>
+							</div>
+							<!-- 자신 email로 고정 -->
+							<!-- <div>
+								<v-text-field 
+								disabled
+								prepend-icon="far fa-envelope"
+								v-model="userinfo.emailaddr"
+								></v-text-field>
+							</div> -->
+							<div class="my-2">
+								<v-btn depressed small class="btn-success" @click="updateSNS">수정완료</v-btn>
+							</div>
+						</v-col>
+
+						
+
+
+					</v-col>
+					<v-col cols="12" class="msg">
+							포스트 및 블로그에서 보여지는 프로필에 공개되는 소셜 정보입니다.
+					</v-col>
+			</v-row>
+			<hr>
+			
+						<v-row dense>
+								<v-col cols="3">
+										<h3>Donation QR 코드 업로드</h3>
+								</v-col>
 								<v-col cols="9">
-								<!-- 데이터베이스에서 email 값 가져오기 -->
-									{{userinfo.emailaddr}}
-							</v-col>
-							<v-col cols="12" class="msg">
-									회원 인증 또는 시스템에서 발송하는 이메일을 수신하는 주소입니다.
-							</v-col>
-							
-
-				
-					</v-row>
-					<hr>
-					<v-row dense>
-							<v-col cols="3">
-									<h3>Subscribe</h3>
-							</v-col>
-							<v-col cols="9">
-								<!-- 이 기능 추가할 지 상의. -->
-									<v-col cols="12">
-											<v-switch value inset color="#FF5733" v-model="commentAlarm" style="margin:0px" label="댓글 알림"></v-switch>
-											<v-switch value inset color="#FF5733" v-model="updateAlarm" style="margin:0px" label="업데이트 소식"></v-switch>
-									</v-col> 
-							</v-col>
-					</v-row>
-					<hr>
-					<v-row dense>
-							<v-col cols="3">
-									<h3>Sign Out</h3>
-							</v-col>
-							<v-col cols="9">
-								<!-- 회원탈퇴 누를 경우 delete 요청 -->
-								<!-- 회원탈퇴 모달 창 -->
-								<div>
-									<div class="mb-1">
-										<b-button @click="showMsgBoxTwo">회원 탈퇴</b-button>
+									<!-- 데이터베이스에서 QR 이미지 가져오기 -->
+									<img v-bind:src="userinfo.qrImage" alt="QR코드 생성방법" width="200px" height="200px">
+								</v-col>
 									
-									</div>
+								<div class="my-2">
+									<!-- 모달 창으로 이미지 업로드 -->
+									<!-- <input type="file" accept="image/*" @change="uploadImage($event)" id="file-input"> -->
+									<!-- <v-file-input width="120px" type="file" accept="image/*" @change="onChange">이미지 변경</v-file-input> -->
+									<input type="file" accept="image/*" @change="uploadQR($event)" id="file-input">
+									<!-- <div> -->
+										<!-- <img v-bind:src="userinfo.profileImage" class="uploading-image"/> -->
+										<!-- <input type="file" accept="image/jpeg" @change=uploadImage> -->
+									<!-- </div> -->
 								</div>
-									
+								<div>
+									<!-- 기본 이미지로 대체 후, 데이터베이스에서 String = null -->
+									<v-btn depressed width="120px" @click="deleteQRImage">이미지 제거</v-btn>
+								</div>
 
+								<!-- <v-btn>QR 이미지 업로드</v-btn> -->
+									<v-col cols="12" class="msg">
+									후원 받을 QR코드를 이미지 파일로 등록해주세요.
 							</v-col>
-							
-					</v-row>
-					<hr>
-		</v-flex>
-  </v-container>
+						</v-row>
+						<hr>
+						<v-row dense>
+								<v-col cols="3">
+										<h3>Email Address</h3>
+								</v-col>
+									<v-col cols="9">
+									<!-- 데이터베이스에서 email 값 가져오기 -->
+										{{userinfo.emailaddr}}
+								</v-col>
+								<v-col cols="12" class="msg">
+										회원 인증 또는 시스템에서 발송하는 이메일을 수신하는 주소입니다.
+								</v-col>
+								
+
+					
+						</v-row>
+						<hr>
+						<v-row dense>
+								<v-col cols="3">
+										<h3>Subscribe</h3>
+								</v-col>
+								<v-col cols="9">
+									<!-- 이 기능 추가할 지 상의. -->
+										<v-col cols="12">
+												<v-switch value inset color="#FF5733" v-model="commentAlarm" style="margin:0px" label="댓글 알림"></v-switch>
+												<v-switch value inset color="#FF5733" v-model="updateAlarm" style="margin:0px" label="업데이트 소식"></v-switch>
+										</v-col> 
+								</v-col>
+						</v-row>
+						<hr>
+						<v-row dense>
+								<v-col cols="3">
+										<h3>Sign Out</h3>
+								</v-col>
+								<v-col cols="9">
+									<!-- 회원탈퇴 누를 경우 delete 요청 -->
+									<!-- 회원탈퇴 모달 창 -->
+									<div>
+										<div class="mb-1">
+											<b-button @click="showMsgBoxTwo">회원 탈퇴</b-button>
+										
+										</div>
+									</div>
+										
+
+								</v-col>
+								
+						</v-row>
+						<hr>
+			</v-flex>
+		</v-container>
+	</div>
 </template>
 
 <script>
+import Navbar from '../components/Navbar.vue'
 import axios from 'axios'
-
+const storage = window.sessionStorage
 
 const API_URL = 'http://i3a507.p.ssafy.io:8081/'
 // const API_URL = 'http://localhost:8081/'
 
 export default {
+	components: {
+		Navbar,
+	},
 	props: {
 		iconName: {
 		type: String,
@@ -357,6 +410,7 @@ export default {
 			)
 			.then(response => {
 				this.userinfo.profileImage = response.data;
+				storage.setItem("profileImage", response.data)
 			})
 			.catch((err) => {
 				console.log("프로필 이미지 업로드 실패")
@@ -374,6 +428,7 @@ export default {
 			})
 			.then(response => {
 				this.userinfo.profileImage = response.data;
+				storage.setItem("profileImage", response.data)
 			})
 			.catch( (err) => {
 				console.log("프로필 이미지 삭제 실패");
@@ -499,12 +554,60 @@ export default {
 </script>
 
 <style scoped>
-	.wrapper {
-		text-align: center;
+	.wrap {
+		background-color: #f2f4f7;	
 	}
 	.inner {
-		max-width:150px;
-		display: inline-block;
+		max-width:960px;
+		margin: 0 auto;
+		padding: 151px 15px 0 15px;
+	}
+	.inner_feature h2 {
+  font-family: 'NanumSquare', Noto Sans Light, sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+	}
+	.inner_feature p {
+		font-size: 15px;
+		line-height: 19px;
+		color: #666;
+	}
+	.inner_info {
+		width:100%;
+		border: 1px solid #e0e5ee;
+		background-color: white;
+		margin-bottom: 15px;
+	}
+	.profile_area{
+		padding: 30px 20px 18px;
+		border-bottom: 1px solid  #e0e5ee;
+	}
+	.imgbox {
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
+		overflow: hidden;
+		margin: 0 auto;
+	}
+	.btn_group{
+		margin: 15px 0 0;
+	}
+	.imgbox img {
+		width : 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.img_btn{
+		font-family: 'NanumSquare', Noto Sans Light, sans-serif;
+		width:150px;
+		margin: 5px auto 0;
+	}
+	.inner_detail{
+		width: 100%;
+		padding: 30px;
+	}
+	.uploadimg {
+		display:none;
 	}
 	.circle {
 		width:8rem;
