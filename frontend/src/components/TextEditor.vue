@@ -1,35 +1,57 @@
 <template>
-	<v-container>
-		<v-text-field
-			v-model="title"
-			:counter="20"
-			label="글 제목을 입력해주세요"
-			required
-		></v-text-field>
-		<editor :initialValue="this.tempText" ref="toastuiEditor" height="500px"/>
-		<h3>썸네일 이미지</h3>
-		<div class="profile_area">
-			<div class="imgbox">
-				<!-- 회원 프로필 이미지 디비에서 조회 -->
-				<!-- [추가]이미지 변화에 대한 처리 -->
-				<img v-bind:src="thumbImage" onerror="this.src='https://www.mangboard.com/wp-content/uploads/mangboard/2017/04/07/F816_imageupload.png'">
-			</div>
-			<div class="btn_group">
-				<!-- 이미지 업로드 (모달) -->
-				<div class="img_btn">
-					<v-btn depressed width="150px" color="#6e8af8" class="white--text"><label for="file-input" style="padding-top:9px">이미지 업로드</label></v-btn>
-					<input type="file" accept="image/*" @change="uploadthumbImage($event)" id="file-input" class="uploadimg">
+	<div>
+		<Navbar></Navbar>
+		<div class="inner">
+				<v-text-field
+					dense
+					flat
+					solo
+					hide-details
+					v-model="title"
+					label="글 제목을 입력해주세요"
+					required
+					style="border-radius:0px; border: 1px solid #e0e5ee"
+					class="mb-5"
+				></v-text-field>
+				<editor :initialValue="this.tempText" ref="toastuiEditor" height="500px"/>
+				<div class="posting">
+					<div class="thumbnail">
+						<div class="regthumb">
+							<h4 class="cate_desc">썸네일 이미지</h4>
+								<!-- 이미지 업로드 (모달) -->
+							<div class="img_btn">
+								<v-btn 
+									text
+									depressed 
+									outlined
+									width="150px" 
+									color="#6e8af8"
+									style="border: 1px solid #6e8af8"
+								>
+									<label for="file-input" style="padding-top:9px">이미지 업로드</label></v-btn>
+								<input type="file" accept="image/*" @change="uploadthumbImage($event)" id="file-input" class="uploadimg">
+							</div>
+						</div>
+						<div class="profile_area">
+							<div class="imgbox" v-if="thumbImage">
+								<!-- 회원 프로필 이미지 디비에서 조회 -->
+								<!-- [추가]이미지 변화에 대한 처리 -->
+								<img v-bind:src="thumbImage">
+							</div>
+						</div>
+					</div>
+					<div class="tagreg">
+						<h4 class="cate_desc">태그 입력칸</h4>        
+						<TagInputBox 
+							:pid ="TagInputBoxPID"
+							:uid ="TagInputBoxUID"
+							@submit-post="createAction"
+							@save-post="saveAction"
+						/>
+					</div>
 				</div>
-			</div>
 		</div>
-		<h3>태그 입력칸</h3>        
-		<TagInputBox 
-			:pid ="TagInputBoxPID"
-			:uid ="TagInputBoxUID"
-			@submit-post="createAction"
-			@save-post="saveAction"
-		/>
-	</v-container>
+	</div>
 </template>
 <script>
 import 'tui-editor/dist/tui-editor.css';
@@ -38,7 +60,7 @@ import 'codemirror/lib/codemirror.css';
 import { Editor } from '@toast-ui/vue-editor'
 import axios from 'axios'
 import TagInputBox from './TagInputBox.vue'
-
+import Navbar from '../components/Navbar.vue'
 // const API_URL = 'http://localhost:8081/'
 const storage = window.sessionStorage
 const API_URL = 'http://i3a507.p.ssafy.io:8081/'
@@ -48,7 +70,8 @@ export default {
 	name: 'TextEditor',
 	components: {
 		Editor,
-		TagInputBox
+		TagInputBox,
+		Navbar,
 	},
 	data(){
 		return {
@@ -171,31 +194,50 @@ h3 {
 	margin-top: 20px;
 	margin-bottom: 5px;
 }
-
+button {
+	border-radius: 0px;
+}
+.thumbnail {
+	width:48%;
+	margin-right: 25px;
+}
+.tagreg {
+	width:50%;
+	float: right;
+	margin:7px 0 20px;
+}
 .uploadimg {
 		display:none;
 	}
-.profile_area{
-		padding: 30px 20px 18px;
-		border-bottom: 1px solid  #e0e5ee;
-	}
+
 .img_btn{
 	font-family: 'NanumSquare', Noto Sans Light, sans-serif;
 	width:150px;
-	margin: 5px 0;
+	margin-top:-6px;
+	float: right;
 }
 .imgbox {
-		width: 400px;
-		height: 250px;
-		border-radius: 10%;
+		border-radius: 5px;
 		overflow: hidden;
-		margin: 0 auto;
+		margin: 0 auto 40px auto;
+		border: 1px solid #e0e5ee;
 	}
 .imgbox> img {
 	width: 100%;
 	height: 100%;
 }
-.btn_group{
-	margin: 15px 0 0;
+.cate_desc{
+		font-family: 'NanumSquare', Noto Sans Light, sans-serif;
+		font-weight: 600;
+		font-size: 1rem;
+		margin-right: 20px;
+	}
+.posting{
+	display: flex;
+	margin-top:20px;
+}
+.regthumb{
+	display:flex;
+	margin:7px 0 20px;
 }
 </style>

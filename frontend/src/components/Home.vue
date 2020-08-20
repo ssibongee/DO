@@ -180,6 +180,7 @@ export default {
           el.publishedTime = year+"년 "+month+"월 "+day+"일"
           this.posts = data
         });
+        console.log(data);
       })
       .catch(err => console.log(err))
     },

@@ -7,18 +7,19 @@
 				:items="items"
 				:search-input.sync="search"
 				hide-selected
-				label="태그를 추가해주세요"
+				flat
+				outlined
+				dense
 				multiple
 				small-chips
-				solo
 				hint="태그는 최대 5개까지 가능합니다"
+				style="border-radius:0px; width: 100%"
 			>
 			<template v-slot:no-data>
 				<v-list-item>
 					<!-- <span class="subheading">Create</span> -->
 					<v-chip
 						:color="`${color} lighten-3`"
-						label
 						small
 					>
 						{{ search }}
@@ -31,7 +32,6 @@
 					v-bind="attrs"
 					:color="`${item.color} lighten-3`"
 					:input-value="selected"
-					label
 					small
 				>
 					<span class="pr-2">
@@ -58,7 +58,6 @@
 					v-else
 					:color="`${item.color} lighten-3`"
 					dark
-					label
 					small
 				>
 					{{ item.text }}
@@ -74,15 +73,21 @@
 				</v-list-item-action>
 			</template>
 		</v-combobox>
+		<div class="sub_btn">
 		<v-btn 
 			@click="onSubmitButton"
-			color="success"
+			color="#08d3bc"
+			outlined
+			tile
 		>출간하기</v-btn>
 		<v-btn
 			class="ml-2"
 			@click="onSaveButton"
-			color="info"
+			color="#5c7bf4"
+			outlined
+			tile
 		>임시저장</v-btn>
+		</div>
 	</div>
 </template>
 
@@ -97,11 +102,11 @@ export default {
 			activator: null,
 			attach: null,
 			// colors: ['green', 'purple', 'indigo', 'cyan', 'teal', 'orange'],
-			color: 'green',
+			color: "#08d3bc",
 			editing: null,
 			index: -1,
 			items: [
-				{ header: '엔터를 누르면 태그가 끊깁니다.' },
+				{ header: '엔터를 누르면 태그가 입력됩니다.' },
 			],
 			nonce: 0,
 			menu: false,
@@ -121,7 +126,7 @@ export default {
 			.then(response => {
 				response.data.tag.forEach(el => {
 					this.model.push(
-					{"color": "green",
+					{"color": "#08d3bc",
 						"text" : el}
 				);
 				})
@@ -184,4 +189,8 @@ export default {
 
 <style>
 
+.sub_btn{
+	float: right;
+	margin-top: -15px;
+}
 </style>
