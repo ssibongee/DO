@@ -20,9 +20,20 @@ public class User {
     private String github;         // github 주소
     private String introduce;      // 프로필 소개
     private String updateType;     // 업데이트 타입
+
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public User(String qrImage, String profileImage, String introduce,
+                String facebook, String instagram, String github) {
+        this.introduce = introduce;
+        this.qrImage = qrImage;
+        this.profileImage = profileImage;
+        this.facebook = facebook;
+        this.instagram = instagram;
+        this.github = github;
     }
 
 }

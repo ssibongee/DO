@@ -3,6 +3,7 @@ package com.backend.service.impl;
 import com.backend.dao.PostDao;
 import com.backend.dto.post.Post;
 import com.backend.dto.post.Tag;
+import com.backend.dto.user.User;
 import com.backend.service.BookmarkService;
 import com.backend.service.PostService;
 import org.apache.tomcat.jni.Local;
@@ -151,10 +152,10 @@ public class PostServiceImpl implements PostService {
         postDao.temporarily(post);
     }
 
-    @Override
-    public String getQRImage(Long uid) {
-        return postDao.getQRImage(uid);
-    }
+//    @Override
+//    public String getQRImage(Long uid) {
+//        return postDao.getQRImage(uid);
+//    }
 
     @Override
     public List<Post> findAllTempPost(Long uid) {
@@ -164,5 +165,10 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> findAllUserPost(Long uid) {
         return postDao.findAllUserPost(uid);
+    }
+
+    @Override
+    public User findAuthorInfo(Long uid) {
+        return postDao.findAuthorInfo(uid);
     }
 }

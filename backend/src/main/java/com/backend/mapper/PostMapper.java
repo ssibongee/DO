@@ -2,6 +2,7 @@ package com.backend.mapper;
 
 import com.backend.dto.post.Post;
 import com.backend.dto.post.Tag;
+import com.backend.dto.user.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -50,9 +51,9 @@ public interface PostMapper {
 
     public void temporarily(Post post); // 포스트 임시저장
 
-    public String getQRImage(Long uid); // 작성자의 QRImage 를 가져옴
-
     public List<Post> findAllTempPost(Long uid); // 사용자의 모든 임시저장 글을 가져옴
 
     public List<Post> findAllUserPost(Long uid); // 사용자의 모든 게시글을 가져옴
+
+    public User findAuthorInfo(Long uid);   // 작성자의 기본정보를 가져옴
 }

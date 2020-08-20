@@ -1,9 +1,11 @@
 package com.backend.controller;
 
 import com.backend.dto.post.Post;
+import com.backend.dto.user.User;
 import com.backend.service.BookmarkService;
 import com.backend.service.CommentService;
 import com.backend.service.PostService;
+import com.backend.service.UserService;
 import com.backend.util.SHA512;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
@@ -40,6 +42,9 @@ public class PostController {
     @Autowired
     BookmarkService bookmarkService;
 
+    @Autowired
+    UserService userService;
+
     private final String DEFAULT_THUMBNAIL_IMAGE_URL = "http://i3a507.p.ssafy.io/img/default/thumbnail.jpg";
 
     /**
@@ -68,15 +73,17 @@ public class PostController {
     @ApiOperation(value = "글 읽기", notes = "pid 를 통해 글 하나를 찾아서 반환")
     @PostMapping("/api/v2/p/")
     public Post findById(@RequestBody Map<String, String> map) {
-        Long uid = Long.parseLong(map.get("uid"));
-        Long pid = Long.parseLong(map.get("pid"));
+        Long uid = Long.parseLong(map.get("uid")); // 현재 로그인한 사용자 정보
+        Long pid = Long.parseLong(map.get("pid")); // 현재 조회한 글 번호
         Post post = postService.findById(pid);
-        post.setQrImage(postService.getQRImage(post.getUid())); // 글 작성자의 QR 이미지를 불러옴
+        post.setAuthorInfo(postService.findAuthorInfo(post.getUid()));
         post.setTag(postService.findAllPostTags(pid)); // 게시글의 모든 태그를 불러옴
         post.setComments(commentService.findAllCommentsInPost(pid)); // 게시글의 모든 댓글을 불러옴
         // 게시글 좋아요 표시
         if(uid != null)
             post.setIsLike(bookmarkService.isBookmark(uid, pid) != null ? true : false);
+        else
+            post.setIsLike(false);
         return post;
     }
 

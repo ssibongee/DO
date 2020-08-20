@@ -107,9 +107,9 @@
                 where taglist.pid = #{pid}
     </select>
 
-    <!-- 사용자의 QR 이미지를 조회 -->
-    <select id="getQRImage" resultType="String">
-        select qrImage from user where uid = #{uid}
+    <!-- 작성자 정보를 읽어옴 -->
+    <select id="findAuthorInfo" resultType="com.backend.dto.user.User">
+        select qrImage, profileImage, facebook, instagram, github, introduce from user where uid = #{uid}
     </select>
 
     <!-- #################### 글 수정 및 삭제 #################### -->

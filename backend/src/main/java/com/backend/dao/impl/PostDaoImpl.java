@@ -3,6 +3,7 @@ package com.backend.dao.impl;
 import com.backend.dao.PostDao;
 import com.backend.dto.post.Post;
 import com.backend.dto.post.Tag;
+import com.backend.dto.user.User;
 import com.backend.mapper.PostMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -115,10 +116,10 @@ public class PostDaoImpl implements PostDao {
         postMapper.temporarily(post);
     }
 
-    @Override
-    public String getQRImage(Long uid) {
-        return postMapper.getQRImage(uid);
-    }
+//    @Override
+//    public String getQRImage(Long uid) {
+//        return postMapper.getQRImage(uid);
+//    }
 
     @Override
     public List<Post> findAllTempPost(Long uid) {
@@ -128,5 +129,10 @@ public class PostDaoImpl implements PostDao {
     @Override
     public List<Post> findAllUserPost(Long uid) {
         return postMapper.findAllUserPost(uid);
+    }
+
+    @Override
+    public User findAuthorInfo(Long uid) {
+        return postMapper.findAuthorInfo(uid);
     }
 }

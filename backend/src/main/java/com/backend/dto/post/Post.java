@@ -1,6 +1,7 @@
 package com.backend.dto.post;
 
 import com.backend.dto.comment.Comment;
+import com.backend.dto.user.User;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
@@ -32,5 +33,5 @@ public class Post {
     private List<Comment> comments; // 글에 작성된 모든 댓글
 
     private Boolean isLike;         // 좋아요 체크 여부
-    private String qrImage;         // QR 이미지
+    private User authorInfo;            // 작성자
 }
