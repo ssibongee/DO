@@ -21,11 +21,7 @@
 
           <!-- TextEditor 미리보기만(마크다운) -->
           <div class="col-lg-12">
-            <!-- <Viewer :initialValue="this.post.content"/> -->
-            <Viewer 
-              :initialValue="this.content"
-              @change="onEditorChange"
-            />
+            <Viewer :initialValue="this.content"/>
           </div>
           <!-- 게시글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
           <div></div>
