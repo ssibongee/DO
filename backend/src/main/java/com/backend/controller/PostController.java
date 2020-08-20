@@ -201,8 +201,6 @@ public class PostController {
         postService.update(post);
     }
 
-    // 글 읽어올 때 좋아요 표시한 게시물인지 판단해서 좋아요 활성 비활성 하는 것 해야함
-
     /**
      * @param file
      * @param title
