@@ -29,7 +29,7 @@
               />
             </v-col>
             <!-- 게시글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
-            <v-col cols="12">
+            <v-col v-if="post.isauthor" cols="12">
               <v-btn @click="onPostUpdateBtn" color="success">게시글 수정</v-btn>
               <v-btn @click="onPostDeleteBtn" color="primary">게시글 삭제</v-btn>
             </v-col>
@@ -160,7 +160,7 @@ export default {
           }
           this.Comments = res.data.comments
           this.isCommentauthor(this.Comments)
-          this.isPostauthor(this.isPostauthor)
+          this.post.isauthor = this.isPostauthor()
       })
     },
     mounted() {
@@ -182,7 +182,7 @@ export default {
             this.post = res.data
             this.Comments = res.data.comments
             this.isCommentauthor(this.Comments)
-            this.isPostauthor(this.isPostauthor)
+            this.post.isauthor = this.isPostauthor()
           })
       },
       onEditorChange() {
@@ -190,7 +190,7 @@ export default {
       },
       // 글 작성자인지 확인
       isPostauthor() {
-        if (this.post.author && storage.getItem("login_user") && this.post.uid && storage.getItem("uid")) {
+        if (this.post.author === storage.getItem("login_user") && this.post.uid === Number(storage.getItem("uid"))) {
           return true
         } else {
           return false
@@ -207,8 +207,11 @@ export default {
       // 게시글 삭제 버튼
       onPostDeleteBtn() {
         if (this.isPostauthor()) {
-          axios.delete(API_URL + 'api/v3' + this.post.pid)
-            .then(() => alert('게시글이 삭제되었습니다.'))
+          axios.delete(API_URL + 'api/v2/' + this.post.pid)
+            .then(() => {
+              alert('게시글이 삭제되었습니다.')
+              this.$router.push('/')
+          })
         }
       },
       
