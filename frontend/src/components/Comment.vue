@@ -1,82 +1,54 @@
 <template>
-	<div class="comment-body">
-		<div class="comment-box justify-content-between">
-			<div>
-				<h5>{{ comment.author }}</h5>
-				<p class="mr-3">{{ comment.content }}</p>
-			</div>
-			<div>
-				<v-btn
-					class="mx-2 red accent-3 text-white"
-					color="white"
-					v-if="comment.isauthor"
-					@click="onCommentDelete(comment)"
-				>삭제</v-btn>
-				<v-btn
-					class="green accent-4"
-					v-if="comment.isauthor"
-					@click="ClickUpdateBtn(comment)"
-				>수정</v-btn>
-			</div>
+	<div class="">
+		<div class="comment-box">
+			<p class="mr-3">작성자: {{ comment.author }} 내용:{{ comment.content }}</p>
+			<v-btn 
+				v-if="comment.isauthor"
+				@click="onCommentDelete(comment)"
+			>삭제</v-btn>
+			<v-btn 
+				v-if="comment.isauthor"
+				@click="onClickUpdateBtn(comment)"
+			>수정</v-btn>
 		</div>
 		<div v-if="UpdateFlag" class="update-box">
 			<v-text-field
 				v-model="CommentUpdateInput"
 				solo
-				rows="2"
+				dense
 				clearable
 			></v-text-field>
 			<v-btn @click="onCommentUpdate(comment)" class="update-btn">수정하기</v-btn>
 		</div>
-		<div class="child-comment-btn">
-			<v-btn @click="ClickChildBtn" class="mx-2" fab x-small dark color="indigo">
-				<v-icon v-if="!ChildFlag" dark>mdi-plus</v-icon>
-				<v-icon v-if="ChildFlag">mdi-minus</v-icon>
+		<div class="comment-box">
+			<v-btn @click="onClickChildBtn" class="mx-2" fab x-small dark color="indigo">
+				<v-icon dark>mdi-plus</v-icon>
 			</v-btn>
 			<div class="my-auto">
 				<p class="" v-if="!isCommentChild(comment.child)">대댓글이 없습니다 ㅠㅠ</p>
 				<p class="" v-else>{{ comment.child.length }}개의 대댓글</p>
-			</div>
-		</div>
-			
-				<!-- 대댓글 부분 -->
 				<div v-if="ChildFlag">
-					<div class="child-box">
-						<v-text-field
-							v-model="ChildCommentInput"
-							flat
-							outlined
-							clearable
-							rows="2"
-						></v-text-field>
-						<v-btn class="Child-Create-Btn" @click="onChildCommentCreate(comment.cid)">대댓글 작성하기</v-btn>
+					<div v-for="child in comment.child" :key=child.cid>
+						<p>작성자: {{ child.author }} | 내용: {{ child.content }}</p>
 					</div>
-					<div v-for="child in comment.child" :key="child.cid" class="child-comment">
-						<div>
-							<h5>{{ child.author }}</h5>
-							<p>{{ child.content }}</p>
-						</div>
-						<div>
-							<v-btn
-								class="mx-2 red accent-3 text-white"
-								v-if="child.isauthor"
-								@click="onCommentDelete(child)"
-							>삭제</v-btn>
-							<v-btn 
-								class="green accent-4"
-								color="white"
-								v-if="child.isauthor"
-								@click="ClickChildUpdateBtn(child)"
-							>수정</v-btn>
-						</div>
+					<div>
+					<v-text-field
+						:id="comment.cid"
+						v-model="ChildCommentInput"
+						solo="true"
+						dense="true"
+						clearable="true"
+					></v-text-field>
+					<v-btn @click="onChildCommentCreate(comment.cid)">답글 작성하기</v-btn>
 					</div>
 				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
 import axios from 'axios'
-// import ChildComment from './ChildComment.vue'
 
 const API_URL = 'http://i3a507.p.ssafy.io:8081/'
 // const API_URL = 'http://localhost:8081/'
@@ -85,23 +57,28 @@ const storage = window.sessionStorage
 export default {
 	name: 'Comment',
 	components: {
-		// ChildComment,
 	},
 	data() {
 		return {
 			comment: this.$attrs.comment,
-			CommentUpdateInput: '',
-			UpdateFlag: false,
 			ChildFlag: false,
 			ChildCommentInput: '',
-			ChildUpdateInput: '',
-			ChildUpdateFlag: false,
+			CommentUpdateInput: '',
+			UpdateFlag: false,
 		}
-	},
-	created() {
 	},
 	methods: {
 		// *** Parent Comment ***
+		isCommentauthor(Comments) {
+			Comments.forEach(one_comment => {
+				if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
+					one_comment.isauthor = true
+				} else {
+					one_comment.isauthor = false
+				}
+			})
+			return Comments
+		},
 		// 댓글 Delete 메서드
 		onCommentDelete(one_comment) {
 			if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
@@ -111,7 +88,7 @@ export default {
 				alert('비정상적인 접근입니다')
 			}
 		},
-		// 댓글 수정
+		// 댓글 수정(아직 수정 필요함)
 		onCommentUpdate(one_comment) {
 			if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
 				// console.log(one_comment)
@@ -132,15 +109,11 @@ export default {
 		},
 		// Comment에 Child가 있는지 없는지 체크
 		isCommentChild(one_comment_child) {
-			if (one_comment_child.length) {
-				// one_comment_child.forEach(element => {
-				// 	this.isCommentauthor(element)
-				// })
-				return true
-			}
+			// console.log(one_comment_child)
+			if (one_comment_child.length) return true
 			return false
 		},
-		ClickUpdateBtn(one_comment) {
+		onClickUpdateBtn(one_comment) {
 			if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
 				this.CommentUpdateInput = one_comment.content
 				this.UpdateFlag = !this.UpdateFlag
@@ -164,31 +137,15 @@ export default {
 			}
 		},
 		// 대댓글 보기, 숨기기 Boolean 반전 메서드
-		ClickChildBtn() {
+		onClickChildBtn() {
 			this.ChildFlag = !this.ChildFlag
-			this.$nextTick()
 		},
-		// 대댓글 수정 버튼
-		ClickChildUpdateBtn() {
-			this.ChildUpdateFlag = !this.ChildUpdateFlag
-		}
-
 	}
 }
 </script>
 
-<style scoped>
-.comment-body {
-	margin: 1rem 0 1rem 1rem;
-  padding: 0 0 0.5rem 0;
-}
+<style>
 .comment-box {
-	display: flex;
-}
-.child-box {
-	display: inline;
-}
-.child-comment-btn {
 	display: flex;
 }
 .update-box {
@@ -196,15 +153,5 @@ export default {
 }
 .update-btn {
 	margin-left: 5px;
-}
-.Child-Create-Btn {
-	margin-bottom: 2rem;
-}
-.child-comment {
-	display: flex;
-	justify-content: space-between;
-	margin: 0.5rem 0 1rem 2rem;
-  padding: 0 0 0.5rem 0;
-  border-bottom: 1px solid #888888
 }
 </style>

@@ -13,8 +13,6 @@ import Introduce from '../components/Introduce.vue'
 import Search from '../components/Search.vue'
 import Feed from '../components/Feed.vue'
 import Forum from '../components/Forum.vue'
-import Myblog from '../components/Myblog.vue'
-import Notice from '../components/Notice.vue'
 
 Vue.use(VueRouter)
 import store from '../router/index.js'
@@ -73,6 +71,7 @@ export default new VueRouter({
       component: Post
     },
     {
+      // path: '/:username/:title',
       path: '/postdetail',
       name: 'postdetail',
       component: PostDetail
@@ -96,16 +95,6 @@ export default new VueRouter({
       path:'/forum',
       name:'forum',
       component: Forum
-    },
-    {
-      path:'/doblog/:username',
-      name:'myblog',
-      component: Myblog,
-    },
-    {
-      path:'/notice',
-      name:'notice',
-      component: Notice,
     }
   ]
 })

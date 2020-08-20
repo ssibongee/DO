@@ -110,7 +110,7 @@ export default {
     return {
       tab: null,
       items: [
-        '조회수', '좋아요', '최신'
+        '최신', '조회수', '좋아요'
       ],
       posts : {
         pid: '',
@@ -131,7 +131,8 @@ export default {
     postdetail(one_post) {
       storage.removeItem("pid")
       storage.setItem("pid", one_post.pid)
-      this.$router.push({name: 'postdetail', params: {data: one_post}})
+      // this.$router.push({name: 'postdetail', params: {data: one_post}})
+      this.$router.push({name: 'postdetail',  params: {data: one_post}})
     },
     postread(item) {
       let option = ""

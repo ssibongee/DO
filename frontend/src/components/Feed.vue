@@ -135,7 +135,7 @@ export default {
 }
 .top_desc {
   padding:0 0;
-  font-size: 20px;
+  font-size: 24px;
   line-height: 1;
   letter-spacing: -0.6px;
   font-family: Noto Sans Light, sans-serif;

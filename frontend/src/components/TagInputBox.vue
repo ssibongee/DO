@@ -87,8 +87,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-const API_URL = 'http://i3a507.p.ssafy.io:8081/'
 
 export default {
 	name:'TagInputBox',
@@ -105,30 +103,14 @@ export default {
 			],
 			nonce: 0,
 			menu: false,
-			model: [],
+			model: [
+			],
 			x: 0,
 			search: null,
 			y: 0,
 		}
 	},
-	created() {
-		// tag
-		axios.post(API_URL+'api/v2/p/',
-			{
-				"pid" : this.$attrs.pid,
-				"uid" :	this.$attrs.uid
-			})
-			.then(response => {
-				response.data.tag.forEach(el => {
-					this.model.push(
-					{"color": "green",
-						"text" : el}
-				);
-				})
-				
-			})
 
-	},
 	watch: {
 		// 태그 글자수 20자 미만으로 제한 두기
 		// 태그 빈칸은 안받기, 빈칸 넣어두면 없애기
@@ -176,7 +158,7 @@ export default {
 			this.$emit('submit-post', this.model)
 		},
 		onSaveButton() {
-			this.$emit('save-post', this.model)
+			this.$emit('save-post')
 		}
 	},
 }

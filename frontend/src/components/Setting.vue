@@ -352,7 +352,7 @@ export default {
 			};
 
 			// **추가** POST문으로 서버에 이미지 파일 전송
-			axios.post(API_URL+'api/v1/img?nickname='+this.userinfo.nickname,
+			axios.post(API_URL+'api/v1/img?uid='+this.userinfo.uid,
 				file,
 				{
 					headers:{
@@ -403,7 +403,7 @@ export default {
 			};
 			
 			// **추가** POST문으로 서버에 이미지 파일 전송
-			axios.post(API_URL+'api/v1/qr/?nickname='+this.userinfo.nickname,
+			axios.post(API_URL+'api/v1/qr/?uid='+this.userinfo.uid,
 				file,
 				{
 					headers:{
