@@ -113,31 +113,20 @@ export default {
 	},
 	created() {
 		// tag
-		console.log(this.$attrs)
-			axios.post(API_URL+'api/v2/p/',
-				{
-					"pid" : this.$attrs.pid,
-					"uid" :	this.$attrs.uid
+		axios.post(API_URL+'api/v2/p/',
+			{
+				"pid" : this.$attrs.pid,
+				"uid" :	this.$attrs.uid
+			})
+			.then(response => {
+				response.data.tag.forEach(el => {
+					this.model.push(
+					{"color": "green",
+						"text" : el}
+				);
 				})
-				.then(response => {
-					console.log("A")
-					console.log(response.data)
-					// console.log("tag 데이터 URL: "+response.data.tag);
-					// "안녕" , "taglist"
-					response.data.tag.forEach(el => {
-						this.model.push(
-						{"color": "green",
-							"text" : el}
-					);
-					})
-					
-					// console.log(this.taglist)
-				})
-				.catch((err) => {
-					console.log("tag 데이터 불러오기 실패")
-					console.log(err);
-				})
-			// this.tag =
+				
+			})
 
 	},
 	watch: {

@@ -105,7 +105,6 @@ export default {
         }
     },
     created(){
-      console.log(this.post.content)
       axios.post(API_URL + 'api/v2/p/',{
         // headers :{
         //   'Content-Type': 'application/json',
@@ -115,13 +114,10 @@ export default {
         pid : storage.getItem("pid")
       })
         .then(res => {
-          // console.log(res)
-          // this.post = res.data
           this.post.title = res.data.title
           this.post.author = res.data.author
           this.post.content = res.data.content
           this.post.islike = res.data.isLike
-          console.log(this.post.content)
           if(this.post.islike===true){
             this.like = "fas fa-heart"
             this.FeedFlag= true
@@ -157,7 +153,6 @@ export default {
           .then(res => {
             console.log('fetchData')
             this.post = res.data
-            console.log(this.post)
             this.Comments = res.data.comments
             this.isCommentauthor(this.Comments)
             this.isPostauthor(this.isPostauthor)
@@ -261,7 +256,7 @@ export default {
               status : this.FeedFlag,
             })
             .then(function (response){
-						console.log(response);
+              console.log(response);
             })
             .catch(function(error){
               console.log(error);

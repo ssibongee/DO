@@ -478,19 +478,6 @@ export default {
 		axios
 		.get(API_URL+'api/v1/'+uid)
 		.then(({data})=>{
-			console.log("들어오는 Data 확인 : "+data.uid);
-			console.log("들어오는 Data 확인 : "+data.nickname);
-			console.log("들어오는 Data 확인 : "+data.email);
-			console.log("들어오는 Data 확인 : "+data.password);
-			console.log("들어오는 Data 확인 : "+data.profileImage);
-			console.log("들어오는 Data 확인 : "+data.qrImage);
-			console.log("들어오는 Data 확인 : "+data.admin);
-			console.log("들어오는 Data 확인 : "+data.facebook);
-			console.log("들어오는 Data 확인 : "+data.instagram);
-			console.log("들어오는 Data 확인 : "+data.github);
-			console.log("들어오는 Data 확인 : "+data.introduce);
-			console.log("들어오는 Data 확인 : "+data.updateType);
-			console.log("=======================================");
 			this.userinfo.uid = data.uid;
 			this.userinfo.profileImage = data.profileImage;
 			this.userinfo.nickname = data.nickname;

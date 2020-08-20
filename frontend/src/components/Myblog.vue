@@ -139,7 +139,6 @@ export default {
 		axios
 		.get(API_URL+'api/v1/'+uid)
 		.then(({data})=>{
-      // console.log(data);
       this.introduce = data.introduce
       this.github = 'https://github.com/'+data.github
 			this.facebook = 'https://facebook.com/'+data.facebook
@@ -152,10 +151,8 @@ export default {
       var uid = sessionStorage.uid;
       this.posts=[]
       if (item === "내글") {
-        console.log("a")
         axios.get(API_URL+'api/v2/u/'+uid)
           .then(({data})=>{
-            console.log(data)
             data.forEach(el => {
             el.tmp = el.content
             if (el.content.length > 120) {
@@ -190,15 +187,11 @@ export default {
               this.posts = data
 
             });
-            console.log(this.posts)
           }).catch(err => console.log(err))
       }
     },
     postdetail(one_post) {
       storage.removeItem("pid")
-      console.log(one_post)
-      console.log("one_post pid : "+one_post.pid)
-      console.log("one_post uid : "+one_post.uid)
       // 임시 저장
       if(one_post.isTemp){
         this.$router.push({name: 'texteditor', params: {data: one_post}})
