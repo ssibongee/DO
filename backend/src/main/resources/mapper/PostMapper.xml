@@ -36,19 +36,19 @@
 
     <!-- 포스트 제목으로 글 검색 -->
     <select id="findByTitle" resultType="com.backend.dto.post.Post">
-                select * from post where title like concat('%', #{keyword}, '%') and isTemp = 0
+                select * from post where title like concat('%', #{keyword}, '%') and isTemp = 0 and uid != 1
     </select>
 
 
     <!-- 사용자 닉네임으로 작성글 검색 -->
     <select id="findByNickName" resultType="com.backend.dto.post.Post">
-                select * from post where author like concat('%', #{nickname}, '%') and isTemp = 0
+                select * from post where author like concat('%', #{nickname}, '%') and isTemp = 0 and uid != 1
     </select>
 
     <!-- 태그를 사용해서 검색 -->
     <select id="findByTag" resultType="String">
                 select title from post join taglist on post.pid = taglist.pid
-                where taglist.tid in (select tid from tag where name like #{tag}) and isTemp = 0
+                where taglist.tid in (select tid from tag where name like #{tag}) and isTemp = 0 and uid != 1
     </select>
 
     <!-- #################### 전체 게시글 조회 #################### -->
