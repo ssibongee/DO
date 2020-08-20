@@ -12,7 +12,7 @@
     -->
     <insert id="save" parameterType="User">
         insert into user (nickname,email,password,profileImage,qrImage,admin)
-        values ( #{nickname}, #{email}, #{password}, default, default, false)
+        values (#{nickname}, #{email}, #{password}, #{profileImage}, default, false)
     </insert>
 
     <!-- 회원 탈퇴 Query

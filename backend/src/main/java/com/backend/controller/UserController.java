@@ -43,6 +43,11 @@ public class UserController {
     @Autowired
     private BookmarkService bookmarkService;
 
+    private final String DEFAULT_PROFILE_IMAGE_URL = "http://i3a507.p.ssafy.io/img/user/default/qr.jpg";
+
+    private final String DEFAULT_QR_IMAGE_URL = "http://i3a507.p.ssafy.io/img/user/default/profile.jpg";
+
+
     @PostMapping("/googlelogin")
     public Object googleLogin(@RequestHeader final HttpHeaders header) throws Exception {
 
@@ -74,6 +79,7 @@ public class UserController {
             newUser.setProfileImage(picture);
             newUser.setPassword(subPassword);
             newUser.setNickname(nickname);
+            newUser.setProfileImage(DEFAULT_PROFILE_IMAGE_URL);
             signup(newUser); // 회원가입
 
         }else if(memberVo != null){ // google 계정 로그인
@@ -182,6 +188,7 @@ public class UserController {
     @PostMapping("/api/v1")
     public ResponseEntity<?> signup(@RequestBody User user)
     {
+        user.setProfileImage(DEFAULT_PROFILE_IMAGE_URL);
         System.out.println("회원가입: " +user.toString());
         try{
             service.save(user);
