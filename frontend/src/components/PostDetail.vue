@@ -21,7 +21,7 @@
 
           <!-- TextEditor 미리보기만(마크다운) -->
           <div class="col-lg-12">
-            <Viewer :initialValue="this.content"/>
+            <Viewer :initialValue="this.post.content"/>
           </div>
           <!-- 게시글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
           <div></div>
@@ -45,8 +45,8 @@
         <!-- 댓글 목록 -->
         <h1>댓글창</h1>
         <!-- 댓글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
-        <div v-for="comment in Comments" :key="comment.cid" class="col-lg-12">
-          <div>
+        <div v-if="renderComponent">
+          <div v-for="comment in Comments" :key="comment.cid" class="col-lg-12">
             <Comment 
               :comment="comment"
               @Click-Delete-Btn="CommentRead"
@@ -100,10 +100,11 @@ export default {
           ChildCommentInput: '',
           FeedFlag: '',
           like: '',
+          renderComponent: true,
         }
     },
     created(){
-      console.log(storage.getItem("uid"))
+      console.log(this.post.content)
       axios.post(API_URL + 'api/v2/p/',{
         // headers :{
         //   'Content-Type': 'application/json',
@@ -135,10 +136,20 @@ export default {
       })
     },
     mounted() {
+      this.fetchData()
     },
     // computed() {
     // },
     methods: {
+      forceRerender() {
+        // Remove my-component from the DOM
+        this.renderComponent = false;
+
+        this.$nextTick(() => {
+          // Add the component back in
+          this.renderComponent = true;
+        })
+      },
       fetchData() {
         axios.post(API_URL + 'api/v2/p',{
           uid : storage.getItem("uid"),
@@ -184,6 +195,8 @@ export default {
         axios.get(API_URL+'api/v3/'+storage.getItem("pid"))
           .then(res => {
             this.Comments = this.isCommentauthor(res.data)
+            this.forceRerender()
+            console.log('Comment Read')
           })
         this.CommentInput = ""
       },
