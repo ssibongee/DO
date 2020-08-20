@@ -1,111 +1,128 @@
 <template>
   <div id="app">
   <!-- navbar(로고에 개인 블로그 이름 추가되야함) -->
-    <Navbar/>
-    <v-container class="post-box">
-      <!-- {{ this.post }} -->
-      <v-row>
-        <!-- 왼쪽 사이드바(좋아요, 공유버튼) -->
-        <v-col cols="1" class="pa-0">
-        <v-btn icon depressed small @click="addToFeed" color="pink">
-          <v-icon :class="like"></v-icon>
-        </v-btn>
-        </v-col>
-        <!-- 게시글, 댓글 큰틀  -->
-        <v-col cols="10" class="pa-0">  
-          <v-layout column="12">
-            <!-- 게시글 헤더 -->
-            <h1 class="post-title">{{ post.title }}</h1>
-            <v-row justify="center">
-              <v-col cols="2">
-                <v-img class="author_profile_img" v-if="post.authorInfo.profileImage" :src="post.authorInfo.profileImage"></v-img>
-              </v-col>
-              <v-col cols="10">
-                <h4 class="post-author">{{ post.author }} </h4>
-              </v-col>
-            </v-row>  
-            
-            <PostTagBox
-              :tagList="post.tag"
+  <Navbar/>
+  <div class="likepost">
+    <v-btn icon depressed small @click="addToFeed" color="pink">
+      <v-icon :class="like"></v-icon>
+    </v-btn>
+  </div>
+  <div class="detail_content">
+    <h1 class="post-title">{{ post.title }}</h1>
+    <div class="post_info">
+      <div class="post_author">
+        {{post.author}}
+      </div>
+      <div class="post_date">
+        {{post.publishedTime}}
+      </div>
+    </div>
+    <div class="taglist">
+      <PostTagBox
+          :tagList="post.tag"
+        />
+    </div>
+    <div class="post-content">
+      <!-- TextEditor 미리보기만(마크다운) -->
+      <!-- <Viewer :initialValue="this.post.content"/> -->
+      <Viewer 
+        :initialValue="this.post.content"
+        @change="onEditorChange"
+      />
+    </div>
+    <!-- 작성자 Thumnail, 자기 소개, 후원버튼 & 후원QR -->
+    <div class="author_info">
+      <div class="author_img">
+        <img :src="post.authorInfo.profileImage">
+      </div>
+      <div class="author_prof">
+        <span>{{ post.author }}</span>
+        <div v-if="post.authorInfo.introduce">
+        {{ post.authorInfo.introduce }}
+        </div>
+        <div v-else>
+          안녕하세요, {{ post.author }}입니다.
+        </div>
+        <!-- 소셜 로그인 버튼 -->
+        <div class="social-login">
+          <i v-if="post.authorInfo.github" small class="fab fa-github fa-2x mr-3" href="`https://github.com/${post.authorInfo.github}`"></i>
+          <i v-if="post.authorInfo.instagram" small class="fab fa-instagram fa-2x mr-3" href=""></i>
+          <i v-if="post.authorInfo.facebook" small class="fab fa-facebook fa-2x mr-3" href=""></i>
+        </div>
+      </div>
+    </div>
+    <div class="author_dona">
+      <div class="dona_btn" v-if="post.authorInfo.qrImage">
+        <v-btn
+          tile
+          depressed
+          outlined
+          color="#08d3bc"
+          @click="ClickQrBtn" v-if="!qrflag"
+        >글쓴이에게 후원하기</v-btn>
+        <div v-if="qrflag" class="qrimage-resize" @click="ClickQrBtn">
+          <v-img :src="post.authorInfo.qrImage"></v-img>
+        </div>
+      </div>
+      <div v-else></div>
+    </div>
+    
+    <div class="comment_area">
+      <div class="comment_input">
+        <v-textarea
+          clearable
+          flat
+          outlined
+          hide-details
+          label="댓글 내용을 작성하세요"
+          rows="3"
+          v-model="CommentInput"
+          style="border-radius:0px"
+        ></v-textarea>
+        <div class="comment_btn">
+          <v-btn
+            depressed
+            color="#08d3bc"
+            @click="onCommentCreate"
+            style="border-radius:0px"
+            class="white--text"
+          >댓글 작성
+          </v-btn>
+        </div>
+      </div>
+      <div class="comment_p" v-if="renderComponent">
+          <div v-for="comment in Comments" :key="comment.cid">
+            <Comment 
+              :comment="comment"
+              @Click-Delete-Btn="CommentRead"
+              @Click-Update-Btn="CommentRead"
+              @Child-Create="CommentRead"
+              @Click-Child-Change-Btn="CommentRead"
             />
-            <!-- TextEditor 미리보기만(마크다운) -->
-            <v-col cols="12" class="post-content">
-              <!-- <Viewer :initialValue="this.post.content"/> -->
-              <Viewer 
-                :initialValue="this.post.content"
-                @change="onEditorChange"
-              />
-            </v-col>
-            <!-- 게시글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
-            <v-col v-if="post.isauthor" cols="12">
-              <v-btn @click="onPostUpdateBtn" color="success">게시글 수정</v-btn>
-              <v-btn @click="onPostDeleteBtn" color="primary">게시글 삭제</v-btn>
-            </v-col>
-            <!-- 블로그 작성자 Thumnail -->
+        </div>
+      </div>
+    </div>
+    <v-row>
+      
+      <!-- 게시글, 댓글 큰틀  -->
+      <v-col cols="10" class="pa-0">  
+        <v-layout column="12">
+          <!-- 게시글 헤더 -->
+        
+          <!-- 게시글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
+          <v-col v-if="post.isauthor" cols="12">
+            <v-btn @click="onPostUpdateBtn" color="success">게시글 수정</v-btn>
+            <v-btn @click="onPostDeleteBtn" color="primary">게시글 삭제</v-btn>
+          </v-col>
+          <!-- 블로그 작성자 Thumnail -->
 
-            <!-- 작성자 Thumnail, 자기 소개, 후원버튼 & 후원QR -->
-            <v-row>
-              <v-col cols="3">
-                <v-img class="author_profile_img" v-if="post.authorInfo.profileImage" :src="post.authorInfo.profileImage"></v-img>
-                <p v-else>{{ post.author }}</p>
-              </v-col>
-              <v-col cols="4" v-if="post.authorInfo.introduce">
-                {{ post.authorInfo.introduce }}
-              </v-col>
-              <v-col cols="3" v-else>
-                안녕하세요, {{ post.author }}입니다.
-              </v-col>
-              <v-col v-if="post.authorInfo.qrImage" cols="5">
-                <v-btn @click="ClickQrBtn" v-if="!qrflag">글쓴이에게 후원하기</v-btn>
-                <div class="qrimage-resize">
-                  <v-img v-if="qrflag" :src="post.authorInfo.qrImage"></v-img>
-                </div>
-              </v-col>
-              <v-col v-else cols="5"></v-col> 
-            </v-row>
-            <!-- 소셜 로그인 버튼 -->
-            <v-row class="social-login">
-              <i v-if="post.authorInfo.github" class="fab fa-github fa-3x" href=""></i>
-              <i v-if="post.authorInfo.instagram" class="fab fa-instagram fa-3x" href=""></i>
-              <i v-if="post.authorInfo.facebook" class="fab fa-facebook fa-3x" href=""></i>
-            </v-row>
-            <h3 class="comment-header">댓글</h3>
-            <!-- 댓글 작성창 -->
-            <div class="col-lg-12 mb-2">          
-              <v-textarea
-                clearable
-                label="댓글 내용을 작성하세요"
-                rows="3"
-                v-model="CommentInput"
-                solo
-              ></v-textarea>
-              <v-btn
-                @click="onCommentCreate"
-              >댓글 작성
-              </v-btn>
-            </div>
-            <!-- 댓글 목록 -->
-            <!-- 댓글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
-            <div v-if="renderComponent">
-              <div v-for="comment in Comments" :key="comment.cid" class="col-lg-12">
-                <Comment 
-                  :comment="comment"
-                  @Click-Delete-Btn="CommentRead"
-                  @Click-Update-Btn="CommentRead"
-                  @Child-Create="CommentRead"
-                  @Click-Child-Change-Btn="CommentRead"
-                />
-              </div>
-            </div>
-          </v-layout>
-        </v-col>
-        <v-col cols="1"></v-col>
-        <!-- 오른쪽 사이드바 -->
-        <!-- <v-col id="side" class="hidden-sm-and-down pa-0" cols="3">
-          <h3> 게시글 목차 </h3>
-        </v-col> -->
-      </v-row>
-    </v-container>
+          <!-- 댓글 목록 -->
+          <!-- 댓글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
+          
+        </v-layout>
+      </v-col>
+    </v-row>
+  </div>
   </div>
 </template>
 
@@ -135,6 +152,7 @@ export default {
             title: '',
             author: '',
             content: '',
+            publishedTime: '',
             // islike: this.$route.params.data.isLike,
           },
           // content: this.$route.params.data.content,
@@ -158,6 +176,11 @@ export default {
           this.post.author = res.data.author
           this.post.content = res.data.content
           this.post.islike = res.data.isLike
+          let year = res.data.publishedTime.slice(0,4);
+          let month = res.data.publishedTime.slice(5,7);
+          let day = res.data.publishedTime.slice(8,10);
+          this.post.publishedTime = year+"년 "+month+"월 "+day+"일"
+          
           if(this.post.islike===true){
             this.like = "fas fa-heart"
             this.FeedFlag= true
@@ -168,6 +191,7 @@ export default {
           this.Comments = res.data.comments
           this.isCommentauthor(this.Comments)
           this.post.isauthor = this.isPostauthor()
+          console.log(this.post)
       })
     },
     mounted() {
@@ -326,11 +350,46 @@ export default {
 </script>
 
 <style scoped>
-#side {
-  margin-left:2vw;
-  position: sticky;
-  top : 130px;
+.detail_content {
+  padding-top:151px;
+  max-width:980px;
+  margin: 0 auto;
 }
+.post_info{
+  display: flex;
+}
+.post_author{
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  padding-right: 30px;
+}
+.post_date{
+  font-family: 'NanumSquare','나눔스퀘어','Noto Sans','Apple SD Gothic',sans-serif;
+  font-size: 14px;
+  margin: auto 0;
+}
+.taglist{
+  margin: 10px 0;
+}
+.post_content{
+  height:700px;
+}
+.author_dona{
+  width: 100%;
+  margin-top: 42px;
+}
+.dona_btn{
+  margin-top:-123px;
+  float: right;
+}
+.qrimage-resize {
+  margin-top:-63px;
+  width: 10rem;
+  height: 10rem;
+  overflow: hidden;
+}
+
 .test {
   display: flex
 }
@@ -338,26 +397,60 @@ export default {
   margin-top: 130px;
 }
 .social-login{
-  margin: 1rem 0;
+  padding-top: 10px;
+  color:#ccc
 }
 .post-title {
   margin: 0 0 2rem 0;
-  border-bottom: 1px solid black;
+	font-family: 'NanumSquare','나눔스퀘어','Noto Sans','Apple SD Gothic',sans-serif;
+  font-size: 36px;
+  font-weight: 800;
 }
 .post-content {
+  min-height:500px;
   margin: 2rem 0 2rem 0;
   padding: 0 0 1rem 0;
-  border-bottom: 1.5px solid #888888
+}
+.author_info {
+  display: flex;
+}
+.author_img{
+  width: 128px;
+  height: 128px;
+}
+.author_img img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+.author_prof{
+  padding-top:10px;
+  padding-left: 15px;
+  margin: auto 0;
+  font-family: 'NanumSquare','나눔스퀘어','Noto Sans','Apple SD Gothic',sans-serif;
+  font-size: 20px;
+  line-height: 28px;
+}
+.author_prof span{
+  font-size: 32px;
+  font-weight: 800;
+}
+.comment_btn {
+  display:flex;
+}
+.comment_input button {
+  margin-top: 10px;
+  margin-bottom: 20px;
+  margin-left: auto;
 }
 .comment-header {
   margin: 2rem 0 2rem 0;
   padding: 0 0 1rem 0;
   border-bottom: 1.5px solid #888888
 }
-.qrimage-resize {
-  width: 10rem;
-  height: 15rem;
-}
+
 .author_profile_img {
   border-radius: 50%;
 } 
