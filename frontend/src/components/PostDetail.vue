@@ -86,21 +86,21 @@ export default {
       Comment,
     },
     data() {
-        return {
-          post: {
-            title: '',
-            author: '',
-            content: '',
-            islike: this.$route.params.data.isLike,
-          },
-          content: this.$route.params.data.tmp,
-          Comments: null,
-          CommentInput: '',
-          ChildFlag: false,
-          ChildCommentInput: '',
-          FeedFlag: '',
-          like: '',
-        }
+      return {
+        post: {
+          title: '',
+          author: '',
+          content: '',
+          islike: this.$route.params.data.isLike,
+        },
+        content: this.$route.params.data.tmp,
+        Comments: null,
+        CommentInput: '',
+        ChildFlag: false,
+        ChildCommentInput: '',
+        FeedFlag: '',
+        like: '',
+      }
     },
     created(){
       console.log(storage.getItem("uid"))

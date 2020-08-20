@@ -56,7 +56,7 @@
             </div>
             <div class="list_menu">
               <div class="myblog">
-                내 블로그 
+                <router-link :to="{path: `/doblog/${this.nickname}`}">내 블로그</router-link>
               </div>
               <div class="setting">
                 <router-link to="/setting">설정</router-link>
