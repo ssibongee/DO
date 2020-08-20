@@ -5,11 +5,11 @@
 			<v-btn 
 				v-if="comment.isauthor"
 				@click="onCommentDelete(comment)"
-			>삭제</v-btn>
+			>댓글 삭제</v-btn>
 			<v-btn 
 				v-if="comment.isauthor"
 				@click="ClickUpdateBtn(comment)"
-			>수정</v-btn>
+			>댓글 수정</v-btn>
 		</div>
 		<div v-if="UpdateFlag" class="update-box">
 			<v-text-field
@@ -34,11 +34,11 @@
 						<v-btn 
 							v-if="child.isauthor"
 							@click="onCommentDelete(child)"
-						>삭제</v-btn>
+						>대댓글 삭제</v-btn>
 						<v-btn 
 							v-if="child.isauthor"
-							@click="onClickUpdateBtn(child)"
-						>수정</v-btn>
+							@click="ClickUpdateBtn(child)"
+						>대댓글 수정</v-btn>
 						<ChildComment 
 							:child="child"
 						/>
