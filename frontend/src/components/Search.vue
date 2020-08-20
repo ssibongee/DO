@@ -111,23 +111,18 @@ export default {
 	},
 	methods: {
 		postList(){
-			// console.log(this.select.abbr)
-			// console.log(this.kword)
 			axios
 				.get(API_URL+`api/v2/find/${this.select.abbr}/${this.kword}`)
 				.then(({data})=>{
 					this.postcnt = data.length;
-					console.log(data);
 					data.forEach(el => {
 						let year = el.publishedTime.slice(0,4);
 						let month = el.publishedTime.slice(5,7);
 						let day = el.publishedTime.slice(8,10);
-						// console.log(year+"년 "+month+"월 "+day+"일")
 						el.publishedTime = year+"년 "+month+"월 "+day+"일"
 						this.posts = data;
 					})
 				});
-			// console.log(this.getFormatDate(this.posts.publishedTime));
 		},
 		postdetail(one_post) {
       storage.removeItem("pid")

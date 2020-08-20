@@ -107,7 +107,6 @@ export default {
 		// 댓글 Update 메서드
 		onCommentUpdate(one_comment) {
 			if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
-				// console.log(one_comment)
 				const tmp_comment = {
 					content: this.CommentUpdateInput,
 					cid: one_comment.cid

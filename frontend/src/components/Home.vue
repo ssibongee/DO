@@ -176,7 +176,6 @@ export default {
           let year = el.publishedTime.slice(0,4);
           let month = el.publishedTime.slice(5,7);
           let day = el.publishedTime.slice(8,10);
-          // console.log(year+"년 "+month+"월 "+day+"일")
           el.publishedTime = year+"년 "+month+"월 "+day+"일"
           this.posts = data
         });
@@ -195,7 +194,6 @@ export default {
             this.topicData = this.topicData.concat(data)
             $state.loaded()
             this.limit += 1
-            console.log("after", this.topicData.length, this.limit)
             // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
             if(data.length / EACH_LEN < 1) {
               $state.complete()

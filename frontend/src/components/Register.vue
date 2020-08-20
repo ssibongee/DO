@@ -160,9 +160,9 @@ export default {
     }
   },
   watch: {
-    fillCheck(user){ 
-      user = this.user.email;
-      console.log(user)
+    fillCheck(){ 
+      // user = this.user.email;
+      // console.log(user)
       // if(){
       // }
       if(this.user.email && this.user.password && this.user.confirmPassword && this.user.name){

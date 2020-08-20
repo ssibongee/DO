@@ -108,7 +108,6 @@ export default {
       //   this.loading = false
       //   return
       // }
-      console.log('TRY login')
       if (this.email && this.password) {
         storage.setItem("jwt-auth-token", "")
         storage.setItem("login_user", "")
@@ -131,7 +130,6 @@ export default {
               alert("입력 정보를 확인해주세요.")
             }
           })
-          .catch(err => console.log(err))
       } else {
         alert('이메일 또는 패스워드를 입력하지 않았습니다.')
       }
@@ -163,7 +161,6 @@ export default {
       }
       axios.post(API_URL + 'googlelogin', null, config)
       .then(res => {
-        console.log(res)
         storage.setItem("jwt-auth-token", res.data["jwt-auth-token"])
         storage.setItem("login_user", res.data.request_body.email)
         storage.setItem("uid", res.data.request_body.uid)

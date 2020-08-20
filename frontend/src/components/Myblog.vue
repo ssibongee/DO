@@ -163,7 +163,6 @@ export default {
             let year = el.publishedTime.slice(0,4);
             let month = el.publishedTime.slice(5,7);
             let day = el.publishedTime.slice(8,10);
-            // console.log(year+"년 "+month+"월 "+day+"일")
             el.publishedTime = year+"년 "+month+"월 "+day+"일"
             this.posts = data
             });
@@ -182,7 +181,6 @@ export default {
               let year = el.publishedTime.slice(0,4);
               let month = el.publishedTime.slice(5,7);
               let day = el.publishedTime.slice(8,10);
-              // console.log(year+"년 "+month+"월 "+day+"일")
               el.publishedTime = year+"년 "+month+"월 "+day+"일"
               this.posts = data
 

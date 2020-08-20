@@ -2,13 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../components/Home.vue'
 import Login from '../components/Login.vue';
-import MyPage from '../components/MyPage.vue';
 import Register from '../components/Register.vue'
-import Post from '../components/Post.vue'
 import TextEditor from '../components/TextEditor.vue'
 import Setting from '../components/Setting.vue'
 import PostDetail from '../components/PostDetail.vue'
-import FindID from '../components/user/FindID.vue'
 import Introduce from '../components/Introduce.vue'
 import Search from '../components/Search.vue'
 import Feed from '../components/Feed.vue'
@@ -47,11 +44,6 @@ export default new VueRouter({
       component: Login,
     },
     {
-      path: '/mypage',
-      name: 'mypage',
-      component: MyPage,
-    },
-    {
       path: '/register',
       name: 'register',
       component: Register
@@ -68,19 +60,9 @@ export default new VueRouter({
       beforeEnter: requireAuth()
     },
     {
-      path: '/create',
-      name: 'create',
-      component: Post
-    },
-    {
       path: '/postdetail',
       name: 'postdetail',
       component: PostDetail
-    },
-    {
-      path: '/findid',
-      name: 'findid',
-      component: FindID,
     },
     {
       path: '/search',

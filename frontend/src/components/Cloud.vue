@@ -35,8 +35,6 @@ export default {
                type: Function,
                default: (word) => { 
                   window.alert(`You clicked hi ${word.text}`) 
-                  // storage.setItem("tag",word.text)
-                  // console.log(storage.getItem("tag"))
                }
         },
         rotate: {

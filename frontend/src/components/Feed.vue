@@ -106,7 +106,6 @@ export default {
         // 콘텐츠 미리보기 슬라이스
         data.forEach(el => {
           el.tmp = el.content
-          // console.log(el)
           if (el.content.length > 40) {
             // 마크다운 사진 제외
             el.content = el.content.replace(/!\[.*\)+/, "")

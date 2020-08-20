@@ -24,7 +24,7 @@
             </div>
 			</div>
          <div class="taglist" v-if="posts.length>0">
-            <div class="onetag" v-for="post in posts" :key="post.pid">
+            <div @click="postdetail(post)" class="onetag" v-for="post in posts" :key="post.pid">
                <div class="profile">
                   <a><img :src="profileImg"></a>
                   <div class="nickname">
@@ -101,7 +101,6 @@ export default {
       var vm = this;
       axios.get(API_URL+"api/v4")
       .then(function(response) {
-        // console.log(response);
         vm.words = response.data;
       })
       .catch(function(err) {
@@ -123,7 +122,6 @@ export default {
             // 콘텐츠 미리보기 슬라이스
             data.forEach(el => {
             el.tmp = el.content
-            // console.log(el)
             if (el.content.length > 40) {
                // 마크다운 사진 제외
                el.content = el.content.replace(/!\[.*\)+/, "")
@@ -138,9 +136,13 @@ export default {
             // this.posts = data
             });
             this.posts=data
-            console.log(data)
          })
-      }
+      },
+      postdetail(one_post) {
+         storage.removeItem("pid")
+         storage.setItem("pid", one_post.pid)
+         this.$router.push({name: 'postdetail', params: {data: one_post}})
+      },
    },
 }
 </script>
