@@ -174,6 +174,14 @@ span {
 	font-size: 1.125rem;
 	margin-top: 3rem;
 }
+.postcount h3{
+	font-family: 'NanumSquare','나눔스퀘어','Noto Sans','Apple SD Gothic',sans-serif;
+	font-weight:600;
+}
+.postcount strong {
+	font-weight: 800;
+	font-size:2rem;
+}
 .post_list {
 	margin : 0 auto;
 	padding: 2rem 0 64px 0;
