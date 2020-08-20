@@ -44,7 +44,10 @@ public class TagController {
             resultList.add(map);
             if(count == interval) { // 구간이 다 채워지면 다음 구간의 크기로 변경
                 count = 0;
-                size *= 100L;
+                if(size < Integer.MAX_VALUE)
+                    size *= 100L;
+                else
+                    size *= 10L;
             }
         }
 
