@@ -63,16 +63,12 @@ export default {
 		}
 	},
 	created(){
-		console.log("A")
-		console.log(this.$route.params.data.title)
 		if(this.$route.params.data.title != null){
 			this.title = this.$route.params.data.title
 			this.tempText = this.$route.params.data.content
 			if(this.$route.params.data.thumbnail != null){
 				this.thumbImage = this.$route.params.data.thumbnail
 			}
-		}else{
-			console.log("HIHI")
 		}
 		
 		if(this.$route.params.data.pid != null){
@@ -158,10 +154,8 @@ export default {
 				}
 				)
 				.then(response => {
-					console.log("썸네일 업로드 데이터 URL: "+response.data);
 					this.thumbImage = response.data;
 					storage.setItem("thumbImage", response.data)
-					console.log("썸네일 스토리지 저장 완료")
 				})
 				.catch((err) => {
 					console.log("프로필 이미지 업로드 실패")
