@@ -144,7 +144,7 @@ export default {
 			};
 
 			// **추가** POST문으로 서버에 이미지 파일 전송
-			axios.post(API_URL+'api/v2/img'+`?title=${this.title}&author=${storage.getItem("login_user")}`,
+			axios.post(API_URL+'api/v2/img'+`?title=${this.title}&uid=${storage.getItem("uid")}`,
 				file,
 				{
 					headers:{
