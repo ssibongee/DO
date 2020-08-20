@@ -16,9 +16,9 @@ public interface UserService {
 
     public void updateSNS(String email, String facebook, String github, String instagram); // SNS 계정 업데이트
 
-    public void updateProfileImage(Long uid, String url); // 프로필 이미지 업데이트
+    public void updateProfileImage(String uid, String url); // 프로필 이미지 업데이트
 
-    public void updateQRImage(Long uid, String url); // QR 이미지 업데이트
+    public void updateQRImage(String uid, String url); // QR 이미지 업데이트
 
     public void updateDefaultProfile(String uid, String url); // Profile 삭제
 

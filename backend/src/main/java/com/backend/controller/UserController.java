@@ -241,7 +241,7 @@ public class UserController {
     @ApiOperation(value = "사용자 프로필 이미지 업로드", notes = "사용자 프로필 이미지 업로드, 파일, 사용자 닉네임")
     @PostMapping(value = "/api/v1/img")
     public String uploadProfileImage(@RequestParam("file") MultipartFile file,
-                                        @RequestParam("uid") Long uid) throws Exception {
+                                        @RequestParam("uid") String uid) throws Exception {
 
         // 이미지 파일 파싱
         String fullFileName = file.getOriginalFilename(); // 파일명 + 확장자
@@ -285,7 +285,7 @@ public class UserController {
     @ApiOperation(value = "후원을 위한 QR 이미지 업로드", notes = "QR 이미지 업로드, 파일, 사용자 닉네임")
     @PostMapping(value = "/api/v1/qr")
     public String uploadQRImage(@RequestParam("file") MultipartFile file,
-                                        @RequestParam("uid") Long uid) throws Exception {
+                                        @RequestParam("uid") String uid) throws Exception {
         // 이미지 파일 파싱
         String fullFileName = file.getOriginalFilename(); // 파일명 + 확장자
         String originFileName = fullFileName.substring(0, fullFileName.indexOf('.')); // 순수 파일명 확장자 제거

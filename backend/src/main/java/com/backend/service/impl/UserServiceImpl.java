@@ -44,12 +44,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateProfileImage(Long uid, String url) {
+    public void updateProfileImage(String uid, String url) {
         dao.updateProfileImage(uid, url);
     }
 
     @Override
-    public void updateQRImage(Long uid, String url) {
+    public void updateQRImage(String uid, String url) {
         dao.updateQRImage(uid, url);
     }
 

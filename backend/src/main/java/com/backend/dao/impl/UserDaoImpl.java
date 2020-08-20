@@ -45,12 +45,12 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void updateProfileImage(Long uid, String url) {
+    public void updateProfileImage(String uid, String url) {
         mapper.updateProfileImage(uid, url);
     }
 
     @Override
-    public void updateQRImage(Long uid, String url) {
+    public void updateQRImage(String uid, String url) {
         mapper.updateQRImage(uid, url);
     }
 
@@ -64,7 +64,6 @@ public class UserDaoImpl implements UserDao {
     public void updateDefaultQR(String uid, String url) {
         mapper.updateDefaultQR(uid, url);
     }
-
 
 
     @Override
