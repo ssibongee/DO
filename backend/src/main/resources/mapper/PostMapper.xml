@@ -68,6 +68,10 @@
                 select * from post where isTemp = 0 order by publishedtime desc
     </select>
 
+    <select id="findAllTempPost" resultType="com.backend.dto.post.Post">
+        select * from post where uid = #{uid} and isTemp = 1
+    </select>
+
     <!-- #################### 글 조회 #################### -->
 
     <!-- 포스트 아이디로 검색 -->
@@ -94,6 +98,11 @@
     <select id="findAllPostTags" resultType="String">
                 select name from tag join taglist on tag.tid = taglist.tid
                 where taglist.pid = #{pid}
+    </select>
+
+    <!-- 사용자의 QR 이미지를 조회 -->
+    <select id="getQRImage" resultType="String">
+        select qrImage from user where uid = #{uid}
     </select>
 
     <!-- #################### 글 수정 및 삭제 #################### -->

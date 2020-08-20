@@ -71,6 +71,7 @@ public class PostController {
         Long uid = Long.parseLong(map.get("uid"));
         Long pid = Long.parseLong(map.get("pid"));
         Post post = postService.findById(pid);
+        post.setQrImage(postService.getQRImage(post.getUid())); // 글 작성자의 QR 이미지를 불러옴
         post.setTag(postService.findAllPostTags(pid)); // 게시글의 모든 태그를 불러옴
         post.setComments(commentService.findAllCommentsInPost(pid)); // 게시글의 모든 댓글을 불러옴
         // 게시글 좋아요 표시
@@ -234,5 +235,16 @@ public class PostController {
         String url = filePath.replace("/home/ubuntu/dist/dist/", "http://i3a507.p.ssafy.io/");
 
         return url;
+    }
+
+    /**
+     * 사용자의 모든 임시저장 게시글을 불러옴
+     * @param uid
+     * @return
+     */
+    @ApiOperation(value = "사용자의 모든 임시저장 게시글", notes = "사용자의 모든 임시저장 게시글 불러옴")
+    @GetMapping("/api/v2/temp/{uid}")
+    public List<Post> findAllTempPost(@RequestParam Long uid) {
+        return postService.findAllTempPost(uid);
     }
 }

@@ -115,21 +115,13 @@ public class PostDaoImpl implements PostDao {
         postMapper.temporarily(post);
     }
 
+    @Override
+    public String getQRImage(Long uid) {
+        return postMapper.getQRImage(uid);
+    }
 
-//    @Override
-//    public List<Post> findAll() {
-//        return findAll();
-//    }
-//
-//    @Override
-//    public void update(Long id) {
-//
-//    }
-//
-//    @Override
-//    public void delete(Long id) {
-//
-//    }
-
-
+    @Override
+    public List<Post> findAllTempPost(Long uid) {
+        return postMapper.findAllTempPost(uid);
+    }
 }
