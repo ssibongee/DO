@@ -1,23 +1,30 @@
 <template>
-	<div class="">
-		<div class="comment-box">
-			<p class="mr-3">작성자: {{ comment.author }} 내용:{{ comment.content }}</p>
-			<v-btn 
-				v-if="comment.isauthor"
-				@click="onCommentDelete(comment)"
-			>댓글 삭제</v-btn>
-			<v-btn 
-				v-if="comment.isauthor"
-				@click="ClickUpdateBtn(comment)"
-			>댓글 수정</v-btn>
+	<div>
+		<div class="comment-box justify-content-between">
+			<div>
+				<h5>{{ comment.author }}</h5>
+				<p class="mr-3">{{ comment.content }}</p>
+			</div>
+			<div>
+				<v-btn
+					class="mx-2 red accent-3"
+					color="white"
+					v-if="comment.isauthor"
+					@click="onCommentDelete(comment)"
+				>삭제</v-btn>
+				<v-btn
+					class="green accent-4"
+					v-if="comment.isauthor"
+					@click="ClickUpdateBtn(comment)"
+				>수정</v-btn>
+			</div>
 		</div>
 		<div v-if="UpdateFlag" class="update-box">
 			<v-text-field
 				v-model="CommentUpdateInput"
 				solo
-				dense
+				rows="2"
 				clearable
-				required
 			></v-text-field>
 			<v-btn @click="onCommentUpdate(comment)" class="update-btn">수정하기</v-btn>
 		</div>
@@ -29,33 +36,42 @@
 			<div class="my-auto">
 				<p class="" v-if="!isCommentChild(comment.child)">대댓글이 없습니다 ㅠㅠ</p>
 				<p class="" v-else>{{ comment.child.length }}개의 대댓글</p>
-				<!-- 대댓글 부분 -->
-				<div v-if="ChildFlag">
-					<div class="comment-box">
-						<v-text-field
-							v-model="ChildCommentInput"
-							clearable
-							solo
-						></v-text-field>
-						<v-btn class="ml-2" @click="onChildCommentCreate(comment.cid)">대댓글 작성하기</v-btn>
-					</div>
-					<div v-for="child in comment.child" :key="child.cid" class="comment-box">
-						<p>작성자: {{ child.author }} | 내용: {{ child.content }}</p>
-						<v-btn 
-							v-if="child.isauthor"
-							@click="onCommentDelete(child)"
-						>대댓글 삭제</v-btn>
-						<v-btn 
-							v-if="child.isauthor"
-							@click="ClickChildUpdateBtn(child)"
-						>대댓글 수정</v-btn>
-						<!-- <ChildComment 
-							:child="child"
-						/> -->
-					</div>
-				</div>
 			</div>
 		</div>
+			
+				<!-- 대댓글 부분 -->
+				<div v-if="ChildFlag">
+					<div class="child-box">
+						<v-text-field
+							v-model="ChildCommentInput"
+							flat
+							outlined
+							clearable
+							rows="2"
+						></v-text-field>
+						<v-btn class="Child-Create-Btn" @click="onChildCommentCreate(comment.cid)">대댓글 작성하기</v-btn>
+					</div>
+					<div v-for="child in comment.child" :key="child.cid" class="child-comment justify-content-between">
+						<div>
+							<h5>{{ child.author }}</h5>
+							<p>{{ child.content }}</p>
+						</div>
+						<div>
+							<v-btn
+								class="mx-2 red accent-3 text-white"
+								color="white"
+								v-if="child.isauthor"
+								@click="onCommentDelete(child)"
+							>삭제</v-btn>
+							<v-btn 
+								class="green accent-4"
+								color="white"
+								v-if="child.isauthor"
+								@click="ClickChildUpdateBtn(child)"
+							>수정</v-btn>
+						</div>
+					</div>
+				</div>
 	</div>
 </template>
 
@@ -162,14 +178,26 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .comment-box {
 	display: flex;
+}
+.child-box {
+	display: inline;
 }
 .update-box {
 	display: flex;
 }
 .update-btn {
 	margin-left: 5px;
+}
+.Child-Create-Btn {
+	margin-bottom: 2rem;
+}
+.child-comment {
+	display: flex;
+	margin: 2rem 0 2rem 0;
+  padding: 0 0 0.5rem 0;
+  border-bottom: 1px solid #888888
 }
 </style>

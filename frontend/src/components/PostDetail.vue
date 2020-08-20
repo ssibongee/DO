@@ -1,75 +1,99 @@
 <template>
   <div id="app">
   <!-- navbar(로고에 개인 블로그 이름 추가되야함) -->
-  <Navbar/>
-  <v-container class="post-box">
-    <v-row>
-      <!-- 왼쪽 사이드바(좋아요, 공유버튼) -->
-      <v-col cols="1" class="pa-0">
-      <v-btn icon depressed small @click="addToFeed" color="pink">
-        <v-icon :class="like"></v-icon>
-      </v-btn>
-      </v-col>
-      <!-- 게시글, 댓글  -->
-      <v-col class="pa-0">  
-        <v-layout column="12">
-          <!-- 게시글 제목 -->
-          <div class="title-area">
-            <h1>글 제목 : {{ post.title }}</h1>
-            <h6>작성자: {{ post.author }}</h6>
-          </div>
+    <Navbar/>
+    <v-container class="post-box">
+      <!-- {{ this.post }} -->
+      <v-row>
+        <!-- 왼쪽 사이드바(좋아요, 공유버튼) -->
+        <v-col cols="1" class="pa-0">
+        <v-btn icon depressed small @click="addToFeed" color="pink">
+          <v-icon :class="like"></v-icon>
+        </v-btn>
+        </v-col>
+        <!-- 게시글, 댓글 큰틀  -->
+        <v-col cols="10" class="pa-0">  
+          <v-layout column="12">
+            <!-- 게시글 헤더 -->
+            <h1 class="post-title">{{ post.title }}</h1>
+            <h4 class="post-author">· {{ post.author }} </h4>
+            <div class="title-area">
+              
+            </div>
+            <!-- TextEditor 미리보기만(마크다운) -->
+            <v-col cols="12" class="post-content">
+              <!-- <Viewer :initialValue="this.post.content"/> -->
+              <Viewer 
+                :initialValue="this.content"
+                @change="onEditorChange"
+              />
+            </v-col>
+            <!-- 게시글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
+            <v-col cols="12"></v-col>
+            <!-- 블로그 작성자 Thumnail -->
 
-          <!-- TextEditor 미리보기만(마크다운) -->
-          <div class="col-lg-12">
-            <!-- <Viewer :initialValue="this.post.content"/> -->
-            <Viewer 
-              :initialValue="this.content"
-              @change="onEditorChange"
-            />
-          </div>
-          <!-- 게시글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
-          <div></div>
-          <!-- 블로그 작성자 Thumnail -->
-
-          <!-- 짧은 자기 소개 -->
-
-        <!-- 댓글 작성창 -->
-        <div class="col-lg-9">          
-          <v-textarea
-            clearable
-            label="댓글 작성"
-            placeholder="댓글 내용을 작성하세요"
-            v-model="CommentInput"
-            solo
-          ></v-textarea>
-          <v-btn
-            @click="onCommentCreate"
-          >댓글 작성
-          </v-btn>
-        </div>
-        <!-- 댓글 목록 -->
-        <h1>댓글창</h1>
-        <!-- 댓글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
-        <div v-if="renderComponent">
-          <div v-for="comment in Comments" :key="comment.cid" class="col-lg-12">
-            <Comment 
-              :comment="comment"
-              @Click-Delete-Btn="CommentRead"
-              @Click-Update-Btn="CommentRead"
-              @Child-Create="CommentRead"
-              @Click-Child-Update-Btn="CommentRead"
-            />
-          </div>
-        </div>
-        </v-layout>
-      </v-col>
-
-      <!-- 오른쪽 사이드바 -->
-      <v-col id="side" class="hidden-sm-and-down pa-0" cols="3">
-        <h3> 게시글 목차 </h3>
-      </v-col>
-    </v-row>
-  </v-container>
+            <!-- 작성자 Thumnail, 자기 소개, 후원버튼 & 후원QR -->
+            <v-row>
+              <v-col cols="3">
+                <v-img aspect-ratio="1.2" v-if="post.authorInfo.profileImage" :src="post.authorInfo.profileImage"></v-img>
+                <p v-else>{{ post.author }}</p>
+              </v-col>
+              <v-col cols="4" v-if="post.authorInfo.introduce">
+                {{ post.authorInfo.introduce }}
+              </v-col>
+              <v-col cols="3" v-else>
+                안녕하세요, {{ post.author }}입니다.
+              </v-col>
+              <v-col cols="5">
+                <v-btn @click="ClickQrBtn" v-if="post.authorInfo.qrImage&&qrflag">글쓴이에게 후원하기</v-btn>
+                <div class="qrimage-resize">
+                  <v-img v-if="!qrflag" :src="post.authorInfo.qrImage"></v-img>
+                </div>
+              </v-col>
+            </v-row>
+            <!-- 소셜 로그인 버튼 -->
+            <v-row class="social-login">
+              <i v-if="post.authorInfo.github" class="fab fa-github fa-3x" href=""></i>
+              <i v-if="post.authorInfo.instagram" class="fab fa-instagram fa-3x" href=""></i>
+              <i v-if="post.authorInfo.facebook" class="fab fa-facebook fa-3x" href=""></i>
+            </v-row>
+            <h3 class="comment-header">댓글</h3>
+            <!-- 댓글 작성창 -->
+            <div class="col-lg-12 mb-2">          
+              <v-textarea
+                clearable
+                label="댓글 내용을 작성하세요"
+                rows="3"
+                v-model="CommentInput"
+                solo
+              ></v-textarea>
+              <v-btn
+                @click="onCommentCreate"
+              >댓글 작성
+              </v-btn>
+            </div>
+            <!-- 댓글 목록 -->
+            <!-- 댓글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
+            <div v-if="renderComponent">
+              <div v-for="comment in Comments" :key="comment.cid" class="col-lg-12">
+                <Comment 
+                  :comment="comment"
+                  @Click-Delete-Btn="CommentRead"
+                  @Click-Update-Btn="CommentRead"
+                  @Child-Create="CommentRead"
+                  @Click-Child-Update-Btn="CommentRead"
+                />
+              </div>
+            </div>
+          </v-layout>
+        </v-col>
+        <v-col cols="1"></v-col>
+        <!-- 오른쪽 사이드바 -->
+        <!-- <v-col id="side" class="hidden-sm-and-down pa-0" cols="3">
+          <h3> 게시글 목차 </h3>
+        </v-col> -->
+      </v-row>
+    </v-container>
   </div>
 </template>
 
@@ -106,6 +130,7 @@ export default {
           FeedFlag: '',
           like: '',
           renderComponent: true,
+          qrflag: true,
         }
     },
     created(){
@@ -120,7 +145,8 @@ export default {
       })
         .then(res => {
           // console.log(res)
-          // this.post = res.data
+          this.post = res.data
+          console.dir(this.post)
           this.post.title = res.data.title
           this.post.author = res.data.author
           this.post.content = res.data.content
@@ -141,14 +167,10 @@ export default {
     mounted() {
       this.fetchData()
     },
-    // computed() {
-    // },
     methods: {
       forceRerender() {
-        // Remove my-component from the DOM
         this.renderComponent = false;
         this.$nextTick(() => {
-          // Add the component back in
           this.renderComponent = true;
         })
         console.log("rerender Complete")
@@ -275,6 +297,9 @@ export default {
         else {
           alert('로그인 후 이용해주세요.')
         }
+      },
+      ClickQrBtn() {
+        this.qrflag = !this.qrflag
       }
     }
 }
@@ -292,5 +317,25 @@ export default {
 .post-box {
   margin-top: 130px;
 }
-
+.social-login{
+  margin: 1rem 0;
+}
+.post-title {
+  margin: 0 0 2rem 0;
+  border-bottom: 1px solid black;
+}
+.post-content {
+  margin: 2rem 0 2rem 0;
+  padding: 0 0 1rem 0;
+  border-bottom: 1.5px solid #888888
+}
+.comment-header {
+  margin: 2rem 0 2rem 0;
+  padding: 0 0 1rem 0;
+  border-bottom: 1.5px solid #888888
+}
+.qrimage-resize {
+  width: 10rem;
+  height: 15rem;
+}
 </style>
