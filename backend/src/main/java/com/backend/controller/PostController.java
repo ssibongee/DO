@@ -164,9 +164,10 @@ public class PostController {
     @ApiOperation(value = "임시저장", notes = "임시저장을 눌렀을 포스트 처리")
     @PutMapping("/api/v2/temp")
     public void temporarily(@RequestBody Post post) {
-        System.out.println(post.getPid());
         Long pid;
+        Boolean isNewPost = false;
         if (post.getPid() == null) {
+            isNewPost = true;
             System.out.println("처음 작성하는 게시글 ");
             try {
                 pid = postService.save(post);
@@ -175,7 +176,7 @@ public class PostController {
                 e.printStackTrace();
             }
         }
-        postService.temporarily(post);
+        postService.temporarily(post, isNewPost);
     }
 
 

@@ -26,7 +26,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Long save(Post post) {
-
         postDao.save(post);
         Long pid = post.getPid();
         if(post.getTag() != null) {
@@ -134,9 +133,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void temporarily(Post post) {
+    public void temporarily(Post post, boolean isNewPost) {
         Long pid = post.getPid();
-        if(post.getTag() != null) {
+        if(post.getTag() != null && !isNewPost) {
             for (String tag : post.getTag()) {
                 Long tid = postDao.findTagByName(tag);
                 if (tid != null) { // 태그가 이미 존재하는 경우
