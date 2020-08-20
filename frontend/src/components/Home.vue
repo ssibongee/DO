@@ -167,7 +167,7 @@ export default {
       .then(({data})=>{
         // 콘텐츠 미리보기 슬라이스
         data.forEach(el => {
-          el.tmp = el.content
+          // el.tmp = el.content
           if (el.content.length > 120) {
             // 마크다운 사진 제외
             el.content = el.content.replace(/!\[.*\)+/, "")
