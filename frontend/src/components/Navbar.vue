@@ -14,11 +14,17 @@
       <router-link to="/feed">피드</router-link>
     </v-toolbar-items>
     <v-toolbar-items style="align-items: center">
-      포럼
+      <router-link to="/forum">포럼</router-link>
     </v-toolbar-items>
+
       <div class="notice">
         <v-icon small>fas fa-volume-down</v-icon>
-        <span>{{noticemsg}}</span>
+        <div id="app" class="output">
+          <p>
+            <a @click="postdetail(text)" class="text">{{ text }}</a>
+           
+          </p>
+        </div>
 			</div>
 			<v-spacer></v-spacer>
       <router-link to="/search">
@@ -40,29 +46,33 @@
       <div v-if="isLogin" class="info_blog"> 
         <div @click="profileshow">
             <img v-bind:src=profileImage class="thumb_profile" alt>
-          <!-- <img src="https://item.kakaocdn.net/do/437998cb670b87a9a8faca156155beeb8f324a0b9c48f77dbce3a43bd11ce785" class="thumb_profile" alt> -->
         </div>
         <!--프로필 클릭시 팝업되는 드롭다운 메뉴-->
-        <v-card class="shortcuts">
-          <v-list v-if="profile">
-            무림고수
-            <v-list-item>
-              내블로그 
-            </v-list-item>
-            <v-list-item>
-              <router-link to="/setting">설정</router-link>
-            </v-list-item>
-            <v-list-item v-if="!google_login" @click="onClickLogout">
-              로그아웃
-            </v-list-item>
-            <v-list-item v-if="google_login" @click="onClickLogout">
-              <GoogleLogin :params="params" :logoutButton=true>로그아웃</GoogleLogin>
-            </v-list-item>
-          </v-list>
-        </v-card>
+        <div class="shortcuts" id="shortcuts" v-if="profile">
+          <div class="inner_shortcuts">
+            <div class="info_profile">
+              <span class="user_nickname">{{nickname}}</span>
+              <span class="user_email">{{userEmail}}</span>
+            </div>
+            <div class="list_menu">
+              <div class="myblog">
+                내 블로그 
+              </div>
+              <div class="setting">
+                <router-link to="/setting">설정</router-link>
+              </div>
+              <div class="logout" v-if="!google_login" @click="onClickLogout">
+                로그아웃
+              </div>
+              <div class="logout" v-if="google_login" @click="onClickLogout">
+                <GoogleLogin :params="params" :logoutButton=true>로그아웃</GoogleLogin>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div v-if="isLogin" class="info_blog" @click="profileshow"> 
-        <v-icon small color="black" style="margin: 20px 4px 0px 0px">fas fa-angle-down</v-icon>
+        <v-icon small color="black" style="margin: 20px 4px 0px 5px">fas fa-angle-down</v-icon>
       </div>
   </v-app-bar>
 </template>
@@ -70,19 +80,33 @@
 <script>
 const storage = window.sessionStorage
 import GoogleLogin from 'vue-google-login';
+import axios from 'axios'
+
+const API_URL = 'http://i3a507.p.ssafy.io:8081/'
+// const API_URL = 'http://localhost:8081/'
 
 export default {
   name: 'Navbar',
   component: {
-    GoogleLogin
+    GoogleLogin,
+
   },
   data() {
+    
     return {
+      nickname: storage.getItem("login_user"),
+      userEmail: "사용자메일@가져오기.com",
       profile: false,
       isLogin: this.$store.state.isLoggedIn,
-      noticemsg: '공지입니다.',
       google_login: storage.getItem("google_login"),
-      profileImage: storage.getItem("profileImage")
+      profileImage: storage.getItem("profileImage"),
+
+      list: [],
+      index: 0,
+      text: '',
+      speed: 2000
+
+
     }
   },
   computed: {
@@ -110,17 +134,48 @@ export default {
     },
     profileshow() {
       this.profile = !this.profile
-    }
+    },
+    getTextFromList() {
+      var vm = this;
+      
+      vm.text = vm.list[vm.index].title;
+      // vm.textURL = vm.list[vm.index].url;
+      vm.index += 1;
+      
+      if (vm.index >= vm.list.length) {
+        vm.index = 0;
+      }
+    },
+    postdetail(text) {
+      for(var i =0; i<this.list.length; i++){
+        if( text === this.list[i].title){
+          storage.removeItem("pid")
+          storage.setItem("pid", this.list[i].pid)
+          // article, user -> 페이지 변경 this.$router.push
+          // this.$router.push({name: 'postdetail', params: {data: this.list[i]}});
+          this.$router.push({name: 'postdetail', params: {data: this.list[i]}}).catch(()=>{});
+        }
+      }
+    },
   },
   created() {
     this.loginChecker()
+    axios.get(API_URL + 'api/v2/notice')
+        .then(res => {
+          // this.post = res.data
+          // pid를 활용하여 게시글로 이동
+          for(var i=0; i<res.data.length; i++){
+            this.list[i] = res.data[i];
+          }
+    })
   },
-  mounted() {
-    this.loginChecker()
+  mounted(){
+    // this.text = this.list[this.index];
+    this.loginChecker();
+    this.text = "공지사항";
+    setInterval(this.getTextFromList, this.speed);
   },
-  // computed() {
-  //   this.loginChecker()
-  // }
+
   // watch: {
   //   isLogin (val, prev) {
   //     if (val !== prev) {
@@ -204,11 +259,45 @@ div > .newpost > a >button:hover {
   border-radius:50%;
 }
 .shortcuts{
-  position : fixed;
-  top: 80px;
-  width: 150px;
-  right: 10%;
-  background-color: aqua;
+  position : absolute;
+  top: 85px;
+  width: 230px;
+  right: 15px;
+  border-radius: 3px;
+  background-color: white;
+  box-sizing: content-box;
+  box-shadow: 0 2px 5px rgba(0,0,0,.1), 0 0 1px rgba(0,0,0,.3)
+}
+.inner_shortcuts{
+  padding: 20px 0 15px 25px
+}
+.info_profile{
+  padding-bottom: 20px;
+}
+.user_nickname{
+  font-size:16px;
+  display: block;
+  font-family: 'NanumSquare', Noto Sans Light, sans-serif;
+  font-weight: 800;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.user_email{
+  font-family: Noto Sans Light, sans-serif;
+  overflow: hidden;
+  padding: 2px 0 0;
+  text-overflow: ellipsis;
+  white-space:nowrap;
+  color:#909090;
+  font-size:14px;
+}
+.list_menu{
+  font-family: 'NanumSquare', Noto Sans Light, sans-serif;
+  font-size: 14px;
+}
+.myblog, .setting, .logout {
+  padding: 3px 0 8px ;
+  cursor: pointer;
 }
 .newpost {
   margin-right:20px;
