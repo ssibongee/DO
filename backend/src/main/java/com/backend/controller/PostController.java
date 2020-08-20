@@ -244,7 +244,7 @@ public class PostController {
      */
     @ApiOperation(value = "사용자의 모든 임시저장 게시글", notes = "사용자의 모든 임시저장 게시글 불러옴")
     @GetMapping("/api/v2/temp/{uid}")
-    public List<Post> findAllTempPost(@RequestParam Long uid) {
+    public List<Post> findAllTempPost(@PathVariable Long uid) {
         return postService.findAllTempPost(uid);
     }
 
