@@ -8,7 +8,7 @@
 			>삭제</v-btn>
 			<v-btn 
 				v-if="comment.isauthor"
-				@click="onClickUpdateBtn(comment)"
+				@click="ClickUpdateBtn(comment)"
 			>수정</v-btn>
 		</div>
 		<div v-if="UpdateFlag" class="update-box">
@@ -29,7 +29,7 @@
 				<p class="" v-else>{{ comment.child.length }}개의 대댓글</p>
 				<!-- 대댓글 부분 -->
 				<div v-if="ChildFlag">
-					<div v-for="child in comment.child" :key=child.cid class="comment-box">
+					<div v-for="child in comment.child" :key="child.cid" class="comment-box">
 						<p>작성자: {{ child.author }} | 내용: {{ child.content }}</p>
 						<v-btn 
 							v-if="child.isauthor"
@@ -39,11 +39,9 @@
 							v-if="child.isauthor"
 							@click="onClickUpdateBtn(child)"
 						>수정</v-btn>
-						<!-- <div v-for="child in comment.child" :key=child.cid>
-							<ChildComment 
-								:child="child"
-							/>
-						</div> -->
+						<ChildComment 
+							:child="child"
+						/>
 					</div>
 					<div>
 					<v-text-field
@@ -62,7 +60,7 @@
 
 <script>
 import axios from 'axios'
-// import ChildComment from './ChildComment.vue'
+import ChildComment from './ChildComment.vue'
 
 const API_URL = 'http://i3a507.p.ssafy.io:8081/'
 // const API_URL = 'http://localhost:8081/'
@@ -71,7 +69,7 @@ const storage = window.sessionStorage
 export default {
 	name: 'Comment',
 	components: {
-		// ChildComment,
+		ChildComment,
 	},
 	data() {
 		return {
@@ -86,16 +84,6 @@ export default {
 	},
 	methods: {
 		// *** Parent Comment ***
-		isCommentauthor(Comments) {
-			Comments.forEach(one_comment => {
-				if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
-					one_comment.isauthor = true
-				} else {
-					one_comment.isauthor = false
-				}
-			})
-			return Comments
-		},
 		// 댓글 Delete 메서드
 		onCommentDelete(one_comment) {
 			if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
@@ -105,7 +93,7 @@ export default {
 				alert('비정상적인 접근입니다')
 			}
 		},
-		// 댓글 수정(아직 수정 필요함)
+		// 댓글 수정
 		onCommentUpdate(one_comment) {
 			if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
 				// console.log(one_comment)
@@ -127,12 +115,14 @@ export default {
 		// Comment에 Child가 있는지 없는지 체크
 		isCommentChild(one_comment_child) {
 			if (one_comment_child.length) {
-				this.isCommentauthor(one_comment_child)
+				// one_comment_child.forEach(element => {
+				// 	this.isCommentauthor(element)
+				// })
 				return true
 			}
 			return false
 		},
-		onClickUpdateBtn(one_comment) {
+		ClickUpdateBtn(one_comment) {
 			if (one_comment.author === storage.getItem("login_user") && one_comment.uid === Number(storage.getItem("uid"))) {
 				this.CommentUpdateInput = one_comment.content
 				this.UpdateFlag = !this.UpdateFlag
@@ -158,6 +148,7 @@ export default {
 		// 대댓글 보기, 숨기기 Boolean 반전 메서드
 		onClickChildBtn() {
 			this.ChildFlag = !this.ChildFlag
+			this.$nextTick()
 		},
 	}
 }

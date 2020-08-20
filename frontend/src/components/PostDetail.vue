@@ -17,7 +17,6 @@
           <div class="title-area">
             <h1>글 제목 : {{ post.title }}</h1>
             <h6>작성자: {{ post.author }}</h6>
-            <h1>test: {{ this.post.content }}</h1>
           </div>
 
           <!-- TextEditor 미리보기만(마크다운) -->
@@ -215,6 +214,15 @@ export default {
             one_comment.isauthor = true
           } else {
             one_comment.isauthor = false
+          }
+          if (one_comment.child.length) {
+            one_comment["child"].forEach(one_child => {
+              if (one_child.author === storage.getItem("login_user") && one_child.uid === Number(storage.getItem("uid"))) {
+                one_child.isauthor = true
+              } else {
+                one_child.isauthor = false
+              }
+            })
           }
         })
         return Comments
