@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="comment-body">
 		<div class="comment-box justify-content-between">
 			<div>
 				<h5>{{ comment.author }}</h5>
@@ -7,7 +7,7 @@
 			</div>
 			<div>
 				<v-btn
-					class="mx-2 red accent-3"
+					class="mx-2 red accent-3 text-white"
 					color="white"
 					v-if="comment.isauthor"
 					@click="onCommentDelete(comment)"
@@ -28,7 +28,7 @@
 			></v-text-field>
 			<v-btn @click="onCommentUpdate(comment)" class="update-btn">수정하기</v-btn>
 		</div>
-		<div class="comment-box">
+		<div class="child-comment-btn">
 			<v-btn @click="ClickChildBtn" class="mx-2" fab x-small dark color="indigo">
 				<v-icon v-if="!ChildFlag" dark>mdi-plus</v-icon>
 				<v-icon v-if="ChildFlag">mdi-minus</v-icon>
@@ -51,7 +51,7 @@
 						></v-text-field>
 						<v-btn class="Child-Create-Btn" @click="onChildCommentCreate(comment.cid)">대댓글 작성하기</v-btn>
 					</div>
-					<div v-for="child in comment.child" :key="child.cid" class="child-comment justify-content-between">
+					<div v-for="child in comment.child" :key="child.cid" class="child-comment">
 						<div>
 							<h5>{{ child.author }}</h5>
 							<p>{{ child.content }}</p>
@@ -59,7 +59,6 @@
 						<div>
 							<v-btn
 								class="mx-2 red accent-3 text-white"
-								color="white"
 								v-if="child.isauthor"
 								@click="onCommentDelete(child)"
 							>삭제</v-btn>
@@ -179,11 +178,18 @@ export default {
 </script>
 
 <style scoped>
+.comment-body {
+	margin: 1rem 0 1rem 1rem;
+  padding: 0 0 0.5rem 0;
+}
 .comment-box {
 	display: flex;
 }
 .child-box {
 	display: inline;
+}
+.child-comment-btn {
+	display: flex;
 }
 .update-box {
 	display: flex;
@@ -196,7 +202,8 @@ export default {
 }
 .child-comment {
 	display: flex;
-	margin: 2rem 0 2rem 0;
+	justify-content: space-between;
+	margin: 0.5rem 0 1rem 2rem;
   padding: 0 0 0.5rem 0;
   border-bottom: 1px solid #888888
 }
