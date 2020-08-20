@@ -131,9 +131,8 @@ export default {
     postdetail(one_post) {
       storage.removeItem("pid")
       storage.setItem("pid", one_post.pid)
-      console.log(one_post.title)
       // this.$router.push({name: 'postdetail', params: {data: one_post}})
-      this.$router.push({name: 'postdetail', path:`${one_post.author}/${one_post.title}`,  params: {data: one_post}})
+      this.$router.push({name: 'postdetail',  params: {data: one_post}})
     },
     postread(item) {
       let option = ""
