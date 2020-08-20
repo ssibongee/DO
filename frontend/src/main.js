@@ -43,7 +43,7 @@ new Vue({
   mounted() {
     this.$validator.localize('en', {
       messages: {
-        email: () => "유효한 이메일 형식이 아닙니다.",
+        email: () => "* 유효한 이메일 형식이 아닙니다.",
         required: (field) => '* ' + field + '항목은 필수 항목 입니다',
         confirmed: () =>  "비밀번호가 일치하지 않습니다",
       },
