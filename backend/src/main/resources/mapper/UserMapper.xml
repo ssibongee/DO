@@ -55,7 +55,7 @@
     </update>
 
     <update id="updateQRImage" parameterType="String">
-        update user set qrImage = #{url} where where uid = #{uid}
+        update user set qrImage = #{url} where uid = #{uid}
     </update>
 
     <!-- -->
