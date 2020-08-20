@@ -247,4 +247,15 @@ public class PostController {
     public List<Post> findAllTempPost(@RequestParam Long uid) {
         return postService.findAllTempPost(uid);
     }
+
+    /**
+     * 사용자의 모든 게시글을 불러옴
+     * @param uid
+     * @return
+     */
+    @ApiOperation(value = "사용자의 모든 게시글", notes = "사용자의 모든 게시글 불러옴")
+    @GetMapping("/api/v2/{uid}")
+    public List<Post> findAllUserPost(@RequestParam Long uid) {
+        return postService.findAllUserPost(uid);
+    }
 }

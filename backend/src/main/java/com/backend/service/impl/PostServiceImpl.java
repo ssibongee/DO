@@ -133,4 +133,9 @@ public class PostServiceImpl implements PostService {
     public List<Post> findAllTempPost(Long uid) {
         return postDao.findAllTempPost(uid);
     }
+
+    @Override
+    public List<Post> findAllUserPost(Long uid) {
+        return postDao.findAllUserPost(uid);
+    }
 }

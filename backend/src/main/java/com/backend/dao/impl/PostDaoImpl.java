@@ -124,4 +124,9 @@ public class PostDaoImpl implements PostDao {
     public List<Post> findAllTempPost(Long uid) {
         return postMapper.findAllTempPost(uid);
     }
+
+    @Override
+    public List<Post> findAllUserPost(Long uid) {
+        return postMapper.findAllUserPost(uid);
+    }
 }

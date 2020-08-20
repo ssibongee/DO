@@ -52,4 +52,6 @@ public interface PostDao {
 
     public List<Post> findAllTempPost(Long uid); // 사용자의 모든 임시저장 글을 가져옴
 
+    public List<Post> findAllUserPost(Long uid); // 사용자의 모든 게시글을 가져옴
+
 }
