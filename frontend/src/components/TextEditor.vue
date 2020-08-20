@@ -6,7 +6,7 @@
             label="글 제목을 입력해주세요"
             required
         ></v-text-field>
-        <editor ref="toastuiEditor" height="500px"/>
+        <editor :initialValue="this.tempText" ref="toastuiEditor" height="500px"/>
         <h3>썸네일 이미지</h3>
         <div class="profile_area">
             <div class="imgbox">
@@ -20,7 +20,7 @@
                     <v-btn depressed width="150px" color="#6e8af8" class="white--text"><label for="file-input" style="padding-top:9px">이미지 업로드</label></v-btn>
                     <input type="file" accept="image/*" @change="uploadthumbImage($event)" id="file-input" class="uploadimg">
                 </div>
-              </div>
+            </div>
         </div>
         <h3>태그 입력칸</h3>        
         <TagInputBox 
@@ -54,12 +54,16 @@ export default {
             title: '',
             thumbImage: '',
             uid: '',
+            tempText: ''
+
+
         }
     },
     mounted() {
         storage.removeItem("thumbImage")
     },
     methods: {
+
         createAction(tagData) {
             // 태그 데이터 정리해서 보내기
             let tagList = new Array()
@@ -83,7 +87,21 @@ export default {
             .catch(err => console.log(err))
         },
         saveAction() {
-        
+
+            var textdata = this.$refs.toastuiEditor.invoke("getMarkdown"); // content를 저장하는 액션 처리
+            this.editorText = textdata
+            axios.put(API_URL+"api/v2/temp",{
+                pid : `${storage.getItem("pid")}`,
+                uid : `${storage.getItem("uid")}`,
+                author : `${storage.getItem("login_user")}`,
+                title: this.title,
+                content: this.editorText,
+            })
+            .then(() => {
+                storage.removeItem("thumbImage")
+                this.$router.push('/')
+            })
+            .catch(err => console.log(err))
         },
 
         // 업로드 이미지
@@ -111,9 +129,10 @@ export default {
                 }
                 )
                 .then(response => {
-                    console.log(response.data);
+                    console.log("썸네일 업로드 데이터 URL: "+response.data);
                     this.thumbImage = response.data;
                     storage.setItem("thumbImage", response.data)
+                    console.log("썸네일 스토리지 저장 완료")
                 })
                 .catch((err) => {
                     console.log("프로필 이미지 업로드 실패")
