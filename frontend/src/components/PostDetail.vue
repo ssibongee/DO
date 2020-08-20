@@ -165,12 +165,9 @@ export default {
       },
       // 게시글 수정 페이지로 보내는 버튼
       onPostUpdateBtn() {
-        console.log('수정버튼 눌림')
-        console.log(this.post.author)
-        console.log(this.post.uid)
         if (this.isPostauthor()) {
-          console.log('검증 통과')
-          // this.$router.push()
+          console.log()
+          // this.$router.push({path:`/${}/${}`})
         }
       },
 

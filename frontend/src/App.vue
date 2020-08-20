@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <!-- <router-view :key="someVariableUnderYourControl"/> -->
-    <router-view/>
+    <router-view :key="$route.fullPath"/>
   </v-app>
 </template>
 
@@ -15,7 +15,6 @@ export default {
 
     }
   },
-  
 }
 </script>
 

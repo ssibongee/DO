@@ -71,7 +71,8 @@ export default new VueRouter({
       component: Post
     },
     {
-      path: '/:username/:title',
+      // path: '/:username/:title',
+      path: '/postdetail',
       name: 'postdetail',
       component: PostDetail
     },
