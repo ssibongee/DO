@@ -221,14 +221,14 @@ public class PostController {
     /**
      * @param file
      * @param title
-     * @param author
+     * @param uid
      * @return
      * @throws Exception
      */
     @ApiOperation(value = "섬네일 이미지 업로드", notes = "섬네일 이미지 업로드, 파일, 게시글 제목, 작성자")
     @PostMapping(value = "/api/v2/img")
     public String uploadThumbnailImages(@RequestParam("file") MultipartFile file, @RequestParam("title") String title,
-                                        @RequestParam("author") String author) throws Exception {
+                                        @RequestParam("uid") Long uid) throws Exception {
 
         String fullFileName = file.getOriginalFilename(); // 파일명 + 확장자
         String originFileName = fullFileName.substring(0, fullFileName.indexOf('.')); // 순수 파일명 확장자 제거
@@ -236,12 +236,21 @@ public class PostController {
 
         SHA512 filename = new SHA512(originFileName); // 파일명 SHA-512 암호화
         SHA512 sha512Title = new SHA512(title);
-        String basePath = "/home/ubuntu/dist/dist/img/" + author + "/" + sha512Title.getSha512(); // 루트경로 + 사용자 닉네임 + 글 제목
+        String basePath = "/home/ubuntu/dist/dist/img/user/" + uid + "/" + sha512Title.getSha512(); // 루트경로 + 사용자 닉네임 + 글 제목
 
         File dir = new File(basePath); // 경로에 디렉토리가 존재하지 않을 경우 폴더 생성
         if (!dir.exists()) {
             dir.mkdirs();
         }
+
+        // 디렉토리 내의 모든 파일 삭제
+        File[] list = dir.listFiles();
+        if(list.length != 0) {
+            for (int i = 0; i < list.length; i++) {
+                list[i].delete();
+            }
+        }
+
 
         String filePath = basePath + "/" + filename.getSha512() + extension;
         System.out.println(filePath);
@@ -251,6 +260,7 @@ public class PostController {
 
         return url;
     }
+
 
     /**
      * 사용자의 모든 임시저장 게시글을 불러옴
