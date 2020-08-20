@@ -1,11 +1,14 @@
 package com.backend.controller;
 
+import com.backend.dto.post.Post;
 import com.backend.dto.post.Tag;
 import com.backend.service.TagService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
@@ -52,5 +55,17 @@ public class TagController {
         }
 
         return resultList;
+    }
+
+
+    /**
+     * 태그를 포함한 모든 게시글을 불러옴 좋아요 기준
+     * @param name
+     * @return
+     */
+    @ApiOperation(value = "태그를 포함한 모든 게시글 불러옴", notes = "태그를 포함한 모든 게시글 불러옴 좋아요 우선순위")
+    @GetMapping("/api/v4/{name}")
+    public List<Post> getAllPostByTag(@PathVariable String name) {
+        return tagService.getAllPostByTag(name);
     }
 }

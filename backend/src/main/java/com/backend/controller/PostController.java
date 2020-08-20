@@ -273,4 +273,6 @@ public class PostController {
     public List<Post> findAllUserPost(@PathVariable Long uid) {
         return postService.findAllUserPost(uid);
     }
+
+
 }

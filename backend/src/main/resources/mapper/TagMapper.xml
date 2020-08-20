@@ -10,7 +10,7 @@
 
     <!-- 좋아요 순으로 태그가 사용된 게시글 목록 불러오기 -->
     <select id="getAllPostByTag" resultType="com.backend.dto.post.Post">
-        select * from post where pid in (select taglist.pid from taglist join tag on taglist.tid = tag.tid where tag.name = #{name})
+        select * from post where pid in (select taglist.pid from taglist join tag on taglist.tid = tag.tid where tag.name = #{name}) order by likes desc
     </select>
 
 </mapper>
