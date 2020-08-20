@@ -181,7 +181,12 @@
 							<h4 class="cate_desc">후원 QR</h4>
 							<div class="qrbox">
 								<div class="qrbox_img">
-									<img v-bind:src="userinfo.qrImage" alt="QR코드 생성방법">
+									<div v-if="userinfo.qrImage===null">
+										<img src="http://i3a507.p.ssafy.io/img/user/default/qr.png">
+									</div>
+									<div  v-else>
+										<img v-bind:src="userinfo.qrImage" onerror="this.src='http://i3a507.p.ssafy.io/img/user/default/qr.png'">
+									</div>
 								</div>
 							</div>
 							<div class="btn_grp">
