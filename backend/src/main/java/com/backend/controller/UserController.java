@@ -43,10 +43,7 @@ public class UserController {
     @Autowired
     private BookmarkService bookmarkService;
 
-    private final String DEFAULT_PROFILE_IMAGE_URL = "http://i3a507.p.ssafy.io/img/user/default/qr.jpg";
-
-    private final String DEFAULT_QR_IMAGE_URL = "http://i3a507.p.ssafy.io/img/user/default/profile.jpg";
-
+    private final String DEFAULT_PROFILE_IMAGE_URL = "http://i3a507.p.ssafy.io/img/user/default/profile.jpg";
 
     @PostMapping("/googlelogin")
     public Object googleLogin(@RequestHeader final HttpHeaders header) throws Exception {
