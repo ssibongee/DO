@@ -110,7 +110,7 @@ export default {
     return {
       tab: null,
       items: [
-        '최신', '조회수', '좋아요'
+        '조회수', '좋아요', '최신'
       ],
       posts : {
         pid: '',
