@@ -2,63 +2,54 @@
 	<!-- 댓글(comment)+대댓글(comment.child) -->
 	<div class="comment-body">
 		<!-- 댓글 하나 -->
-		<div class="comment-box justify-content-between">
+		<div class="comment-box">
 			<!-- 댓글 작성자, 내용 -->
-			<div>
-				<h5>{{ comment.author }}</h5>
-				<p class="mr-3">{{ comment.content }}</p>
+			<div class="main_comment">
+				<div>
+					<h5>{{ comment.author }}</h5>
+					<div class="mc_content">
+					<p>{{ comment.content }}</p>
+					</div>
+				</div>
+				<div class="btngrp">
+					<span style="margin-right: 10px;"
+						@click="onCommentDelete(comment)"
+					>삭제</span>
+					<span
+						@click="ClickUpdateBtn(comment)"
+					>수정</span>
+				</div>
 			</div>
 			<!-- 댓글 삭제, 수정 버튼 -->
-			<div>
-				<v-btn
-					class="mx-2 red accent-3 text-white"
-					color="white"
-					v-if="comment.isauthor"
-					@click="onCommentDelete(comment)"
-				>삭제</v-btn>
-				<v-btn
-					class="green accent-4"
-					v-if="comment.isauthor"
-					@click="ClickUpdateBtn(comment)"
-				>수정</v-btn>
-			</div>
+			
 		</div>
 		<!-- 댓글 수정 버튼 누를 시 인풋 -->
 		<div v-if="UpdateFlag" class="update-box">
 			<v-text-field
 				v-model="CommentUpdateInput"
-				solo
 				rows="2"
 				clearable
+				style="border-radius:0px"
+				flat
+				outlined
 			></v-text-field>
 			<v-btn @click="onCommentUpdate(comment)" class="update-btn">수정하기</v-btn>
 		</div>
 		<!-- 대댓글 버튼 & 갯수 -->
 		<div class="child-comment-btn">
 			<!-- 대댓글 보이기/숨기기 버튼 -->
-			<v-btn @click="ClickChildBtn" class="mx-2" fab x-small dark color="indigo">
+			<v-btn @click="ClickChildBtn" depressed outlined fab x-small dark color="#08d3bc"
+				style="border-radius:0px; margin-right: 10px">
 				<v-icon v-if="!ChildFlag" dark>mdi-plus</v-icon>
 				<v-icon v-if="ChildFlag">mdi-minus</v-icon>
 			</v-btn>
 			<!-- 대댓글 갯수 따라서 다른 설명 -->
-			<div class="my-auto">
-				<p class="" v-if="!isCommentChild(comment.child)">대댓글이 없습니다 ㅠㅠ</p>
-				<p class="" v-else>{{ comment.child.length }}개의 대댓글</p>
+			<div class="comment_c">
+				<p class="">{{ comment.child.length }}개의 코멘트</p>
 			</div>
 		</div>
 		<!-- 대댓글 -->
 		<div v-if="ChildFlag">
-			<!-- 대댓글 작성 인풋 -->
-			<div class="child-box">
-				<v-text-field
-					v-model="ChildCommentInput"
-					flat
-					outlined
-					clearable
-					rows="2"
-				></v-text-field>
-				<v-btn class="Child-Create-Btn" @click="onChildCommentCreate(comment.cid)">대댓글 작성하기</v-btn>
-			</div>
 			<!-- 대댓글 리스트 -->
 			<div v-for="child in comment.child" :key="child.cid" class="child-comment">
 				<ChildComment
@@ -67,6 +58,27 @@
 					@Click-Child-Delete-Btn="ChildChange"
 				/>
 			</div>
+			<!-- 대댓글 작성 인풋 -->
+			<div class="child-box">
+				<span>댓글 코멘트</span>
+				<v-text-field
+					hide-details
+					v-model="ChildCommentInput"
+					flat
+					outlined
+					clearable
+					style="border-radius:0px"
+					rows="2"
+				></v-text-field>
+				<div class="comment_btn">
+					<v-btn 
+						color="#08d3bc"
+						depressed
+						style="border-radius:0px"
+						class="white--text" @click="onChildCommentCreate(comment.cid)">작성</v-btn>
+				</div>
+			</div>
+			
 		</div>
 	</div>
 </template>
@@ -171,14 +183,13 @@ export default {
 
 <style scoped>
 .comment-body {
-	margin: 1rem 0 1rem 1rem;
-  padding: 0 0 0.5rem 0;
-}
-.comment-box {
-	display: flex;
+	margin: 10px 0;
+	padding: 0 0 0.5rem 0;
 }
 .child-box {
 	display: inline;
+	font-family: 'NanumSquare','나눔스퀘어','Noto Sans','Apple SD Gothic',sans-serif;
+
 }
 .child-comment-btn {
 	display: flex;
@@ -194,9 +205,42 @@ export default {
 }
 .child-comment {
 	display: flex;
-	justify-content: space-between;
-	margin: 0.5rem 0 1rem 2rem;
-  padding: 0 0 0.5rem 0;
-  border-bottom: 1px solid #888888
+	padding: 0 0 0.5rem 0;
+	border-bottom: 1px solid #888888
+}
+.btngrp{
+	margin-top: -2px;
+}
+.btngrp span {
+	cursor: pointer;
+	font-size: 14px;
+}
+.main_comment {
+	width: 100%;
+	display: flex;
+	font-family: 'NanumSquare','나눔스퀘어','Noto Sans','Apple SD Gothic',sans-serif;
+}
+.main_comment h5{
+	font-weight: 800;
+}
+.mc_content {
+	max-height: 3.6rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.mc_content p{
+	font-size: 1rem;
+	line-height: 1.2rem;
+}
+.comment_c p{
+	padding-top:7px;
+	font-size: 14px;
+}
+.comment_btn {
+  display:flex;
+}
+.comment_btn button {
+	margin-left: auto;
+	margin-top : 10px;
 }
 </style>

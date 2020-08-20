@@ -1,11 +1,9 @@
 <template>
-  <v-row>
-    <v-col cols="12">
-		<v-chip class="mx-1" v-for="tag in tags" :key="tag">
+    <div>
+		<v-chip class="mr-2 white--text" v-for="tag in tags" :key="tag" color="#08d3bc">
 			{{ tag }}
 		</v-chip>
-    </v-col>
-  </v-row>
+    </div>
 </template>
 
 <script>

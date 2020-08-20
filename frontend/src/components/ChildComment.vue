@@ -1,9 +1,13 @@
 <template>
   <div>
-    <div>
-      <h5>{{ child.author }}</h5>
-      <p>{{ child.content }}</p>
-    </div>
+    <div class="main_comment">
+		<div>
+			<h5>{{child.author}}</h5>
+			<div class="mc_content">
+				<p>{{ child.content }}</p>
+			</div>
+		</div>
+	</div>
     <div>
       <v-btn
         class="mx-2 red accent-3 text-white"
@@ -83,6 +87,23 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.main_comment {
+	width: 100%;
+	display: flex;
+	font-family: 'NanumSquare','나눔스퀘어','Noto Sans','Apple SD Gothic',sans-serif;
+	margin : 10px 0 10px 30px;
+}
+.main_comment h5{
+	font-weight: 800;
+}
+.mc_content {
+	max-height: 3.6rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.mc_content p{
+	font-size: 1rem;
+	line-height: 1.2rem;
+}
 </style>
