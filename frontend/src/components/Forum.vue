@@ -272,14 +272,16 @@ svg {
 	height: 100%;
 	object-fit: cover;
 }
-.onetag{
+.onetag {
    max-width: 738px;
    margin: 0 auto;
+   padding: 30px 0 50px;
+   border-bottom: 1px solid #ddd;
 }
 .tagcnt{
    max-width: 738px;
    margin: 0 auto;
    line-height: 17px;
-   padding-bottom: 50px;
+   padding-bottom: 10px;
 }
 </style>
