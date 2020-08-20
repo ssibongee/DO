@@ -1,15 +1,11 @@
 <template>
-  <div>
+    <div>
     <Navbar></Navbar>
     <div class="doContent">
       <div class="feature_feed">
         <div class="inner_feature">
-          <h2 id="do_top do_feed">Feed</h2>
-          <p class="top_desc">내가 좋아요한 글을 한 눈에</p>
-          <div class="info_feed">
-            좋아요
-            <span class="feed_cnt">{{posts.length}}</span>
-          </div>
+          <h2 id="do_top do_feed">Notice</h2>
+          <p class="top_desc">공지사항과 새로운 업데이트 소식을 게시합니다</p>
         </div>
       </div>
       <div class="content">
@@ -76,7 +72,7 @@ const API_URL = 'http://i3a507.p.ssafy.io:8081/'
 const storage = window.sessionStorage
 
 export default {
-  name: 'Feed',
+  name: 'Notice',
   components: {
     Navbar,
   },
@@ -101,7 +97,7 @@ export default {
       this.$router.push({name: 'postdetail', params: {data: one_post}})
     },
     postread() {
-      axios.get(API_URL+`api/v1/likes/${storage.getItem("uid")}`)
+      axios.get(API_URL+`/api/v2/notice`)
       .then(({data})=>{
         // 콘텐츠 미리보기 슬라이스
         data.forEach(el => {
