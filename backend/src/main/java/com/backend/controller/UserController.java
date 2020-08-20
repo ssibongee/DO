@@ -326,7 +326,7 @@ public class UserController {
      * @return void
      */
     @PutMapping("/api/v1/img/{uid}")
-    public String  deleteProfile(@PathVariable String uid, @RequestBody Map<String, String> param) {
+    public void  deleteProfile(@PathVariable String uid, @RequestBody Map<String, String> param) {
         String path = "/home/ubuntu/dist/dist/img/user/" + uid + "/profile";
         File dir  = new File(path);
 
@@ -336,16 +336,7 @@ public class UserController {
             list[i].delete();
         }
 
-
-        try{
-            String url = param.get("url");
-            service.updateDefaultProfile(uid, url);
-            return url;
-        }catch(Exception err){
-            String errorMessage;
-            errorMessage = err + "<== error";
-            return "프로필 삭제 실패";
-        }
+        service.updateDefaultProfile(uid, DEFAULT_PROFILE_IMAGE_URL);
     }
 
     /**
@@ -355,7 +346,7 @@ public class UserController {
      */
 
     @PutMapping("/api/v1/qr/{uid}")
-    public String  deleteQR(@PathVariable String uid, @RequestBody Map<String, String> param) {
+    public void  deleteQR(@PathVariable String uid, @RequestBody Map<String, String> param) {
         User user = service.findByUid(uid);
         String path = "/home/ubuntu/dist/dist/img/user/" + uid + "/qr";
         File dir  = new File(path);
@@ -366,16 +357,7 @@ public class UserController {
             list[i].delete();
         }
 
-
-        try{
-            String url = param.get("url");
-            service.updateDefaultQR(uid, url);
-            return url;
-        }catch(Exception err){
-            String errorMessage;
-            errorMessage = err + "<== error";
-            return "QR코드 삭제 실패";
-        }
+        service.updateDefaultQR(uid, null);
     }
 
 
