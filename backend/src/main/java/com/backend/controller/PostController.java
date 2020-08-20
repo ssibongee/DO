@@ -45,7 +45,7 @@ public class PostController {
     @Autowired
     UserService userService;
 
-    private final String DEFAULT_THUMBNAIL_IMAGE_URL = "http://i3a507.p.ssafy.io/img/default/thumbnail.jpg";
+    private final String DEFAULT_THUMBNAIL_IMAGE_URL = "http://i3a507.p.ssafy.io/img/user/default/thumbnail.jpg";
 
     /**
      * @param newPost : 사용자가 작성한 Post
