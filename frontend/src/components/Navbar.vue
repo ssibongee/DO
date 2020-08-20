@@ -19,11 +19,8 @@
 
       <div class="notice">
         <v-icon small>fas fa-volume-down</v-icon>
-        <div id="app" class="output">
-          <p>
-            <a @click="postdetail(text)" class="text">{{ text }}</a>
-           
-          </p>
+        <div class="banner" @click="gotonotice">
+          {{list[0].title}}
         </div>
 			</div>
 			<v-spacer></v-spacer>
@@ -56,7 +53,7 @@
             </div>
             <div class="list_menu">
               <div class="myblog">
-                <router-link :to="{path: `/doblog/${this.nickname}`}">내 블로그</router-link>
+                <router-link :to="{path: `/doblog/${this.uid}`}">내 블로그</router-link>
               </div>
               <div class="setting">
                 <router-link to="/setting">설정</router-link>
@@ -80,7 +77,7 @@
 <script>
 const storage = window.sessionStorage
 import GoogleLogin from 'vue-google-login';
-import axios from 'axios'
+import axios from 'axios';
 
 const API_URL = 'http://i3a507.p.ssafy.io:8081/'
 // const API_URL = 'http://localhost:8081/'
@@ -92,8 +89,8 @@ export default {
 
   },
   data() {
-    
     return {
+      uid: storage.getItem("uid"),
       nickname: storage.getItem("login_user"),
       userEmail: "사용자메일@가져오기.com",
       profile: false,
@@ -101,12 +98,10 @@ export default {
       google_login: storage.getItem("google_login"),
       profileImage: storage.getItem("profileImage"),
 
-      list: [],
+      list: '',
       index: 0,
       text: '',
       speed: 2000
-
-
     }
   },
   computed: {
@@ -135,17 +130,6 @@ export default {
     profileshow() {
       this.profile = !this.profile
     },
-    getTextFromList() {
-      var vm = this;
-      
-      vm.text = vm.list[vm.index].title;
-      // vm.textURL = vm.list[vm.index].url;
-      vm.index += 1;
-      
-      if (vm.index >= vm.list.length) {
-        vm.index = 0;
-      }
-    },
     postdetail(text) {
       for(var i =0; i<this.list.length; i++){
         if( text === this.list[i].title){
@@ -157,17 +141,20 @@ export default {
         }
       }
     },
+    gotonotice(){
+      this.$router.push({name:'doblog',params:{data:'1'}})
+    }
   },
   created() {
     this.loginChecker()
+    //공지사항 받아옴
     axios.get(API_URL + 'api/v2/notice')
         .then(res => {
           // this.post = res.data
           // pid를 활용하여 게시글로 이동
-          for(var i=0; i<res.data.length; i++){
-            this.list[i] = res.data[i];
-          }
+          this.list = res.data
     })
+    sessionStorage.setItem("noticelist",this.list)
   },
   mounted(){
     // this.text = this.list[this.index];
@@ -233,8 +220,30 @@ div > .newpost > a >button:hover {
 	text-decoration: none;
 }
 .notice {
+  display: flex;
   margin : 0px 0px 0px 54px ;
-	padding: 0px 0px 0px 0px;
+	/* padding: 0px 0px 0px 0px; */
+
+}
+.banner {
+  width: 100%;
+  height: 1.5rem;
+  overflow: hidden;
+  margin:0 auto; 
+  padding-left:8px; 
+}
+.rolling {
+  position: relative;
+  width: 100%;
+  height: auto;
+  margin: 0px; 
+  padding:0; 
+  list-style: none; 
+}
+.rolling li {
+  margin:0; 
+  padding:0;
+  font-family: 'NanumSquare', Noto Sans Light, sans-serif;
 }
 .notice::before {
   content:'|';
