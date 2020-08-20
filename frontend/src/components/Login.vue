@@ -101,18 +101,13 @@ export default {
   },
   methods: {
     login() {
-      // this.loading = true
-      // this.$validator.validateAll()
-
-      // if (this.errors.any()) {
-      //   this.loading = false
-      //   return
-      // }
       if (this.email && this.password) {
         storage.setItem("jwt-auth-token", "")
         storage.setItem("login_user", "")
+        storage.setItem("email", "")
         storage.setItem("uid", "")
         storage.setItem("google_login", "")
+        storage.setItem("profileImage", "")
         axios.post(API_URL+'api/signin', {
           email: this.email,
           password: this.password
@@ -121,6 +116,7 @@ export default {
               this.message = res.data.request_body.email + "로 로그인 되었습니다."
               storage.setItem("jwt-auth-token", res.data["jwt-auth-token"])
               storage.setItem("login_user", res.data.request_body.nickname)
+              storage.setItem("email", res.data.request_body.email)
               storage.setItem("uid", res.data.request_body.uid)
               storage.setItem("google_login", false)
               storage.setItem("profileImage", res.data.request_body.profileImage)

@@ -93,7 +93,7 @@ export default {
     return {
       uid: storage.getItem("uid"),
       nickname: storage.getItem("login_user"),
-      userEmail: "사용자메일@가져오기.com",
+      userEmail: storage.getItem("email"),
       profile: false,
       isLogin: this.$store.state.isLoggedIn,
       google_login: storage.getItem("google_login"),
