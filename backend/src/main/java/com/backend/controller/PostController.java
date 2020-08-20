@@ -176,6 +176,7 @@ public class PostController {
                 e.printStackTrace();
             }
         }
+        if(post.getThumbnail() == null) post.setThumbnail(DEFAULT_THUMBNAIL_IMAGE_URL);
         postService.temporarily(post, isNewPost);
     }
 
@@ -199,6 +200,7 @@ public class PostController {
     @ApiOperation(value = "게시글 수정", notes = "게시글 수정, 임시저장 글을 수정완료할 경우 상태 변경")
     @PutMapping("/api/v2")
     public void update(Post post) {
+        if(post.getThumbnail() == null) post.setThumbnail(DEFAULT_THUMBNAIL_IMAGE_URL);
         postService.update(post);
     }
 

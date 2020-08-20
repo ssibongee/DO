@@ -120,7 +120,7 @@
 
     <update id="update">
         update from post
-        set title = #{title}, content = #{content}, isTemp = 0
+        set title = #{title}, content = #{content}, thumbnail = #{thumbnail}, isTemp = 0
         where pid = #{pid}
     </update>
 
@@ -135,7 +135,7 @@
     <!-- 임시저장 -->
     <update id="temporarily">
                 update post
-                set title = #{title}, content = #{content}, isTemp = 1
+                set title = #{title}, content = #{content}, thumbnail = #{thumbnail}, isTemp = 1
                 where pid = #{pid}
     </update>
 </mapper>
