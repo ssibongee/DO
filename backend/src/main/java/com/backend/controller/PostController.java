@@ -73,7 +73,13 @@ public class PostController {
     @ApiOperation(value = "글 읽기", notes = "pid 를 통해 글 하나를 찾아서 반환")
     @PostMapping("/api/v2/p/")
     public Post findById(@RequestBody Map<String, String> map) {
-        Long uid = Long.parseLong(map.get("uid")); // 현재 로그인한 사용자 정보
+        Long uid;
+        try {
+            uid = Long.parseLong(map.get("uid")); // 현재 로그인한 사용자 정보
+        } catch (Exception e) {
+            uid = null; // 로그인 안할경우 null 값 처리
+        }
+
         Long pid = Long.parseLong(map.get("pid")); // 현재 조회한 글 번호
         Post post = postService.findById(pid);
         post.setAuthorInfo(postService.findAuthorInfo(post.getUid()));
