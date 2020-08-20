@@ -34,8 +34,9 @@
           <v-textarea
             clearable
             label="댓글 작성"
-            placeholder="댓글을 작성하세요"
+            placeholder="댓글 내용을 작성하세요"
             v-model="CommentInput"
+            solo
           ></v-textarea>
           <v-btn
             @click="onCommentCreate"
@@ -52,6 +53,7 @@
               @Click-Delete-Btn="CommentRead"
               @Click-Update-Btn="CommentRead"
               @Child-Create="CommentRead"
+              @Click-Child-Update-Btn="CommentRead"
             />
           </div>
         </div>
@@ -93,10 +95,9 @@ export default {
             content: '',
             islike: this.$route.params.data.isLike,
           },
-          content: this.$route.params.data.tmp,
+          content: this.$route.params.data.content,
           Comments: null,
           CommentInput: '',
-          ChildFlag: false,
           ChildCommentInput: '',
           FeedFlag: '',
           like: '',
@@ -120,7 +121,7 @@ export default {
           this.post.author = res.data.author
           this.post.content = res.data.content
           this.post.islike = res.data.isLike
-          // console.log(this.post)
+          console.log(this.post.content)
           if(this.post.islike===true){
             this.like = "fas fa-heart"
             this.FeedFlag= true
@@ -128,9 +129,7 @@ export default {
             this.like = "far fa-heart"
             this.FeedFlag = false
           }
-          // console.log(this.post)
           this.Comments = res.data.comments
-          // console.log(this.Comments)
           this.isCommentauthor(this.Comments)
           this.isPostauthor(this.isPostauthor)
       })
@@ -144,24 +143,28 @@ export default {
       forceRerender() {
         // Remove my-component from the DOM
         this.renderComponent = false;
-
         this.$nextTick(() => {
           // Add the component back in
           this.renderComponent = true;
         })
+        console.log("rerender Complete")
       },
       fetchData() {
-        axios.post(API_URL + 'api/v2/p',{
+        axios.post(API_URL + 'api/v2/p/',{
           uid : storage.getItem("uid"),
           pid : storage.getItem("pid")
         })
           .then(res => {
+            console.log('fetchData')
             this.post = res.data
             console.log(this.post)
             this.Comments = res.data.comments
             this.isCommentauthor(this.Comments)
             this.isPostauthor(this.isPostauthor)
           })
+      },
+      onEditorChange() {
+        this.fetchData()
       },
       // 글 작성자인지 확인
       isPostauthor() {
@@ -174,18 +177,22 @@ export default {
       // 댓글 Create 메서드
       onCommentCreate() {
         if (storage.getItem("login_user")) {
-          const tmp_comment = {
-            author: storage.getItem("login_user"),
-            content: this.CommentInput,
-            uid: storage.getItem("uid"),
-            pid: storage.getItem("pid")
+          if (this.CommentInput.trim()) {
+            const tmp_comment = {
+              author: storage.getItem("login_user"),
+              content: this.CommentInput,
+              uid: storage.getItem("uid"),
+              pid: storage.getItem("pid")
+            }
+            // 서버에 댓글 작성 요청 보냄
+            axios.post(API_URL + 'api/v3/', tmp_comment)
+              .then(() => {
+                // 댓글 작성 완료 후 새로 댓글 받아옴
+                this.CommentRead()
+              })
+          } else {
+            alert('빈 댓글은 작성할 수 없습니다.')
           }
-          // 서버에 댓글 작성 요청 보냄
-          axios.post(API_URL + 'api/v3/', tmp_comment)
-            .then(() => {
-              // 댓글 작성 완료 후 새로 댓글 받아옴
-              this.CommentRead()
-            })
         } else {
           alert('로그인한 유저만 댓글을 달 수 있습니다.')
         }
@@ -194,6 +201,7 @@ export default {
       CommentRead() {
         axios.get(API_URL+'api/v3/'+storage.getItem("pid"))
           .then(res => {
+            console.log('Comment Reset')
             this.Comments = this.isCommentauthor(res.data)
             this.forceRerender()
             console.log('Comment Read')
@@ -207,6 +215,15 @@ export default {
             one_comment.isauthor = true
           } else {
             one_comment.isauthor = false
+          }
+          if (one_comment.child.length) {
+            one_comment["child"].forEach(one_child => {
+              if (one_child.author === storage.getItem("login_user") && one_child.uid === Number(storage.getItem("uid"))) {
+                one_child.isauthor = true
+              } else {
+                one_child.isauthor = false
+              }
+            })
           }
         })
         return Comments
