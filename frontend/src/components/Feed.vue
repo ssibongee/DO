@@ -215,4 +215,7 @@ export default {
   float:right; 
   margin-top: -24px
 }
+.row{
+  margin: 0px !important;
+}
 </style>

@@ -45,7 +45,7 @@ export default {
         },
         font: {
             type: [String, Function],
-            default: 'Serif'
+            default: 'Roboto'
         },
         width: {
             type: [Number, String],

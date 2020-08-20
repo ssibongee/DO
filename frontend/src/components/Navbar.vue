@@ -21,7 +21,7 @@
       <div class="notice">
         <v-icon small>fas fa-volume-down</v-icon>
         <div class="banner" @click="gotonotice">
-          {{list[0].title}}
+          {{list.title}}
         </div>
 			</div>
 			<v-spacer></v-spacer>
@@ -99,7 +99,9 @@ export default {
       google_login: storage.getItem("google_login"),
       profileImage: storage.getItem("profileImage"),
 
-      list: '',
+      list: {
+        title:''
+      },
       index: 0,
       text: '',
       speed: 2000
@@ -131,17 +133,6 @@ export default {
     profileshow() {
       this.profile = !this.profile
     },
-    postdetail(text) {
-      for(var i =0; i<this.list.length; i++){
-        if( text === this.list[i].title){
-          storage.removeItem("pid")
-          storage.setItem("pid", this.list[i].pid)
-          // article, user -> 페이지 변경 this.$router.push
-          // this.$router.push({name: 'postdetail', params: {data: this.list[i]}});
-          this.$router.push({name: 'postdetail', params: {data: this.list[i]}}).catch(()=>{});
-        }
-      }
-    },
     gotonotice(){
       this.$router.push({path:'notice'})
     }
@@ -153,9 +144,9 @@ export default {
         .then(res => {
           // this.post = res.data
           // pid를 활용하여 게시글로 이동
-          this.list = res.data
+          this.list.title = res.data[0].title
     })
-    sessionStorage.setItem("noticelist",this.list)
+    sessionStorage.setItem("noticelist",this.list.title)
   },
   mounted(){
     // this.text = this.list[this.index];
