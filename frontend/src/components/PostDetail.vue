@@ -146,7 +146,6 @@ export default {
         pid : storage.getItem("pid")
       })
         .then(res => {
-          // console.log(res)
           this.post = res.data
           this.post.title = res.data.title
           this.post.author = res.data.author
@@ -173,7 +172,6 @@ export default {
         this.$nextTick(() => {
           this.renderComponent = true;
         })
-        console.log("rerender Complete")
       },
       fetchData() {
         axios.post(API_URL + 'api/v2/p/',{
@@ -181,7 +179,6 @@ export default {
           pid : storage.getItem("pid")
         })
           .then(res => {
-            console.log('fetchData')
             this.post = res.data
             this.Comments = res.data.comments
             this.isCommentauthor(this.Comments)
@@ -242,10 +239,8 @@ export default {
       CommentRead() {
         axios.get(API_URL+'api/v3/'+storage.getItem("pid"))
           .then(res => {
-            console.log('Comment Reset')
             this.Comments = this.isCommentauthor(res.data)
             this.forceRerender()
-            console.log('Comment Read')
           })
         this.CommentInput = ""
       },
