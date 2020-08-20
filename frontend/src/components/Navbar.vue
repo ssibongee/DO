@@ -142,7 +142,7 @@ export default {
       }
     },
     gotonotice(){
-      this.$router.push({name:'doblog',params:{data:'1'}})
+      this.$router.push({path:'notice'})
     }
   },
   created() {
