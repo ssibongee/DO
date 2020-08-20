@@ -24,7 +24,7 @@
             </div>
 			</div>
          <div class="taglist" v-if="posts.length>0">
-            <div class="onetag" v-for="post in posts" :key="post.pid">
+            <div @click="postdetail(post)" class="onetag" v-for="post in posts" :key="post.pid">
                <div class="profile">
                   <a><img :src="profileImg"></a>
                   <div class="nickname">
@@ -140,7 +140,12 @@ export default {
             this.posts=data
             console.log(data)
          })
-      }
+      },
+      postdetail(one_post) {
+         storage.removeItem("pid")
+         storage.setItem("pid", one_post.pid)
+         this.$router.push({name: 'postdetail', params: {data: one_post}})
+      },
    },
 }
 </script>
