@@ -29,7 +29,7 @@ public class TagController {
         for(Tag tag : tagList) {
             Map<String, String> map = new HashMap<>();
             map.put("text", tag.getName());
-            map.put("value", tag.getHits().toString());
+            map.put("value", tag.getHits().toString() + "000");
             resultList.add(map);
         }
 
