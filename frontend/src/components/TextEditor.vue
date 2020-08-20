@@ -20,7 +20,7 @@
                     <v-btn depressed width="150px" color="#6e8af8" class="white--text"><label for="file-input" style="padding-top:9px">이미지 업로드</label></v-btn>
                     <input type="file" accept="image/*" @change="uploadthumbImage($event)" id="file-input" class="uploadimg">
                 </div>
-              </div>
+            </div>
         </div>
         <h3>태그 입력칸</h3>        
         <TagInputBox 
