@@ -38,8 +38,9 @@
           <v-textarea
             clearable
             label="댓글 작성"
-            placeholder="댓글을 작성하세요"
+            placeholder="댓글 내용을 작성하세요"
             v-model="CommentInput"
+            solo
           ></v-textarea>
           <v-btn
             @click="onCommentCreate"
@@ -180,18 +181,22 @@ export default {
       // 댓글 Create 메서드
       onCommentCreate() {
         if (storage.getItem("login_user")) {
-          const tmp_comment = {
-            author: storage.getItem("login_user"),
-            content: this.CommentInput,
-            uid: storage.getItem("uid"),
-            pid: storage.getItem("pid")
+          if (this.CommentInput.trim()) {
+            const tmp_comment = {
+              author: storage.getItem("login_user"),
+              content: this.CommentInput,
+              uid: storage.getItem("uid"),
+              pid: storage.getItem("pid")
+            }
+            // 서버에 댓글 작성 요청 보냄
+            axios.post(API_URL + 'api/v3/', tmp_comment)
+              .then(() => {
+                // 댓글 작성 완료 후 새로 댓글 받아옴
+                this.CommentRead()
+              })
+          } else {
+            alert('빈 댓글은 작성할 수 없습니다.')
           }
-          // 서버에 댓글 작성 요청 보냄
-          axios.post(API_URL + 'api/v3/', tmp_comment)
-            .then(() => {
-              // 댓글 작성 완료 후 새로 댓글 받아옴
-              this.CommentRead()
-            })
         } else {
           alert('로그인한 유저만 댓글을 달 수 있습니다.')
         }

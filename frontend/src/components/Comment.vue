@@ -31,6 +31,14 @@
 				<p class="" v-else>{{ comment.child.length }}개의 대댓글</p>
 				<!-- 대댓글 부분 -->
 				<div v-if="ChildFlag">
+					<div class="comment-box">
+						<v-text-field
+							v-model="ChildCommentInput"
+							clearable
+							solo
+						></v-text-field>
+						<v-btn class="ml-2" @click="onChildCommentCreate(comment.cid)">대댓글 작성하기</v-btn>
+					</div>
 					<div v-for="child in comment.child" :key="child.cid" class="comment-box">
 						<p>작성자: {{ child.author }} | 내용: {{ child.content }}</p>
 						<v-btn 
@@ -39,19 +47,11 @@
 						>대댓글 삭제</v-btn>
 						<v-btn 
 							v-if="child.isauthor"
-							@click="ClickUpdateBtn(child)"
+							@click="ClickChildUpdateBtn(child)"
 						>대댓글 수정</v-btn>
 						<!-- <ChildComment 
 							:child="child"
 						/> -->
-					</div>
-					<div>
-						<v-text-field
-							v-model="ChildUpdateInput"
-							clearable
-							required
-						></v-text-field>
-						<v-btn @click="onChildCommentCreate(comment.cid)">답글 작성하기</v-btn>
 					</div>
 				</div>
 			</div>
@@ -153,6 +153,11 @@ export default {
 			this.ChildFlag = !this.ChildFlag
 			this.$nextTick()
 		},
+		// 대댓글 수정 버튼
+		ClickChildUpdateBtn() {
+			this.ChildUpdateFlag = !this.ChildUpdateFlag
+		}
+
 	}
 }
 </script>
