@@ -55,17 +55,17 @@
 
     <!-- 조회수 순으로 정렬 -->
     <select id="findAllOrderedByHits" resultType="com.backend.dto.post.Post">
-                select * from post where isTemp = 0 order by hits desc
+                select * from post where isTemp = 0 and uid != 1 order by hits desc
     </select>
 
     <!-- 좋아요 순으로 정렬 -->
     <select id="findAllOrderedByLikes" resultType="com.backend.dto.post.Post">
-                select * from post where isTemp = 0 order by likes desc
+                select * from post where isTemp = 0 and uid != 1 order by likes desc
     </select>
 
     <!-- 최신글 순으로 정렬 -->
     <select id="findAllOrderedByPublishedTime" resultType="com.backend.dto.post.Post">
-                select * from post where isTemp = 0 order by publishedtime desc
+                select * from post where isTemp = 0 and uid != 1 order by publishedtime desc
     </select>
 
     <!-- 사용자가 작성한 임시저장 게시글 조회 -->
@@ -129,7 +129,7 @@
 
     <!-- 가장 최신의 공지사항 5개 불러옴 -->
     <select id="findLatestNotice" resultType="com.backend.dto.post.Post">
-                select * from post join user on post.uid = user.uid where user.admin = 1 order by publishedTime desc limit 5
+                select * from post join user on post.uid = user.uid where user.admin = 1 order by publishedTime desc
     </select>
 
     <!-- 임시저장 -->
