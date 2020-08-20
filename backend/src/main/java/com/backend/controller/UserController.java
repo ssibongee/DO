@@ -234,36 +234,43 @@ public class UserController {
     /**
      * 사용자 프로필 이미지 업로드
      * @param file
-     * @param nickname
+     * @param uid
      * @return
      * @throws Exception
      */
     @ApiOperation(value = "사용자 프로필 이미지 업로드", notes = "사용자 프로필 이미지 업로드, 파일, 사용자 닉네임")
     @PostMapping(value = "/api/v1/img")
     public String uploadProfileImage(@RequestParam("file") MultipartFile file,
-                                        @RequestParam("nickname") String nickname) throws Exception {
+                                        @RequestParam("uid") Long uid) throws Exception {
 
+        // 이미지 파일 파싱
         String fullFileName = file.getOriginalFilename(); // 파일명 + 확장자
         String originFileName = fullFileName.substring(0, fullFileName.indexOf('.')); // 순수 파일명 확장자 제거
         String extension = fullFileName.substring(fullFileName.indexOf('.')); // 파일 확장자
 
+        // 이미지 파일 이름 암호화
         SHA512 filename = new SHA512(originFileName); // 파일명 SHA-512 암호화
 
-        String basePath = "/home/ubuntu/dist/dist/img/" + nickname + "/profile"; // 루트경로 + 사용자 명  + 프로필
+        // 프로필 저장할 경로 생성
+        // 루트경로 + user/ + uid/ + profile
+        String basePath = "/home/ubuntu/dist/dist/img/user/" + uid + "/profile";
 
-        File dir = new File(basePath); // 경로에 디렉토리가 존재하지 않을 경우 폴더 생성
+        // 경로에 디렉토리가 존재하지 않을 경우 폴더 생성
+        File dir = new File(basePath);
         if(!dir.exists()) {
             dir.mkdirs();
         }
 
+        // 파일 저장
         String filePath = basePath + "/" + filename.getSha512() + extension;
         File location = new File(filePath);
         file.transferTo(location);
-        String url = "http://" + filePath.replace("/home/ubuntu/dist/dist/", "i3a507.p.ssafy.io/");
+
+        // 저장된 파일이 위치한 경로
+        String url = filePath.replace("/home/ubuntu/dist/dist/", "http://i3a507.p.ssafy.io/");
 
         // profileImage 필드에 저장하기
-        service.updateProfileImage(nickname, url);
-
+        service.updateProfileImage(uid, url);
 
         return url;
     }
@@ -271,35 +278,40 @@ public class UserController {
     /**
      * 후원을 위한 QR 이미지 업로드
      * @param file
-     * @param nickname
+     * @param uid
      * @return
      * @throws Exception
      */
     @ApiOperation(value = "후원을 위한 QR 이미지 업로드", notes = "QR 이미지 업로드, 파일, 사용자 닉네임")
     @PostMapping(value = "/api/v1/qr")
     public String uploadQRImage(@RequestParam("file") MultipartFile file,
-                                        @RequestParam("nickname") String nickname) throws Exception {
-
+                                        @RequestParam("uid") Long uid) throws Exception {
+        // 이미지 파일 파싱
         String fullFileName = file.getOriginalFilename(); // 파일명 + 확장자
         String originFileName = fullFileName.substring(0, fullFileName.indexOf('.')); // 순수 파일명 확장자 제거
         String extension = fullFileName.substring(fullFileName.indexOf('.')); // 파일 확장자
 
+        // 이미지 파일 이름 암호화
         SHA512 filename = new SHA512(originFileName); // 파일명 SHA-512 암호화
 
-        String basePath = "/home/ubuntu/dist/dist/img/" + nickname + "/qr"; // 루트경로 + 사용자 명  + 프로필
+        // 프로필 저장할 경로 생성
+        // 루트경로 + user/ + uid/ + profile
+        String basePath = "/home/ubuntu/dist/dist/img/user/" + uid + "/qr";
 
         File dir = new File(basePath); // 경로에 디렉토리가 존재하지 않을 경우 폴더 생성
         if(!dir.exists()) {
             dir.mkdirs();
         }
 
+        // 파일 저장
         String filePath = basePath + "/" + filename.getSha512() + extension;
-        System.out.println(filePath);
         File location = new File(filePath);
         file.transferTo(location);
-        String url = "http://" + filePath.replace("/home/ubuntu/dist/dist/", "i3a507.p.ssafy.io/");
 
-        service.updateQRImage(nickname, url);
+        // 저장된 파일이 위치한 경로
+        String url = filePath.replace("/home/ubuntu/dist/dist/", "http://i3a507.p.ssafy.io/");
+
+        service.updateQRImage(uid, url);
 
         return url;
     }
@@ -311,8 +323,7 @@ public class UserController {
      */
     @PutMapping("/api/v1/img/{uid}")
     public String  deleteProfile(@PathVariable String uid, @RequestBody Map<String, String> param) {
-        User user = service.findByUid(uid);
-        String path = "/home/ubuntu/dist/dist/img/" + user.getNickname() + "/profile";
+        String path = "/home/ubuntu/dist/dist/img/user/" + uid + "/profile";
         File dir  = new File(path);
 
         // 디렉토리 내의 모든 파일 삭제
@@ -342,7 +353,7 @@ public class UserController {
     @PutMapping("/api/v1/qr/{uid}")
     public String  deleteQR(@PathVariable String uid, @RequestBody Map<String, String> param) {
         User user = service.findByUid(uid);
-        String path = "/home/ubuntu/dist/dist/img/" + user.getNickname() + "/qr";
+        String path = "/home/ubuntu/dist/dist/img/user/" + uid + "/qr";
         File dir  = new File(path);
 
         // 디렉토리 내의 모든 파일 삭제

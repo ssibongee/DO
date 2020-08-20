@@ -45,13 +45,13 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void updateProfileImage(String nickname, String url) {
-        mapper.updateProfileImage(nickname, url);
+    public void updateProfileImage(Long uid, String url) {
+        mapper.updateProfileImage(uid, url);
     }
 
     @Override
-    public void updateQRImage(String nickname, String url) {
-        mapper.updateQRImage(nickname, url);
+    public void updateQRImage(Long uid, String url) {
+        mapper.updateQRImage(uid, url);
     }
 
     @Override

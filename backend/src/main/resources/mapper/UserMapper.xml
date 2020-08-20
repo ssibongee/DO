@@ -51,12 +51,14 @@
 
 
     <update id="updateProfileImage" parameterType="String">
-        update user set profileImage = #{url} where nickname like #{nickname}
+        update user set profileImage = #{url} where uid = #{uid}
     </update>
 
     <update id="updateQRImage" parameterType="String">
-        update user set qrImage = #{url} where nickname like #{nickname}
+        update user set qrImage = #{url} where where uid = #{uid}
     </update>
+
+    <!-- -->
 
     <update id="updateDefaultProfile" parameterType="String">
         update user set profileImage = #{url} where uid = #{uid}

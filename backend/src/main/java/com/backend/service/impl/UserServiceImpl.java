@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     @Autowired
     UserDao dao;
@@ -44,13 +44,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void updateProfileImage(String nickname, String url) {
-        dao.updateProfileImage(nickname, url);
+    public void updateProfileImage(Long uid, String url) {
+        dao.updateProfileImage(uid, url);
     }
 
     @Override
-    public void updateQRImage(String nickname, String url) {
-        dao.updateQRImage(nickname, url);
+    public void updateQRImage(Long uid, String url) {
+        dao.updateQRImage(uid, url);
     }
 
     @Override
