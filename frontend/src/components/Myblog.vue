@@ -190,6 +190,7 @@ export default {
     },
     postdetail(one_post) {
       storage.removeItem("pid")
+      storage.setItem("pid", one_post.pid)
       // 임시 저장
       if(one_post.isTemp){
         this.$router.push({name: 'texteditor', params: {data: one_post}})
