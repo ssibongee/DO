@@ -255,7 +255,7 @@ public class PostController {
      */
     @ApiOperation(value = "사용자의 모든 게시글", notes = "사용자의 모든 게시글 불러옴")
     @GetMapping("/api/v2/u/{uid}")
-    public List<Post> findAllUserPost(@RequestParam Long uid) {
+    public List<Post> findAllUserPost(@PathVariable Long uid) {
         return postService.findAllUserPost(uid);
     }
 }
