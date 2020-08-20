@@ -16,10 +16,18 @@
           <v-layout column="12">
             <!-- 게시글 헤더 -->
             <h1 class="post-title">{{ post.title }}</h1>
-            <h4 class="post-author">· {{ post.author }} </h4>
-            <div class="title-area">
-              
-            </div>
+            <v-row justify="center">
+              <v-col cols="2">
+                <v-img class="author_profile_img" v-if="post.authorInfo.profileImage" :src="post.authorInfo.profileImage"></v-img>
+              </v-col>
+              <v-col cols="10">
+                <h4 class="post-author">{{ post.author }} </h4>
+              </v-col>
+            </v-row>  
+            
+            <PostTagBox
+              :tagList="post.tag"
+            />
             <!-- TextEditor 미리보기만(마크다운) -->
             <v-col cols="12" class="post-content">
               <!-- <Viewer :initialValue="this.post.content"/> -->
@@ -38,7 +46,7 @@
             <!-- 작성자 Thumnail, 자기 소개, 후원버튼 & 후원QR -->
             <v-row>
               <v-col cols="3">
-                <v-img aspect-ratio="1.2" v-if="post.authorInfo.profileImage" :src="post.authorInfo.profileImage"></v-img>
+                <v-img class="author_profile_img" v-if="post.authorInfo.profileImage" :src="post.authorInfo.profileImage"></v-img>
                 <p v-else>{{ post.author }}</p>
               </v-col>
               <v-col cols="4" v-if="post.authorInfo.introduce">
@@ -47,7 +55,7 @@
               <v-col cols="3" v-else>
                 안녕하세요, {{ post.author }}입니다.
               </v-col>
-              <v-col v-if="post.authorInfo.qrImage !== 'null'" cols="5">
+              <v-col v-if="post.authorInfo.qrImage" cols="5">
                 <v-btn @click="ClickQrBtn" v-if="!qrflag">글쓴이에게 후원하기</v-btn>
                 <div class="qrimage-resize">
                   <v-img v-if="qrflag" :src="post.authorInfo.qrImage"></v-img>
@@ -104,6 +112,7 @@
 <script>
 import Navbar from './Navbar.vue'
 import Comment from './Comment.vue'
+import PostTagBox from './PostTagBox.vue'
 
 import { Viewer } from '@toast-ui/vue-editor'
 import axios from 'axios'
@@ -118,6 +127,7 @@ export default {
       Viewer,
       Navbar,
       Comment,
+      PostTagBox,
     },
     data() {
         return {
@@ -352,4 +362,7 @@ export default {
   width: 10rem;
   height: 15rem;
 }
+.author_profile_img {
+  border-radius: 50%;
+} 
 </style>
