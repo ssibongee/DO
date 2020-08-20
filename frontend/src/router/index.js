@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import Home from '../components/Home.vue'
 import Login from '../components/Login.vue';
 import Register from '../components/Register.vue'
-import Post from '../components/Post.vue'
 import TextEditor from '../components/TextEditor.vue'
 import Setting from '../components/Setting.vue'
 import PostDetail from '../components/PostDetail.vue'
@@ -59,11 +58,6 @@ export default new VueRouter({
       name : 'setting',
       component: Setting,
       beforeEnter: requireAuth()
-    },
-    {
-      path: '/create',
-      name: 'create',
-      component: Post
     },
     {
       path: '/postdetail',
