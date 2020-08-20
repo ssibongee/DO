@@ -47,12 +47,13 @@
               <v-col cols="3" v-else>
                 안녕하세요, {{ post.author }}입니다.
               </v-col>
-              <v-col cols="5">
-                <v-btn @click="ClickQrBtn" v-if="post.authorInfo.qrImage&&qrflag">글쓴이에게 후원하기</v-btn>
+              <v-col v-if="post.authorInfo.qrImage !== 'null'" cols="5">
+                <v-btn @click="ClickQrBtn" v-if="!qrflag">글쓴이에게 후원하기</v-btn>
                 <div class="qrimage-resize">
-                  <v-img v-if="!qrflag" :src="post.authorInfo.qrImage"></v-img>
+                  <v-img v-if="qrflag" :src="post.authorInfo.qrImage"></v-img>
                 </div>
               </v-col>
+              <v-col v-else cols="5"></v-col> 
             </v-row>
             <!-- 소셜 로그인 버튼 -->
             <v-row class="social-login">
@@ -133,7 +134,7 @@ export default {
           FeedFlag: '',
           like: '',
           renderComponent: true,
-          qrflag: true,
+          qrflag: false,
         }
     },
     created(){
