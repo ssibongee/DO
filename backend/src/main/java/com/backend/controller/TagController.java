@@ -35,7 +35,7 @@ public class TagController {
         if(interval == 0) interval += 1;
 
         int count = 0;
-        Long size = 10L;
+        Long size = 1000L;
         for(Tag tag : tagList) {
             count += 1;
             Map<String, String> map = new HashMap<>();
@@ -45,9 +45,9 @@ public class TagController {
             if(count == interval) { // 구간이 다 채워지면 다음 구간의 크기로 변경
                 count = 0;
                 if(size < Integer.MAX_VALUE)
-                    size *= 100L;
-                else
                     size *= 10L;
+                else
+                    size *= 5L;
             }
         }
 
