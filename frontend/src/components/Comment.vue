@@ -39,6 +39,11 @@
 							v-if="child.isauthor"
 							@click="onClickUpdateBtn(child)"
 						>수정</v-btn>
+						<!-- <div v-for="child in comment.child" :key=child.cid>
+							<ChildComment 
+								:child="child"
+							/>
+						</div> -->
 					</div>
 					<div>
 					<v-text-field
@@ -57,6 +62,7 @@
 
 <script>
 import axios from 'axios'
+// import ChildComment from './ChildComment.vue'
 
 const API_URL = 'http://i3a507.p.ssafy.io:8081/'
 // const API_URL = 'http://localhost:8081/'
@@ -65,6 +71,7 @@ const storage = window.sessionStorage
 export default {
 	name: 'Comment',
 	components: {
+		// ChildComment,
 	},
 	data() {
 		return {
