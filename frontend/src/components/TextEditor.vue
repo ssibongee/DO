@@ -24,6 +24,8 @@
 		</div>
 		<h3>태그 입력칸</h3>        
 		<TagInputBox 
+			:pid ="TagInputBoxPID"
+			:uid ="TagInputBoxUID"
 			@submit-post="createAction"
 			@save-post="saveAction"
 		/>
@@ -38,8 +40,8 @@ import axios from 'axios'
 import TagInputBox from './TagInputBox.vue'
 
 // const API_URL = 'http://localhost:8081/'
-const API_URL = 'http://i3a507.p.ssafy.io:8081/'
 const storage = window.sessionStorage
+const API_URL = 'http://i3a507.p.ssafy.io:8081/'
 // const FLICKR_URL = 'https://up.flickr.com/services/upload/'
 
 export default {
@@ -54,45 +56,65 @@ export default {
 			title: '',
 			thumbImage: '',
 			uid: '',
-			tempText: ''
+			tempText: '',
+			taglist: [],
+			TagInputBoxPID : '',
+			TagInputBoxUID : ''
 		}
 	},
 	created(){
-		this.title = storage.getItem("title")
-		this.tempText = storage.getItem("content")
-	},
-	mounted() {
-		storage.removeItem("thumbImage")
+		console.log("A")
+		console.log(this.$route.params.data.title)
+		if(this.$route.params.data.title != null){
+			this.title = this.$route.params.data.title
+			this.tempText = this.$route.params.data.content
+			if(this.$route.params.data.thumbnail != null){
+				this.thumbImage = this.$route.params.data.thumbnail
+			}
+		}else{
+			console.log("HIHI")
+		}
+		
+		if(this.$route.params.data.pid != null){
+			this.TagInputBoxPID = this.$route.params.data.pid
+		}
+		if(this.$route.params.data.uid != null){
+			this.TagInputBoxPID = this.$route.params.data.uid
+		}
 	},
 	methods: {
 
 		createAction(tagData) {
 			// 태그 데이터 정리해서 보내기
 			let tagList = new Array()
+			
 			tagData.forEach(tag => {
 				tagList.push(tag["text"])
 			})
-			// console.log(tagList)
 			var textdata = this.$refs.toastuiEditor.invoke("getMarkdown"); // content를 저장하는 액션 처리
 			this.editorText = textdata
+
 			axios.post(API_URL+'api/v2/', {
 				author: storage.getItem("login_user"),
 				title: this.title,
 				content: this.editorText,
 				tag: tagList,
+				uid: `${storage.getItem("uid")}`,
 				thumbnail: storage.getItem("thumbImage")
 			})
 			.then(() => {
 				storage.removeItem("thumbImage")
-				// 임시 저장 storage 삭제
-				storage.removeItem("title")
-				storage.removeItem("content")
 				this.$router.push('/')
 			})
 			.catch(err => console.log(err))
 		},
-		saveAction() {
+		saveAction(tagData) {
 
+			//	 태그 데이터 정리해서 보내기
+			let tagList = new Array()
+			tagData.forEach(tag => {
+				tagList.push(tag["text"])
+			})
 			var textdata = this.$refs.toastuiEditor.invoke("getMarkdown"); // content를 저장하는 액션 처리
 			this.editorText = textdata
 			axios.put(API_URL+"api/v2/temp",{
@@ -101,12 +123,11 @@ export default {
 				author : `${storage.getItem("login_user")}`,
 				title: this.title,
 				content: this.editorText,
+				tag: tagList,
+				thumbnail: storage.getItem("thumbImage")
 			})
 			.then(() => {
 				storage.removeItem("thumbImage")
-						// 임시 저장 storage 삭제
-				storage.removeItem("title")
-				storage.removeItem("content")
 				this.$router.push('/')
 			})
 			.catch(err => console.log(err))

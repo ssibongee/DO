@@ -150,6 +150,7 @@ export default {
   methods: {
     postread(item){
       var uid = sessionStorage.uid;
+      this.posts=[]
       if (item === "내글") {
         console.log("a")
         axios.get(API_URL+'api/v2/u/'+uid)
@@ -195,10 +196,15 @@ export default {
     },
     postdetail(one_post) {
       storage.removeItem("pid")
-      storage.setItem("pid", one_post.pid)
-      storage.setItem("title", one_post.title)
-      storage.setItem("content", one_post.content)
-      this.$router.push({name: 'postdetail', params: {data: one_post}})
+      console.log(one_post)
+      console.log("one_post pid : "+one_post.pid)
+      console.log("one_post uid : "+one_post.uid)
+      // 임시 저장
+      if(one_post.isTemp){
+        this.$router.push({name: 'texteditor', params: {data: one_post}})
+      }else if(!one_post.isTemp){
+        this.$router.push({name: 'postdetail', params: {data: one_post}})
+      }
     },
   }
 }
