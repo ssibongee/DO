@@ -37,54 +37,56 @@
       <div class="content_area">
         <!-- 게시글 탭 -->
         <v-tabs-items v-model="tab">
-        <!-- 게시글 미리보기 -->
+          <!-- 게시글 미리보기 -->
           <v-tab-item v-for="(item) in items" :key="item">
             <v-row v-if="posts.length">
-            <v-col cols="4" v-for="(post, index) in posts" :key="index+'_posts'"
-              style="padding:1rem">
+              <v-col cols="4" v-for="(post, index) in posts" :key="index+'_posts'"
+                style="padding:1rem">
                 <v-hover>
-                <template v-slot="{hover}">
-                <v-card 
-                  @click="postdetail(post)"
-                  height="406px"
-                  max-width="350px"
-                  :elevation="hover ? 8 : 2"
-                >
-                  <v-img
-                    class="white--text align-end"
-                    height="180px"
-                    :src="post.thumbnail"
-                  />
-                  <div class="inner_card">
-                    <!-- 제목이 가로범위 초과시 ... -->
-                    <div class="card_title"><h5>{{post.title}}</h5></div>
-                    <!-- <v-card-subtitle class="pb-0">{{ item }}</v-card-subtitle> -->
-                    <!-- 내용 -->
-                    <div class="card_content">
-                      <p>{{post.content}}</p>
-                      <div v-if="!post.content">게시글 내용이 비어있습니다.</div>
-                    </div>
-                    <!-- 날짜 -->
-                    <div class="card_date">{{post.publishedTime}}</div>
-                    <!-- 작성자, 좋아요 -->
-                    <div class="card_info">
-                      <div class="author">
-                        {{post.author}}
+                  <template v-slot="{hover}">
+                  <v-card 
+                    @click="postdetail(post)"
+                    height="406px"
+                    max-width="350px"
+                    :elevation="hover ? 8 : 2"
+                  >
+                    <v-img
+                      class="white--text align-end"
+                      height="180px"
+                      :src="post.thumbnail"
+                    />
+                    <div class="inner_card">
+                      <!-- 제목이 가로범위 초과시 ... -->
+                      <div class="card_title"><h5>{{post.title}}</h5></div>
+                      <!-- 내용 -->
+                      <div class="card_content">
+                        <p>{{post.content}}</p>
+                        <div v-if="!post.content">게시글 내용이 비어있습니다.</div>
                       </div>
-                      <div class="liked">
-                        <v-icon x-small style="margin-top:-2px" color="black">fas fa-heart</v-icon>
-                        {{post.likes}}
+                      <!-- 날짜 -->
+                      <div class="card_date">{{post.publishedTime}}</div>
+                      <!-- 작성자, 좋아요 -->
+                      <div class="card_info">
+                        <div class="author">
+                          {{post.author}}
+                        </div>
+                        <div class="liked">
+                          <v-icon x-small style="margin-top:-2px" color="black">fas fa-heart</v-icon>
+                          {{post.likes}}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </v-card>
+                  </v-card>
                 </template>
                 </v-hover>
               </v-col>
             </v-row>
             <v-row v-else>
               게시글이 없습니다.
-              </v-row>
+            </v-row>
+            <infinite-loading @infinite="infiniteHandler" spinner="waveDots">
+              <div slot="no-more" style="color: rgb(102, 102, 102); font-size: 14px; padding: 10px 0px;">목록의 끝입니다 :)</div>
+            </infinite-loading>
           </v-tab-item>
         </v-tabs-items>
       </div>
@@ -94,9 +96,11 @@
 
 <script>
 import Navbar from '../components/Navbar.vue'
+
 import axios from 'axios'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
+import InfiniteLoading from 'vue-infinite-loading';
 
 AOS.init();
 
@@ -110,7 +114,7 @@ export default {
     return {
       tab: null,
       items: [
-        '최신', '조회수', '좋아요'
+        '조회수', '좋아요', '최신'
       ],
       posts : {
         pid: '',
@@ -118,13 +122,29 @@ export default {
         content: '',
         publishedTime: '',
         thumbnail:'',
-      }
+      },
+      limit: 1
     }
   },
   created() {
     this.postread('최신')
+    // 무한 스크롤
+    async function getTopicFromApi() {
+          try {
+              const init = await fetch(`/api/idol/uwasa/pages/0`, {method: "GET"})
+              const data = await init.json()
+              return data
+          } catch(exc) {
+              console.error(exc)
+          }
+      }
+      getTopicFromApi().then(data => {
+          console.log("fromAPI", data)
+          this.topicData = data
+      })
   },
   components: {
+    InfiniteLoading,
     Navbar,
   },
   methods: {
@@ -162,6 +182,31 @@ export default {
         });
       })
       .catch(err => console.log(err))
+    },
+    // 무한스크롤 핸들러
+    infiniteHandler($state) {
+      const EACH_LEN = 30
+      fetch("/api/idol/uwasa/pages/" + (this.limit), {method: "get"}).then(resp => {
+        return resp.json()
+      }).then(data => {
+        setTimeout(() => {
+          if(data.length) {
+            this.topicData = this.topicData.concat(data)
+            $state.loaded()
+            this.limit += 1
+            console.log("after", this.topicData.length, this.limit)
+            // 끝 지정(No more data) - 데이터가 EACH_LEN개 미만이면 
+            if(data.length / EACH_LEN < 1) {
+              $state.complete()
+            }
+          } else {
+            // 끝 지정(No more data)
+            $state.complete()
+          }
+        }, 1000)
+      }).catch(err => {
+        console.error(err);
+      })
     }
   }
 }
