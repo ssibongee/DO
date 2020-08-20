@@ -32,7 +32,7 @@
             <v-col cols="12" class="post-content">
               <!-- <Viewer :initialValue="this.post.content"/> -->
               <Viewer 
-                :initialValue="this.content"
+                :initialValue="this.post.content"
                 @change="onEditorChange"
               />
             </v-col>
@@ -135,9 +135,9 @@ export default {
             title: '',
             author: '',
             content: '',
-            islike: this.$route.params.data.isLike,
+            // islike: this.$route.params.data.isLike,
           },
-          content: this.$route.params.data.content,
+          // content: this.$route.params.data.content,
           Comments: null,
           CommentInput: '',
           ChildCommentInput: '',
@@ -149,10 +149,6 @@ export default {
     },
     created(){
       axios.post(API_URL + 'api/v2/p/',{
-        // headers :{
-        //   'Content-Type': 'application/json',
-        //   'Accept':'application/json'
-        // },
         uid : storage.getItem("uid"),
         pid : storage.getItem("pid")
       })
