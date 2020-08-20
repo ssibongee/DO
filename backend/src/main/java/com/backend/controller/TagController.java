@@ -66,6 +66,7 @@ public class TagController {
     @ApiOperation(value = "태그를 포함한 모든 게시글 불러옴", notes = "태그를 포함한 모든 게시글 불러옴 좋아요 우선순위")
     @GetMapping("/api/v4/{name}")
     public List<Post> getAllPostByTag(@PathVariable String name) {
+
         return tagService.getAllPostByTag(name);
     }
 }
