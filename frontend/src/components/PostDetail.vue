@@ -183,6 +183,7 @@ export default {
       CommentRead() {
         axios.get(API_URL+'api/v3/'+storage.getItem("pid"))
           .then(res => {
+            console.log('Comment Reset')
             this.Comments = this.isCommentauthor(res.data)
           })
         this.CommentInput = ""

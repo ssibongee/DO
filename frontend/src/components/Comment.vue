@@ -27,17 +27,25 @@
 			<div class="my-auto">
 				<p class="" v-if="!isCommentChild(comment.child)">대댓글이 없습니다 ㅠㅠ</p>
 				<p class="" v-else>{{ comment.child.length }}개의 대댓글</p>
+				<!-- 대댓글 부분 -->
 				<div v-if="ChildFlag">
-					<div v-for="child in comment.child" :key=child.cid>
+					<div v-for="child in comment.child" :key=child.cid class="comment-box">
 						<p>작성자: {{ child.author }} | 내용: {{ child.content }}</p>
+						<v-btn 
+							v-if="child.isauthor"
+							@click="onCommentDelete(child)"
+						>삭제</v-btn>
+						<v-btn 
+							v-if="child.isauthor"
+							@click="onClickUpdateBtn(child)"
+						>수정</v-btn>
 					</div>
 					<div>
 					<v-text-field
-						:id="comment.cid"
 						v-model="ChildCommentInput"
-						solo="true"
-						dense="true"
-						clearable="true"
+						solo
+						dense
+						clearable
 					></v-text-field>
 					<v-btn @click="onChildCommentCreate(comment.cid)">답글 작성하기</v-btn>
 					</div>
@@ -66,6 +74,8 @@ export default {
 			CommentUpdateInput: '',
 			UpdateFlag: false,
 		}
+	},
+	created() {
 	},
 	methods: {
 		// *** Parent Comment ***
@@ -109,8 +119,10 @@ export default {
 		},
 		// Comment에 Child가 있는지 없는지 체크
 		isCommentChild(one_comment_child) {
-			// console.log(one_comment_child)
-			if (one_comment_child.length) return true
+			if (one_comment_child.length) {
+				this.isCommentauthor(one_comment_child)
+				return true
+			}
 			return false
 		},
 		onClickUpdateBtn(one_comment) {
