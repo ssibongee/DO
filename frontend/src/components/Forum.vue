@@ -26,7 +26,7 @@
          <div class="taglist" v-if="posts.length>0">
             <div @click="postdetail(post)" class="onetag" v-for="post in posts" :key="post.pid">
                <div class="profile">
-                  <a><img :src="profileImg"></a>
+                  <a><img :src="post.authorInfo.profileImage"></a>
                   <div class="nickname">
                      {{post.author}}
                   </div>
