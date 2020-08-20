@@ -26,4 +26,6 @@ public interface UserService {
 
     User signin(String email, String password);
 
+    public void updateAllPostsNickName(String uid, String nickname); // 유저 닉네임 변경시 모든 글 닉네임 변경
+
 }

@@ -138,12 +138,13 @@ public class UserController {
      */
 
     @PutMapping(value="/api/v1/{uid}")
-    public ResponseEntity<?> update(@RequestBody User user) {
+    public ResponseEntity<?> update(@PathVariable String uid, @RequestBody User user) {
         try{
-
             switch(user.getUpdateType()){
                 // modifyType:2 nickname, introduce
-                case "1": service.updateIntroduce(user.getEmail(), user.getNickname(), user.getIntroduce());
+                case "1":
+                    service.updateAllPostsNickName(uid, user.getNickname());
+                    service.updateIntroduce(user.getEmail(), user.getNickname(), user.getIntroduce());
                     break;
                 // modifyType:3 SNS Info
                 case "2":service.updateSNS(user.getEmail(), user.getFacebook(), user.getGithub(), user.getInstagram());

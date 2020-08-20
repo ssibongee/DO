@@ -71,4 +71,8 @@ public class UserDaoImpl implements UserDao {
         return mapper.signin(email, password);
     }
 
+    @Override
+    public void updateAllPostsNickName(String uid, String nickname) {
+        mapper.updateAllPostsNickName(uid, nickname);
+    }
 }

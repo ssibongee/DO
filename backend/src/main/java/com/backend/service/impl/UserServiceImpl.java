@@ -76,4 +76,8 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public void updateAllPostsNickName(String uid, String nickname) {
+        dao.updateAllPostsNickName(uid, nickname);
+    }
 }

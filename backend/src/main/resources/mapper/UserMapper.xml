@@ -73,4 +73,8 @@
         select * from user where email like #{email} and password like #{password}
     </select>
 
+    <!-- 닉네임 변경시 전체 게시글의 닉네임도 변경됨 -->
+    <update id="updateAllPostsNickName">
+        update from post set author = #{nickname} where uid = #{uid}
+    </update>
 </mapper>

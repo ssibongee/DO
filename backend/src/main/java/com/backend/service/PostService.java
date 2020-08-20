@@ -41,5 +41,4 @@ public interface PostService {
     public List<Post> findAllUserPost(Long uid); // 사용자의 모든 게시글을 가져옴
 
     public User findAuthorInfo(Long uid);   // 작성자의 기본정보를 가져옴
-
 }
