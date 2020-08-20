@@ -104,7 +104,7 @@ export default {
 			})
 			.then(() => {
 				storage.removeItem("thumbImage")
-				// 임시 저장 storage 삭제
+						// 임시 저장 storage 삭제
 				storage.removeItem("title")
 				storage.removeItem("content")
 				this.$router.push('/')
