@@ -7,8 +7,8 @@
           <div class="cont_data">
           <span><h2>Sign up</h2></span>
           <p>DO!를 시작해보세요.</p>
-          <strong class="tit_step">회원 정보 입력</strong>
-          <table v-if="!successful" style="border:1px solid #ddd">
+          <div style="border:1px solid #ddd">
+          <table v-if="!successful">
             <tr>
               <td class="def">
                 아이디
@@ -23,20 +23,16 @@
                   v-model="user.email"
                   v-validate="'required|email|max:50'"
                   type="email"
-                  style="padding : 0px"
                 />
-                <div class="alert-danger" v-if="submitted && errors.has('email')">
+                <div class="warn" v-if="submitted && errors.has('email')">
                   {{errors.first('email')}}
                 </div>
                 <!-- 아이디 중복체크 메세지 -->
-                <div
-                  class="alert"
-                  :class="successful ? 'alert-success' : 'alert-danger'"
-                  v-if="message">
-                  {{message}}
+                <div class="warn" v-if="message">
+                  * {{message}}
                 </div>
               </td>
-              <td style="width:5%; min-width: 63px; padding:0;">
+              <td style="width:5%; min-width: 63px; padding-right:10px;">
                 <div class="dup_check" @click="dupCheck">
                   <!-- 중복이 아닌 메일을 입력했다가 중복인 메일을 입력했을 때 -->
                   <v-btn x-small depressed color="#6e8af8" class="white--text">                
@@ -61,8 +57,8 @@
                   type="password"
                   ref="password"
                 />
-                <div class="alert-danger" v-if="submitted && errors.has('password')">
-                  {{errors.first('password')}}
+                <div class="warn" v-if="submitted && errors.has('password')">
+                  * 비밀번호는 8자 이상 입력해주세요
                 </div>
               </td>
             </tr>
@@ -84,13 +80,13 @@
                 data-vv-as="password"
               />
               <div
-                class="alert-danger"
+                class="warn"
                 v-if="submitted && errors.has('confirmPassword')"
-              >{{errors.first('confirmPassword')}}</div>
+              >* {{errors.first('confirmPassword')}}</div>
               </td>
             </tr>
             <tr>
-              <td class="defination">
+              <td class="def">
                 닉네임
               </td>
               <!-- <label for="password">비밀번호 확인</label> -->
@@ -107,12 +103,13 @@
                   data-vv-as="password"
                 />
                 <div
-                  class="alert-danger" v-if="submitted && errors.has('username')">
-                  {{errors.first('username')}}
+                  class="warn" v-if="submitted && errors.has('username')">
+                  * 닉네임은 3자 이상 입력해주세요.
                 </div>
               </td>
             </tr>
           </table>
+        </div>
           <!-- user field와 중복체크를 했을 때만 활성화-->
           <div class="reg_btn" style="text-align:right;">
             <v-btn 
@@ -193,7 +190,7 @@ export default {
           }
           else {
             this.dupcheck = false;
-            this.message = "아이디로 사용할 수 없는 이메일 주소입니다. 다시 입력해주세요."
+            this.message = " 아이디로 사용할 수 없는 이메일 주소입니다. 다시 입력해주세요."
           }
         } 
         else {
@@ -245,12 +242,15 @@ table {
   width:100%
 }
 td {
-  vertical-align: top;
+  vertical-align: center;
   text-align: left;
   padding: 18px 0px 16px 19px; 
+  /* font-family: 'NanumSquare','나눔스퀘어','Noto Sans','Apple SD Gothic',sans-serif; */
+
 }
 .def{
-  width:20%
+  width:20%;
+  font-family: 'NanumSquare','나눔스퀘어','Noto Sans','Apple SD Gothic',sans-serif;
 }
 .container {
   padding-top:150px; 
@@ -302,4 +302,8 @@ td {
   color:red;
 }
 
+.warn {
+  padding-left: 12px;
+  font-size:0.9rem;
+}
 </style>
