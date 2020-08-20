@@ -21,7 +21,11 @@
 
           <!-- TextEditor 미리보기만(마크다운) -->
           <div class="col-lg-12">
-            <Viewer :initialValue="this.post.content"/>
+            <!-- <Viewer :initialValue="this.post.content"/> -->
+            <Viewer 
+              :initialValue="this.content"
+              @change="onEditorChange"
+            />
           </div>
           <!-- 게시글 수정, 삭제(작성자랑 일치할 경우 버튼 노출) -->
           <div></div>
@@ -52,6 +56,7 @@
               @Click-Delete-Btn="CommentRead"
               @Click-Update-Btn="CommentRead"
               @Child-Create="CommentRead"
+              @Click-Child-Update-Btn="CommentRead"
             />
           </div>
         </div>
@@ -93,10 +98,9 @@ export default {
             content: '',
             islike: this.$route.params.data.isLike,
           },
-          content: this.$route.params.data.tmp,
+          content: this.$route.params.data.content,
           Comments: null,
           CommentInput: '',
-          ChildFlag: false,
           ChildCommentInput: '',
           FeedFlag: '',
           like: '',
@@ -120,7 +124,7 @@ export default {
           this.post.author = res.data.author
           this.post.content = res.data.content
           this.post.islike = res.data.isLike
-          // console.log(this.post)
+          console.log(this.post.content)
           if(this.post.islike===true){
             this.like = "fas fa-heart"
             this.FeedFlag= true
@@ -128,9 +132,7 @@ export default {
             this.like = "far fa-heart"
             this.FeedFlag = false
           }
-          // console.log(this.post)
           this.Comments = res.data.comments
-          // console.log(this.Comments)
           this.isCommentauthor(this.Comments)
           this.isPostauthor(this.isPostauthor)
       })
@@ -144,24 +146,28 @@ export default {
       forceRerender() {
         // Remove my-component from the DOM
         this.renderComponent = false;
-
         this.$nextTick(() => {
           // Add the component back in
           this.renderComponent = true;
         })
+        console.log("rerender Complete")
       },
       fetchData() {
-        axios.post(API_URL + 'api/v2/p',{
+        axios.post(API_URL + 'api/v2/p/',{
           uid : storage.getItem("uid"),
           pid : storage.getItem("pid")
         })
           .then(res => {
+            console.log('fetchData')
             this.post = res.data
             console.log(this.post)
             this.Comments = res.data.comments
             this.isCommentauthor(this.Comments)
             this.isPostauthor(this.isPostauthor)
           })
+      },
+      onEditorChange() {
+        this.fetchData()
       },
       // 글 작성자인지 확인
       isPostauthor() {
@@ -194,6 +200,7 @@ export default {
       CommentRead() {
         axios.get(API_URL+'api/v3/'+storage.getItem("pid"))
           .then(res => {
+            console.log('Comment Reset')
             this.Comments = this.isCommentauthor(res.data)
             this.forceRerender()
             console.log('Comment Read')
@@ -207,6 +214,15 @@ export default {
             one_comment.isauthor = true
           } else {
             one_comment.isauthor = false
+          }
+          if (one_comment.child.length) {
+            one_comment["child"].forEach(one_child => {
+              if (one_child.author === storage.getItem("login_user") && one_child.uid === Number(storage.getItem("uid"))) {
+                one_child.isauthor = true
+              } else {
+                one_child.isauthor = false
+              }
+            })
           }
         })
         return Comments
