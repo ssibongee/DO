@@ -2,13 +2,17 @@
   <div id="app">
   <!-- navbar(로고에 개인 블로그 이름 추가되야함) -->
   <Navbar/>
-  <div class="likepost">
-    <v-btn icon depressed small @click="addToFeed" color="pink">
-      <v-icon :class="like"></v-icon>
-    </v-btn>
-  </div>
   <div class="detail_content">
     <h1 class="post-title">{{ post.title }}</h1>
+    <div class="btn_outer">
+      <div class="likepost">
+        <div class="remote_likepost">
+          <v-btn icon fab outlined depressed large @click="addToFeed" color="pink">
+            <v-icon :class="like"></v-icon>
+          </v-btn>
+        </div>
+      </div>
+    </div>
     <div class="post_info">
       <div class="post_author">
         {{post.author}}
@@ -349,7 +353,18 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
+.btn_outer{
+  position: relative;
+  margin-top: 2rem;
+}
+.likepost{
+  position: absolute;
+  left: 64rem;
+}
+.remote_likepost{
+  position: fixed;
+}
 .detail_content {
   padding-top:151px;
   max-width:980px;
@@ -410,6 +425,7 @@ export default {
   min-height:500px;
   margin: 2rem 0 2rem 0;
   padding: 0 0 1rem 0;
+  font-family: 'NanumSquare','나눔스퀘어','Noto Sans','Apple SD Gothic',sans-serif;
 }
 .author_info {
   display: flex;
@@ -454,4 +470,21 @@ export default {
 .author_profile_img {
   border-radius: 50%;
 } 
+.tui-editor-contents p{
+  font-size: 1.125rem;
+}
+.tui-editor-contents li{
+  font-size: 1.125rem;
+}
+.tui-editor-contents h1{
+  font-size: 32px;
+  font-family: 'inter', 'NanumSquare','나눔스퀘어', sans-serif;
+  line-height:35px;
+}
+.tui-editor-contents h2{
+  font-size: 24px;
+  font-family: 'inter', 'NanumSquare','나눔스퀘어','Noto Sans','Apple SD Gothic',sans-serif;
+  font-weight: 700;
+  line-height:30px;
+}
 </style>
