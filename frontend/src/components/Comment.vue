@@ -205,8 +205,7 @@ export default {
 }
 .child-comment {
 	display: flex;
-	padding: 0 0 0.5rem 0;
-	border-bottom: 1px solid #888888
+	margin: 0 0 0.5rem 2rem;
 }
 .btngrp{
 	margin-top: -2px;
@@ -222,6 +221,9 @@ export default {
 }
 .main_comment h5{
 	font-weight: 800;
+}
+h5 {
+	margin-right: 20px;
 }
 .mc_content {
 	max-height: 3.6rem;

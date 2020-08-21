@@ -7,19 +7,20 @@
 				<p>{{ child.content }}</p>
 			</div>
 		</div>
+		<div class="btngrp">
+			<span
+				v-if="child.isauthor"
+				style="margin-right: 10px;"
+				@click="onCommentDelete(child)"
+				>삭제</span>
+			<span 
+				v-if="child.isauthor"
+				style="margin-right: 10px;"
+				@click="ClickChildUpdateBtn(child)"
+				>수정</span>
+		</div>
 	</div>
     <div>
-      <v-btn
-        class="mx-2 red accent-3 text-white"
-        v-if="child.isauthor"
-        @click="onCommentDelete(child)"
-      >삭제</v-btn>
-      <v-btn 
-        class="green accent-4"
-        color="white"
-        v-if="child.isauthor"
-        @click="ClickChildUpdateBtn(child)"
-      >수정</v-btn>
       <div v-if="ChildUpdateFlag" class="update-box">
 				<v-text-field
 					v-model="ChildUpdateInput"
@@ -92,10 +93,11 @@ export default {
 	width: 100%;
 	display: flex;
 	font-family: 'NanumSquare','나눔스퀘어','Noto Sans','Apple SD Gothic',sans-serif;
-	margin : 10px 0 10px 30px;
+	margin : 10px 0 10px 0;
 }
-.main_comment h5{
+.main_comment div h5{
 	font-weight: 800;
+	margin-right: 20px;
 }
 .mc_content {
 	max-height: 3.6rem;
@@ -105,5 +107,12 @@ export default {
 .mc_content p{
 	font-size: 1rem;
 	line-height: 1.2rem;
+}
+.btngrp{
+	margin-top: -2px;
+}
+.btngrp span {
+	cursor: pointer;
+	font-size: 14px;
 }
 </style>
