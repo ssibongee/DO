@@ -53,6 +53,8 @@ CI/CD : Jenkins
   * 워드 클라우드 관련 기능 구현 
 
 **Infra**
+
+
 안시원
   * AWS EC2 서버에 Nginx 설정
   * AWS EC2 서버에 Docker 설치 
